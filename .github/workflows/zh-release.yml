@@ -43,6 +43,12 @@ jobs:
           git remote add upstream https://github.com/mikroverk/esp32sim.git
           git fetch upstream --tags --force
 
+      - name: 发现上游新增文案
+        run: |
+          set -e
+          node tools/zh-discover.mjs
+          node tools/zh-discover.mjs --write
+
       - name: 增量翻译
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -169,7 +175,7 @@ jobs:
 
   publish:
     needs: [translate, build]
-    if: needs.build.result == 'success'
+    if: always() && needs.build.result == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

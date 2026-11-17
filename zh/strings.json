@@ -2,8 +2,9 @@
   "meta": {
     "generator": "tools/zh-bootstrap.mjs",
     "upstream": "HEAD",
-    "count": 463,
-    "note": "en/zh 为精确文本(多行用 \\n 连接);en 唯一时唯一匹配,occ 表示取第几次出现"
+    "count": 495,
+    "note": "en/zh 为精确文本(多行用 \\n 连接);en 唯一时唯一匹配,occ 表示取第几次出现",
+    "discoveredAt": "2026-11-17T14:33:21.754Z"
   },
   "units": [
     {
@@ -2783,6 +2784,198 @@
       "en": "      if (pace) pace.textContent = wasmMode ? (document.getElementById('pace')?.textContent || document.getElementById('status')?.textContent || 'loading…') : 'native emulator, over its WebSocket';",
       "zh": "      if (pace) pace.textContent = wasmMode ? (document.getElementById('pace')?.textContent || document.getElementById('status')?.textContent || '加载中…') : '本机模拟器，经它的 WebSocket';",
       "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "<a class=\"brand\" href=\"index.html\"><img src=\"assets/esp32sim-logo-icon.png\" alt=\"\">esp32sim</a>",
+      "zh": "<a class=\"brand\" href=\"index.html\"><img src=\"assets/esp32sim-logo-icon.png\" alt=\"\">esp32sim</a>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<a href=\"#releases\">Releases</a>",
+      "zh": "<a href=\"#releases\">版本发布</a>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<a class=\"gh\" href=\"https://github.com/mikroverk/esp32sim\">GitHub ↗</a>",
+      "zh": "<a class=\"gh\" href=\"https://github.com/mikroverk/esp32sim\">GitHub ↗</a>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<h2 id=\"latest-h\">New in v0.4.0 <time datetime=\"2026-11-15\">15 Nov 2026</time></h2>",
+      "zh": "<h2 id=\"latest-h\">v0.4.0 新增内容 <time datetime=\"2026-11-15\">2026 年 11 月 15 日</time></h2>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<li><a href=\"run.html?wasm&amp;fw=s31-mosaico\"><b>ESP32-S31 on Espressif's ESP-Mosaico:</b> the newest chip, its round AMOLED, touch and sensors, here in the browser</a></li>",
+      "zh": "<li><a href=\"run.html?wasm&amp;fw=s31-mosaico\"><b>ESP32-S31 运行在乐鑫 ESP-Mosaico 上：</b>最新芯片，带圆形 AMOLED、触摸和传感器，就在浏览器里</a></li>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<li><a href=\"run.html?wasm&amp;fw=p4-c6-hosted\"><b>ESP32-P4:</b> two RISC-V cores, and WiFi through an emulated ESP32-C6 running ESP-Hosted</a></li>",
+      "zh": "<li><a href=\"run.html?wasm&amp;fw=p4-c6-hosted\"><b>ESP32-P4：</b>两个 RISC-V 核，并通过模拟的 ESP32-C6 运行 ESP-Hosted 提供 WiFi</a></li>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<li><a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/cli.md\"><b>esptool</b> flashes the S3, C3, C6 and P4 through the ROM, as on a real board</a></li>",
+      "zh": "<li><a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/cli.md\"><b>esptool</b> 通过 ROM 烧写 S3、C3、C6 和 P4，与真实开发板一致</a></li>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<a class=\"all\" href=\"https://github.com/mikroverk/esp32sim/releases/tag/v0.4.0\">Release notes</a> <a class=\"all\" href=\"#releases\">Release history</a>",
+      "zh": "<a class=\"all\" href=\"https://github.com/mikroverk/esp32sim/releases/tag/v0.4.0\">发布说明</a> <a class=\"all\" href=\"#releases\">发布历史</a>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<div class=\"body\"><div class=\"meta\"><span>ESP32-S3</span><span>Linux 6.11 · xterm.js</span></div>",
+      "zh": "<div class=\"body\"><div class=\"meta\"><span>ESP32-S3</span><span>Linux 6.11 · xterm.js</span></div>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<h3>Schematik T-Display</h3>",
+      "zh": "<h3>Schematik T-Display</h3>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<div class=\"body\"><div class=\"meta\"><span>ESP32-C6</span><span>802.15.4 · ST7789 · RISC-V</span></div>",
+      "zh": "<div class=\"body\"><div class=\"meta\"><span>ESP32-C6</span><span>802.15.4 · ST7789 · RISC-V</span></div>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<div class=\"body\"><div class=\"meta\"><span>2 × ESP32-C6</span><span>Contiki-NG · IPv6</span></div>",
+      "zh": "<div class=\"body\"><div class=\"meta\"><span>2 × ESP32-C6</span><span>Contiki-NG · IPv6</span></div>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<div class=\"body\"><div class=\"meta\"><span>ESP32-C6</span><span>WiFi · DHCP · pcap</span></div>",
+      "zh": "<div class=\"body\"><div class=\"meta\"><span>ESP32-C6</span><span>WiFi · DHCP · pcap</span></div>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<h3>Seeed Studio XIAO ESP32-C6</h3>",
+      "zh": "<h3>Seeed Studio XIAO ESP32-C6</h3>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<dt>CPU</dt><dd>2 × Xtensa LX7 @ 240 MHz, PIE SIMD</dd>",
+      "zh": "<dt>CPU</dt><dd>2 × Xtensa LX7 @ 240 MHz，PIE SIMD</dd>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<dt>CPU</dt><dd>1 × RISC-V RV32IMC @ 160 MHz</dd>",
+      "zh": "<dt>CPU</dt><dd>1 × RISC-V RV32IMC @ 160 MHz</dd>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<dt>CPU</dt><dd>1 × RISC-V RV32IMAC @ 160 MHz</dd>",
+      "zh": "<dt>CPU</dt><dd>1 × RISC-V RV32IMAC @ 160 MHz</dd>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<div><span class=\"kicker\">Releases</span><h2>What came when.</h2></div>",
+      "zh": "<div><span class=\"kicker\">版本发布</span><h2>各版本发布时间。</h2></div>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<p>Every release has ready-to-run downloads for Linux (x86-64 and ARM64) and macOS (Apple silicon).</p>",
+      "zh": "<p>每个版本都提供可直接运行的下载包，支持 Linux（x86-64 和 ARM64）与 macOS（Apple 芯片）。</p>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<time datetime=\"2026-11-15\">15 November 2026</time>",
+      "zh": "<time datetime=\"2026-11-15\">2026 年 11 月 15 日</time>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<div class=\"go\"><a href=\"https://github.com/mikroverk/esp32sim/releases/tag/v0.4.0\">Release notes and downloads</a></div>",
+      "zh": "<div class=\"go\"><a href=\"https://github.com/mikroverk/esp32sim/releases/tag/v0.4.0\">发行说明与下载</a></div>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<time datetime=\"2026-10-20\">20 October 2026</time>",
+      "zh": "<time datetime=\"2026-10-20\">2026 年 10 月 20 日</time>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<p>A fourth chip, the classic ESP32, from its own mask ROM to MicroPython on a TTGO T-Display. WiFi and Bluetooth on every chip, a much wider set of peripherals, and a browser build that runs some workloads faster than real time.</p>",
+      "zh": "<p>新增第四款芯片：经典 ESP32。从芯片自带 ROM 一路跑到 TTGO T-Display 上的 MicroPython。每款芯片都支持 WiFi 和蓝牙，外设范围大幅扩展。浏览器构建可让部分负载跑得比实时更快。</p>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<div class=\"go\"><a href=\"https://github.com/mikroverk/esp32sim/releases/tag/v0.3.0\">Release notes and downloads</a></div>",
+      "zh": "<div class=\"go\"><a href=\"https://github.com/mikroverk/esp32sim/releases/tag/v0.3.0\">发行说明与下载</a></div>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<time datetime=\"2026-09-13\">13 September 2026</time>",
+      "zh": "<time datetime=\"2026-09-13\">2026 年 9 月 13 日</time>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<p>A third chip, the ESP32-C6, with an 802.15.4 radio and Contiki-NG. Linux 6.11 boots on the ESP32-S3, and the S3 gets a WebAssembly JIT in the browser.</p>",
+      "zh": "<p>新增第三款芯片：ESP32-C6。带 802.15.4 射频和 Contiki-NG。ESP32-S3 上可启动 Linux 6.11。S3 在浏览器中获得 WebAssembly JIT。</p>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<div class=\"go\"><a href=\"https://github.com/mikroverk/esp32sim/releases/tag/v0.2.0\">Release notes and downloads</a></div>",
+      "zh": "<div class=\"go\"><a href=\"https://github.com/mikroverk/esp32sim/releases/tag/v0.2.0\">发行说明与下载</a></div>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<time datetime=\"2026-09-02\">2 September 2026</time>",
+      "zh": "<time datetime=\"2026-09-02\">2026 年 9 月 2 日</time>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<p>The first release: unmodified ESP-IDF and Arduino firmware on the ESP32-S3 and ESP32-C3, from the real mask ROM through the bootloader into the application, natively and in the browser.</p>",
+      "zh": "<p>首个版本：在 ESP32-S3 和 ESP32-C3 上运行未经修改的 ESP-IDF 与 Arduino 固件。从真实的芯片自带 ROM 开始，经引导程序进入应用固件。支持原生运行和浏览器运行。</p>",
+      "discovered": true
+    },
+    {
+      "file": "web/index.html",
+      "en": "<div class=\"go\"><a href=\"https://github.com/mikroverk/esp32sim/releases/tag/v0.1.0\">Release notes and downloads</a></div>",
+      "zh": "<div class=\"go\"><a href=\"https://github.com/mikroverk/esp32sim/releases/tag/v0.1.0\">发行说明与下载</a></div>",
+      "discovered": true
+    },
+    {
+      "file": "web/run.html",
+      "en": "<div class=\"row\" id=\"stopwatchbuttons\" style=\"display:none;margin-top:8px\"><span class=\"boardbtn\" data-pin=\"2\">A (GPIO 2)</span><span class=\"boardbtn\" data-pin=\"1\">B (GPIO 1)</span></div>",
+      "zh": "<div class=\"row\" id=\"stopwatchbuttons\" style=\"display:none;margin-top:8px\"><span class=\"boardbtn\" data-pin=\"2\">A（GPIO 2）</span><span class=\"boardbtn\" data-pin=\"1\">B（GPIO 1）</span></div>",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --trace-fn PREFIX, --break PC, --watch ADDR, --peek ADDR,N, --profile, --vcd F, --debug AREAS, --no-jit\");",
+      "zh": "eprintln!(\"  --trace-fn PREFIX, --break PC, --watch ADDR, --peek ADDR,N, --profile, --vcd F, --debug AREAS, --no-jit\");",
+      "discovered": true
     }
   ]
 }
