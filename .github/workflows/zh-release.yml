@@ -1,0 +1,190 @@
+# 中文版 esp32sim 的发布流水线(GitHub Actions)
+# 密钥:仓库 Settings → Secrets and variables → Actions → New repository secret
+#        DEEPSEEK_API_KEY(翻译)、RELEASE_TOKEN(可选,发布用)
+name: zh-release
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '上游 tag,例如 v0.4.0(留空则取最新)'
+        required: false
+      skip_translate:
+        description: '跳过翻译,只用现有译文构建'
+        required: false
+        default: 'false'
+  push:
+    branches: [zh]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: zh-release
+  cancel-in-progress: false
+
+jobs:
+  translate:
+    if: inputs.skip_translate != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 拉取上游 tag
+        run: |
+          git remote add upstream https://github.com/mikroverk/esp32sim.git
+          git fetch upstream --tags --force
+
+      - name: 增量翻译
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          node tools/zh-translate.mjs --dry-run || true
+          if [ -n "$DEEPSEEK_API_KEY" ]; then node tools/zh-translate.mjs; else echo "未配置 DEEPSEEK_API_KEY,跳过真实翻译"; fi
+
+      - name: 质量门禁
+        run: node tools/zh-check.mjs
+
+      - name: 提交译文变更
+        run: |
+          if git diff --quiet -- zh/; then echo "译文无变化"; exit 0; fi
+          git config user.name "esp32sim-zh bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add zh/
+          git commit -m "zh: 更新译文"
+          git push
+
+  build:
+    needs: translate
+    if: always() && (needs.translate.result == 'success' || needs.translate.result == 'skipped')
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            platform: linux-x86_64
+          - target: aarch64-unknown-linux-gnu
+            platform: linux-arm64
+          - target: x86_64-pc-windows-gnu
+            platform: windows-x86_64
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 安装交叉工具链
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q gcc-mingw-w64-x86-64 gcc-aarch64-linux-gnu
+          rustup target add "${{ matrix.target }}"
+
+      - name: crates 镜像(国内加速)
+        run: |
+          mkdir -p .cargo
+          cat > .cargo/config.toml <<'EOF'
+          [source.crates-io]
+          replace-with = "rsproxy"
+          [source.rsproxy]
+          registry = "sparse+https://rsproxy.cn/index/"
+          [net]
+          git-fetch-with-cli = true
+          EOF
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            .build/target
+          key: cargo-${{ matrix.target }}-${{ hashFiles('Cargo.lock') }}
+
+      - name: 生成 build-src(模式 B)
+        run: |
+          OVL="$PWD/.build/overlay"
+          mkdir -p "$OVL/docs"
+          cp -r docs/zh "$OVL/docs/zh"
+          node tools/apply-zh.mjs --upstream . --out .build/build-src --strings zh/strings.json --overlay "$OVL"
+
+      - name: 编译
+        env:
+          CARGO_TARGET_DIR: ${{ github.workspace }}/.build/target
+        run: |
+          set -e
+          if [ "${{ matrix.target }}" = "aarch64-unknown-linux-gnu" ]; then
+            export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
+            export RUSTFLAGS="-C link-arg=-fuse-ld=bfd"
+          fi
+          cargo build --release -p esp32sim --target "${{ matrix.target }}" --manifest-path .build/build-src/Cargo.toml
+
+      - name: 打包
+        env:
+          CARGO_TARGET_DIR: ${{ github.workspace }}/.build/target
+        run: |
+          set -e
+          ver=$(tr -d '\r' < Cargo.toml | sed -n 's/^version = "\(.*\)"$/\1/p' | head -1)
+          pkg="esp32sim-${ver}-zh-${{ matrix.platform }}"
+          mkdir -p "dist/$pkg/docs" "dist/$pkg/tools"
+          rel="$CARGO_TARGET_DIR/${{ matrix.target }}/release"
+          for b in esp32sim esp32sim-c3 esp32sim-c6 esp32sim-p4 esp32sim-s31; do
+            if [ "${{ matrix.platform }}" = "windows-x86_64" ]; then cp "$rel/$b.exe" "dist/$pkg/$b.exe"; else cp "$rel/$b" "dist/$pkg/$b"; fi
+          done
+          cp LICENSE "dist/$pkg/" 2>/dev/null || true
+          cp README.md "dist/$pkg/" 2>/dev/null || true
+          cp .build/build-src/docs/zh/*.md "dist/$pkg/docs/" 2>/dev/null || true
+          cp .build/build-src/tools/fetch-rom-elfs.sh "dist/$pkg/tools/" 2>/dev/null || true
+          cp -r .build/build-src/web "dist/$pkg/web"
+          rm -rf "dist/$pkg/web/wasm/fw/public"
+          tar -czf "dist/$pkg.tar.gz" -C dist "$pkg"
+          rm -rf "dist/$pkg"
+          cd dist && sha256sum ./*.tar.gz > SHA256SUMS.txt && cat SHA256SUMS.txt
+
+      - name: 冒烟(linux-x86_64 真跑)
+        if: matrix.platform == 'linux-x86_64'
+        env:
+          CARGO_TARGET_DIR: ${{ github.workspace }}/.build/target
+        run: |
+          set -e
+          exe="$CARGO_TARGET_DIR/x86_64-unknown-linux-gnu/release/esp32sim"
+          "$exe" --version
+          "$exe" --help | head -1 | grep -q '^usage:'
+          set +e; "$exe" --adc x >/dev/null 2>&1; code=$?; set -e
+          [ "$code" = "2" ]
+          file "$exe"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}
+          path: dist/*.tar.gz
+
+  publish:
+    needs: [translate, build]
+    if: needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: 汇总校验和
+        run: cd dist && sha256sum ./*.tar.gz | tee SHA256SUMS.txt
+
+      - name: 发布 Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.translate.outputs.version }}-zh
+          name: esp32sim ${{ needs.translate.outputs.version }} 中文版
+          body: 自动构建:增量翻译 + 三平台交叉编译
+          files: dist/*
