@@ -1,0 +1,196 @@
+# 中文版 esp32sim 的发布流水线
+# 触发:每 6 小时检查上游、手动指定 tag、push 到 zh 分支
+# 说明:AtomGit 的流水线与 GitHub Actions 语法兼容,目录是 .atomgit/workflows/
+name: zh-release
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '上游 tag,例如 v0.4.0(留空则自动取最新)'
+        required: false
+      skip_translate:
+        description: '跳过翻译,只用现有译文构建'
+        required: false
+        default: 'false'
+  push:
+    branches: [zh]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: zh-release
+  cancel-in-progress: false
+
+jobs:
+  # 1) 取上游 tag,准备翻译
+  translate:
+    if: inputs.skip_translate != 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 拉取上游 tag
+        run: |
+          git remote add upstream https://github.com/mikroverk/esp32sim.git || true
+          git fetch upstream --tags --force
+
+      - name: 确定版本号
+        id: ver
+        run: |
+          v="${{ inputs.tag }}"
+          if [ -z "$v" ]; then v=$(git tag --list 'v*' --sort=-v:refname | head -1); fi
+          echo "version=${v#v}" >> "$GITHUB_OUTPUT"
+
+      - name: 增量翻译(缺 key 时只报告待译条数)
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          node tools/zh-translate.mjs --dry-run || true
+          if [ -n "$DEEPSEEK_API_KEY" ]; then node tools/zh-translate.mjs; else echo "未配置 DEEPSEEK_API_KEY,跳过真实翻译"; fi
+
+      - name: 质量门禁(失败即停)
+        run: node tools/zh-check.mjs
+
+      - name: 提交译文变更
+        run: |
+          if git diff --quiet zh/strings.json zh/cache.json 2>/dev/null; then echo "译文无变化"; exit 0; fi
+          git config user.name  "esp32sim-zh bot"
+          git config user.email "bot@users.noreply.atomgit"
+          git add zh/strings.json zh/cache.json
+          git commit -m "zh: 更新译文 (${{ steps.ver.outputs.version }})"
+          git push
+
+  # 2) 三目标编译
+  build:
+    needs: translate
+    if: always() && (needs.translate.result == 'success' || needs.translate.result == 'skipped')
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            platform: linux-x86_64
+          - target: aarch64-unknown-linux-gnu
+            platform: linux-arm64
+          - target: x86_64-pc-windows-gnu
+            platform: windows-x86_64
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 安装交叉工具链
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q gcc-mingw-w64-x86-64 gcc-aarch64-linux-gnu
+          rustup target add "${{ matrix.target }}"
+
+      - name: 依赖镜像(国内加速)
+        run: |
+          mkdir -p .cargo
+          cat > .cargo/config.toml <<'EOF'
+          [source.crates-io]
+          replace-with = "rsproxy"
+          [source.rsproxy]
+          registry = "sparse+https://rsproxy.cn/index/"
+          [registries.rsproxy]
+          index = "sparse+https://rsproxy.cn/index/"
+          [net]
+          git-fetch-with-cli = true
+          EOF
+
+      - name: 缓存
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            .build/target
+          key: cargo-${{ matrix.target }}-${{ hashFiles('Cargo.lock') }}
+
+      - name: 生成 build-src(模式 B)
+        run: node tools/apply-zh.mjs --upstream . --out .build/build-src --strings zh/strings.json
+
+      - name: 编译
+        env:
+          CARGO_TARGET_DIR: ${{ github.workspace }}/.build/target
+        run: cargo build --release -p esp32sim --target "${{ matrix.target }}" --manifest-path .build/build-src/Cargo.toml
+
+      - name: 打包
+        env:
+          CARGO_TARGET_DIR: ${{ github.workspace }}/.build/target
+        run: |
+          set -e
+          ver=$(sed -n 's/^version = "\(.*\)"$/\1/p' Cargo.toml | head -1)
+          pkg="esp32sim-${ver}-zh-${{ matrix.platform }}"
+          mkdir -p "dist/$pkg/docs" "dist/$pkg/tools"
+          rel="$CARGO_TARGET_DIR/${{ matrix.target }}/release"
+          for b in esp32sim esp32sim-c3 esp32sim-c6 esp32sim-p4 esp32sim-s31; do
+            if [ "${{ matrix.platform }}" = "windows-x86_64" ]; then cp "$rel/$b.exe" "dist/$pkg/$b.exe"; else cp "$rel/$b" "dist/$pkg/$b"; fi
+          done
+          cp LICENSE "dist/$pkg/" 2>/dev/null || true
+          cp README.md "dist/$pkg/" 2>/dev/null || true
+          cp .build/build-src/docs/zh/*.md "dist/$pkg/docs/" 2>/dev/null || true
+          cp .build/build-src/tools/fetch-rom-elfs.sh "dist/$pkg/tools/" 2>/dev/null || true
+          tar -czf "dist/$pkg.tar.gz" -C dist "$pkg"
+          cd dist && sha256sum ./*.tar.gz > SHA256SUMS.txt && cat SHA256SUMS.txt
+
+      - name: 冒烟(仅 linux-x86_64 真跑)
+        if: matrix.platform == 'linux-x86_64'
+        env:
+          CARGO_TARGET_DIR: ${{ github.workspace }}/.build/target
+        run: |
+          set -e
+          exe="$CARGO_TARGET_DIR/x86_64-unknown-linux-gnu/release/esp32sim"
+          "$exe" --version
+          "$exe" --help | head -1 | grep -q '^usage:'
+          set +e; "$exe" --adc x >/dev/null 2>&1; code=$?; set -e
+          [ "$code" = "2" ]
+          file "$exe"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}
+          path: dist/*.tar.gz
+
+  # 3) 发布:附上三个平台包与校验和
+  publish:
+    needs: [translate, build]
+    if: needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: 汇总校验和
+        run: |
+          cd dist && sha256sum ./*.tar.gz | tee SHA256SUMS.txt
+
+      - name: 发布到平台 Release
+        env:
+          TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          set -e
+          ver=$(git describe --tags --always | sed 's/^v//')
+          echo "准备发布 v${ver}-zh"
+          # 平台 Release API:换成 AtomGit 的地址与字段即可,上传 dist/* 作为附件
+          # curl -fsS -X POST "$API/repos/$REPO/releases" -H "Authorization: token $TOKEN" ...
+          ls -l dist

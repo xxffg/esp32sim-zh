@@ -66,3 +66,9 @@ esp32s31/firmware/*.bin
 !esp32s31/firmware/s31-wifi_station.bin
 # and the ESP-Mosaico board test (examples/mosaico-board, IDF v6.1)
 !esp32s31/firmware/s31-mosaico-board.bin
+
+# 中文版流水线产物
+/.build/
+/dist/
+/out/
+/roms/

@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "note": "不是翻译、而是新增代码的插入单元。after 必须在文件里唯一出现,text 会紧跟在 after 之后插入。"
+  },
+  "units": [
+    {
+      "file": "cli/src/lib.rs",
+      "after": "fn usage_error(message: &str) -> ! { eprintln!(\"{message}\"); std::process::exit(2) }",
+      "text": "\n\n/// A file the command line named could not be opened or read: which file, and why when the OS says.\nfn file_error(flag: &str, path: &str, e: &std::io::Error) -> String {\n    if e.kind() == std::io::ErrorKind::NotFound { format!(\"{flag}: 找不到文件 {path}\") } else { format!(\"{flag}: 打不开 {path}，{e}\") }\n}",
+      "why": "翻译时把重复的“打不开文件”报错收敛成了一个辅助函数,属于代码增补"
+    }
+  ]
+}

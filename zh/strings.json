@@ -1,0 +1,2788 @@
+{
+  "meta": {
+    "generator": "tools/zh-bootstrap.mjs",
+    "upstream": "HEAD",
+    "count": 463,
+    "note": "en/zh 为精确文本(多行用 \\n 连接);en 唯一时唯一匹配,occ 表示取第几次出现"
+  },
+  "units": [
+    {
+      "file": "cli/src/camera.rs",
+      "en": "    let (w, h) = s.split_once('x').ok_or(\"--cam-size requires WIDTHxHEIGHT\")?;",
+      "zh": "    let (w, h) = s.split_once('x').ok_or(\"--cam-size: 需要 WIDTHxHEIGHT 的形式\")?;",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/camera.rs",
+      "en": "    if !w.bytes().all(|b| b.is_ascii_digit()) || !h.bytes().all(|b| b.is_ascii_digit()) { return Err(\"--cam-size requires unsigned decimal WIDTHxHEIGHT\".into()); }",
+      "zh": "    if !w.bytes().all(|b| b.is_ascii_digit()) || !h.bytes().all(|b| b.is_ascii_digit()) { return Err(\"--cam-size: WIDTH 和 HEIGHT 都要无符号十进制数。\".into()); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/camera.rs",
+      "en": "    let (w, h) = (w.parse::<u16>().map_err(|_| \"invalid camera width\")?, h.parse::<u16>().map_err(|_| \"invalid camera height\")?);",
+      "zh": "    let (w, h) = (w.parse::<u16>().map_err(|_| \"--cam-size: 宽度超出范围。\")?, h.parse::<u16>().map_err(|_| \"--cam-size: 高度超出范围。\")?);",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/camera.rs",
+      "en": "        return Err(\"camera frame must be nonempty and fit the 8 MiB host input limit\".into());",
+      "zh": "        return Err(\"--cam-size: 帧不能为空，也不能超过主机输入的 8 MiB 上限。\".into());",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    eprintln!(\"usage: esp32sim [--chip esp32|s3|c3|c6|p4|s31] --boot rom|app --bootloader B.bin --ptable P.bin --app A.bin [--elf X.elf]... [options]\");\n    eprintln!(\"       esp32sim --flash-image flash.bin --boot rom [options]            (a whole flash dump instead of the three images)\");\n    eprintln!(\"       default chip here: {}; esp32sim-c3/c6/p4/s31 are --chip c3 / c6 / p4 / s31\", chip);",
+      "zh": "    eprintln!(\"usage: esp32sim [--chip esp32|s3|c3|c6|p4|s31] --boot rom|app [选项]\");\n    eprintln!(\"       --bootloader B.bin --ptable P.bin --app A.bin [--elf X.elf]...\");\n    eprintln!(\"       esp32sim --flash-image flash.bin --boot rom [选项]            用整份 flash 转储代替上面三个镜像\");\n    eprintln!(\"       本机默认芯片：{}；esp32sim-c3/c6/p4/s31 就是 --chip c3 / c6 / p4 / s31\", chip);",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    eprintln!(\"  --rom F               the chip's mask ROM ELF; default: $ESP32SIM_ROM_DIR, then ~/.espressif/tools/esp-rom-elfs/*/\");\n    eprintln!(\"                        (Espressif's, not in the tarball: tools/fetch-rom-elfs.sh DIR downloads all of them)\");\n    eprintln!(\"  --board NAME          board model (S3: atech14, waveshare-lcd4b, waveshare-amoled18-v2, waveshare-cam, stopwatch, none;\");\n    eprintln!(\"                        C6: waveshare-c6-lcd147, xiao-esp32c6, none; P4: waveshare-p4-lcd35, none; S31: mosaico, none;\");\n    eprintln!(\"                        classic: ttgo-tdisplay, cyd, ulanzi-tc001, ai-thinker-cam, esp32dev, none)\");\n    eprintln!(\"  --flash-mb N, --psram-mb N   memory sizes (S3 default 8 / 2, C3, C6 and classic 4 / 0, P4 16 / 0, S31 2, mosaico 16 / 16)\");\n    eprintln!(\"  --max-seconds S       stop after S emulated seconds (always give one: the run returns)\");\n    eprintln!(\"  --console usb|uart0|both|none   which consoles to print (uart0 shows the ROM and bootloader)\");\n    eprintln!(\"  --imu-motion N        scripted IMU motion: 0 at rest, 1 the 30 s tilt/flip/shake script (amoled18-v2, mosaico)\");\n    eprintln!(\"  --wifi ssid=…,psk=…   a virtual access point with DHCP, DNS, NTP and NAT to the host network\");\n    eprintln!(\"  --wifi-sta ssid=…,psk=…   a virtual station that joins the guest's own access point (classic ESP32)\");\n    eprintln!(\"  --pcap F              write the station's Ethernet frames (both ways) to pcap F (needs --wifi or --wifi-sta)\");\n    eprintln!(\"  --hostfwd tcp:H:HP-G:GP  publish a guest TCP port on the host (repeatable; needs --wifi)\");\n    eprintln!(\"  --script F            host actions at emulated times (button presses, touches, serial input, stop)\");\n    eprintln!(\"  --tft-png F, --wav F  save the display / the audio at the end of the run\");\n    eprintln!(\"  --mic-wav [PORT:]F    play a 16-bit PCM WAV once into I2S RX (default controller 0), resampled\");\n    eprintln!(\"  --web PORT            serve the board UI at http://127.0.0.1:PORT/ in real time\");\n    eprintln!(\"  --elf F               symbols for logs, traces and profiles (repeatable)\");",
+      "zh": "    eprintln!(\"  --rom F               芯片自带 ROM 的 ELF：先找 $ESP32SIM_ROM_DIR，再找 ~/.espressif/tools/esp-rom-elfs/*/\");\n    eprintln!(\"                        （属 Espressif，不在发布包里；用 tools/fetch-rom-elfs.sh DIR 下载全部）\");\n    eprintln!(\"  --board NAME          开发板型号，不写就用默认板。可选：\");\n    eprintln!(\"                        S3：atech14、waveshare-lcd4b、waveshare-amoled18-v2、waveshare-cam、stopwatch、none\");\n    eprintln!(\"                        C6：waveshare-c6-lcd147、xiao-esp32c6、none；P4：waveshare-p4-lcd35、none\");\n    eprintln!(\"                        S31：mosaico、none\");\n    eprintln!(\"                        经典 ESP32：ttgo-tdisplay、cyd、ulanzi-tc001、ai-thinker-cam、esp32dev、none\");\n    eprintln!(\"  --flash-mb N, --psram-mb N   闪存与 PSRAM 容量，单位 MiB；不给就用默认值：\");\n    eprintln!(\"                               S3 为 8 / 2，C3、C6、经典 ESP32 为 4 / 0，P4 为 16 / 0，S31 为 2，mosaico 为 16 / 16\");\n    eprintln!(\"  --max-seconds S       跑满 S 个模拟秒就停。建议总是给：这样仿真会自己结束。\");\n    eprintln!(\"  --console usb|uart0|both|none   打印哪几路控制台；uart0 会显示 ROM 和引导程序的输出\");\n    eprintln!(\"  --imu-motion N        让 IMU 按脚本运动：0 静止，1 跑 30 秒倾斜、翻转、摇晃；只在 amoled18-v2 和 mosaico 上有\");\n    eprintln!(\"  --wifi ssid=…,psk=…   建一个虚拟热点：自带 DHCP、DNS、NTP，还能 NAT 到本机网络\");\n    eprintln!(\"  --wifi-sta ssid=…,psk=…   让一个虚拟站点加入客户机自己的接入点；只限经典 ESP32\");\n    eprintln!(\"  --pcap F              把站点的以太网帧（收发双向）写成 pcap 文件 F；需要 --wifi 或 --wifi-sta\");\n    eprintln!(\"  --hostfwd tcp:H:HP-G:GP  把客户机的一个 TCP 端口映射到宿主机；可重复，需要 --wifi\");\n    eprintln!(\"  --script F            按脚本在指定模拟时刻做宿主动作：按键、触摸、串口输入、停止\");\n    eprintln!(\"  --tft-png F, --wav F  运行结束时保存屏幕截图和音频\");\n    eprintln!(\"  --mic-wav [PORT:]F    把一段 16 位 PCM WAV 播进 I2S RX，只播一次，会重采样；默认控制器 0\");\n    eprintln!(\"  --web PORT            实时显示开发板界面，地址是 http://127.0.0.1:PORT/\");\n    eprintln!(\"  --elf F               给日志、跟踪和 profile 用的符号表；可重复给多个 ELF\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    eprintln!(\"                        debugging; --no-jit is the oracle when a result looks wrong\");",
+      "zh": "    eprintln!(\"                        调试用。结果看着不对时，先加 --no-jit 再跑一遍，作为基准\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    eprintln!(\"  --adc PIN, --adc-raw PIN=N   last ADC sample at exit / a 12-bit count into that pad\");",
+      "zh": "    eprintln!(\"  --adc PIN, --adc-raw PIN=N   退出时打印最后一次 ADC 采样；--adc-raw 直接写入 12 位计数值\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    eprintln!(\"  --sd IMG, --sd-rw IMG (P4) a card in the SD socket, copy-on-write / write-through;\");",
+      "zh": "    eprintln!(\"  --sd IMG, --sd-rw IMG (P4) SD 插槽里放一张卡：写时复制；用 --sd-rw 则直写\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    eprintln!(\"                        --sd-prg-us N, --sd-serial HEX for its programming time and serial\");",
+      "zh": "    eprintln!(\"                        --sd-prg-us N 和 --sd-serial HEX 设置这张卡的编程时间和序列号\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    eprintln!(\"  --usb-host F          (P4, S31) a USB host on the USB-OTG port running F; --sd-timing for timed SD\");",
+      "zh": "    eprintln!(\"  --usb-host F          （P4、S31）在 USB-OTG 口上跑 USB 主机，命令取自文件 F；--sd-timing 让 SD 计时\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    eprintln!(\"  --coproc c6:KEY=V,... (P4) an ESP32-C6 co-processor on SDIO, run in lock-step\");",
+      "zh": "    eprintln!(\"  --coproc c6:KEY=V,... （P4）在 SDIO 上挂一颗 ESP32-C6 协处理器，和 P4 锁步运行\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    eprintln!(\"  --no-dump             skip the register dump at exit\");",
+      "zh": "    eprintln!(\"  --no-dump             退出时不打印寄存器转储\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    eprintln!(\"Every flag: docs/cli.md. First run: docs/quick-start.md. Both are in the tarball and at github.com/mikroverk/esp32sim.\");",
+      "zh": "    eprintln!(\"全部参数见 docs/cli.md，首次运行见 docs/quick-start.md。这两个文件都在发布包里，也在 github.com/mikroverk/esp32sim。\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if !m.bus.adc_set_raw(pin, raw) { usage_error(&format!(\"--adc-raw: GPIO{pin} is not an ADC pad on this chip\")); }",
+      "zh": "        if !m.bus.adc_set_raw(pin, raw) { usage_error(&format!(\"--adc-raw: GPIO{pin} 在本芯片上不是 ADC 通道\")); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    value.parse().map_err(|_| format!(\"{name}: expected a nonnegative u32 cycle count, got {value:?}\"))",
+      "zh": "    value.parse().map_err(|_| format!(\"{name}: 需要非负的周期数（整数），收到 {value:?}\"))",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        return Err(\"--approximate-timing, --approximate-memory and --approximate-cache require --chip s3\".into());",
+      "zh": "        return Err(\"--approximate-timing: 只在 S3 上有，和 --approximate-memory、--approximate-cache 一样都要求 --chip s3。\".into());",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        return Err(\"--memory-contention requires --approximate-memory\".into());",
+      "zh": "        return Err(\"--memory-contention: 需要 --approximate-memory，单独给没有意义。\".into());",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        return Err(\"--approximate-memory requires --boot rom for its MMU shadow\".into());",
+      "zh": "        return Err(\"--approximate-memory: 需要 --boot rom，它要读 MMU 影子。\".into());",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            Err(_) => return Err(format!(\"{name}: expected a UTF-8 cycle count\")),",
+      "zh": "            Err(_) => return Err(format!(\"{name}: 需要 UTF-8 编码的周期数。\")),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "fn hex(s: &str, what: &str) -> u32 { u32::from_str_radix(s.trim_start_matches(\"0x\"), 16).unwrap_or_else(|_| { eprintln!(\"--{}: bad hex {}\", what, s); std::process::exit(2) }) }",
+      "zh": "fn hex(s: &str, what: &str) -> u32 { u32::from_str_radix(s.trim_start_matches(\"0x\"), 16).unwrap_or_else(|_| { eprintln!(\"--{}: 需要十六进制数，收到 {}\", what, s); std::process::exit(2) }) }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        eprintln!(\"--console: unknown source {name:?}; expected usb, uart0, both, all or none\");",
+      "zh": "        eprintln!(\"--console: 不认识 {name:?}，可选 usb、uart0、both、all 或 none。\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--flash-mb\" => o.flash_mb = Some(next().parse().expect(\"mb\")),",
+      "zh": "            \"--flash-mb\" => o.flash_mb = Some(next().parse().unwrap_or_else(|_| usage_error(\"--flash-mb: 需要整数，单位 MiB。\"))),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--psram-mb\" => o.psram_mb = Some(next().parse().expect(\"mb\")),",
+      "zh": "            \"--psram-mb\" => o.psram_mb = Some(next().parse().unwrap_or_else(|_| usage_error(\"--psram-mb: 需要整数，单位 MiB。\"))),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--sd-prg-us\" => o.sd_prg_us = Some(next().parse().unwrap_or_else(|_| usage_error(\"--sd-prg-us: expected microseconds\"))),",
+      "zh": "            \"--sd-prg-us\" => o.sd_prg_us = Some(next().parse().unwrap_or_else(|_| usage_error(\"--sd-prg-us: 需要微秒数（整数）。\"))),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--mac\" => { let v = next(); let b: Vec<u8> = v.split(':').filter_map(|x| u8::from_str_radix(x, 16).ok()).collect(); if b.len() != 6 { eprintln!(\"--mac wants xx:xx:xx:xx:xx:xx\"); std::process::exit(2); } let mut m = [0u8; 6]; m.copy_from_slice(&b); o.mac = Some(m); }",
+      "zh": "            \"--mac\" => { let v = next(); let b: Vec<u8> = v.split(':').filter_map(|x| u8::from_str_radix(x, 16).ok()).collect(); if b.len() != 6 { eprintln!(\"--mac: 需要 xx:xx:xx:xx:xx:xx 的形式。\"); std::process::exit(2); } let mut m = [0u8; 6]; m.copy_from_slice(&b); o.mac = Some(m); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--imu-motion\" => o.imu_motion = Some(next().parse().unwrap_or_else(|_| usage_error(\"--imu-motion: expected a mode number (0 rest, 1 handling script)\"))),",
+      "zh": "            \"--imu-motion\" => o.imu_motion = Some(next().parse().unwrap_or_else(|_| usage_error(\"--imu-motion: 需要模式编号，0 静止，1 跑动作脚本。\"))),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--wifi-sta\" => if o.wifi_sta.replace(next()).is_some() { usage_error(\"--wifi-sta: one for now, a second station is not modelled\") },",
+      "zh": "            \"--wifi-sta\" => if o.wifi_sta.replace(next()).is_some() { usage_error(\"--wifi-sta: 目前只支持一个，第二个站点还没建模。\") },",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--cam-fps\" => o.cam_fps = next().parse().expect(\"fps\"),",
+      "zh": "            \"--cam-fps\" => o.cam_fps = next().parse().unwrap_or_else(|_| usage_error(\"--cam-fps: 需要数字帧率。\")),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--max-insns\" => o.max_insns = next().replace('_', \"\").parse().expect(\"max-insns\"),",
+      "zh": "            \"--max-insns\" => o.max_insns = next().replace('_', \"\").parse().unwrap_or_else(|_| usage_error(\"--max-insns: 需要整数指令数。\")),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--max-seconds\" => o.max_seconds = Some(next().parse().expect(\"seconds\")),",
+      "zh": "            \"--max-seconds\" => o.max_seconds = Some(next().parse().unwrap_or_else(|_| usage_error(\"--max-seconds: 需要秒数，可以带小数。\"))),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--web\" => o.web_port = Some(next().parse().expect(\"port\")),",
+      "zh": "            \"--web\" => o.web_port = Some(next().parse().unwrap_or_else(|_| usage_error(\"--web: 需要端口号。\"))),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--trace-from\" => { o.trace = true; o.trace_from = next().replace('_', \"\").parse().expect(\"trace-from\") }",
+      "zh": "            \"--trace-from\" => { o.trace = true; o.trace_from = next().replace('_', \"\").parse().unwrap_or_else(|_| usage_error(\"--trace-from: 需要指令数，从第几条开始跟踪。\")) }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--pwm\" => o.pwm_pins.push(next().parse().unwrap_or_else(|_| usage_error(\"--pwm: expected a pin number in 0..255\"))),",
+      "zh": "            \"--pwm\" => o.pwm_pins.push(next().parse().unwrap_or_else(|_| usage_error(\"--pwm: 需要 0..255 的引脚号。\"))),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--adc\" => o.adc_pins.push(next().parse().unwrap_or_else(|_| usage_error(\"--adc: expected a pin number in 0..255\"))),",
+      "zh": "            \"--adc\" => o.adc_pins.push(next().parse().unwrap_or_else(|_| usage_error(\"--adc: 需要 0..255 的引脚号。\"))),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "                let Some((pin, raw)) = spec.split_once('=') else { usage_error(\"--adc-raw: expected PIN=COUNT\") };",
+      "zh": "                let Some((pin, raw)) = spec.split_once('=') else { usage_error(\"--adc-raw: 需要 PIN=COUNT 的形式。\") };",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "                let pin: u8 = pin.parse().unwrap_or_else(|_| usage_error(\"--adc-raw: expected a pin number in 0..255\"));",
+      "zh": "                let pin: u8 = pin.parse().unwrap_or_else(|_| usage_error(\"--adc-raw: 需要 0..255 的引脚号。\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "                let raw: u16 = raw.parse().unwrap_or_else(|_| usage_error(\"--adc-raw: expected a count in 0..4095\"));",
+      "zh": "                let raw: u16 = raw.parse().unwrap_or_else(|_| usage_error(\"--adc-raw: 需要 0..4095 的计数值。\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "                if raw > 4095 { usage_error(\"--adc-raw: expected a count in 0..4095\"); }",
+      "zh": "                if raw > 4095 { usage_error(\"--adc-raw: 需要 0..4095 的计数值。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--regtrace-max\" => o.regtrace_max = next().parse().expect(\"n\"),",
+      "zh": "            \"--regtrace-max\" => o.regtrace_max = next().parse().unwrap_or_else(|_| usage_error(\"--regtrace-max: 需要整数。\")),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--stop-after-exceptions\" => o.stop_exc = next().parse().expect(\"count\"),",
+      "zh": "            \"--stop-after-exceptions\" => o.stop_exc = next().parse().unwrap_or_else(|_| usage_error(\"--stop-after-exceptions: 需要整数次数。\")),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--cooja-slice-us\" => o.cooja_slice_us = next().parse().expect(\"slice-us\"),",
+      "zh": "            \"--cooja-slice-us\" => o.cooja_slice_us = next().parse().unwrap_or_else(|_| usage_error(\"--cooja-slice-us: 需要微秒数（整数）。\")),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            \"--cooja-rx-timing\" => o.cooja_rx_at_end = match next().as_str() { \"start\" => false, \"end\" => true, x => { eprintln!(\"--cooja-rx-timing {}: start or end\", x); std::process::exit(2) } },",
+      "zh": "            \"--cooja-rx-timing\" => o.cooja_rx_at_end = match next().as_str() { \"start\" => false, \"end\" => true, x => { eprintln!(\"--cooja-rx-timing: 只能是 start 或 end，收到 {}。\", x); std::process::exit(2) } },",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            _ => { eprintln!(\"unknown arg {}\", a); usage(default_chip) }",
+      "zh": "            _ => { eprintln!(\"usage: 不认识的参数 {}。\", a); usage(default_chip) }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if !o.hostfwd.is_empty() && o.wifi.is_empty() { usage_error(\"--hostfwd requires --wifi\"); }",
+      "zh": "    if !o.hostfwd.is_empty() && o.wifi.is_empty() { usage_error(\"--hostfwd: 需要 --wifi，没有接入点就没有可转发的网络。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if o.pcap.is_some() && o.wifi.is_empty() && o.wifi_sta.is_none() { usage_error(\"--pcap requires --wifi or --wifi-sta\"); }",
+      "zh": "    if o.pcap.is_some() && o.wifi.is_empty() && o.wifi_sta.is_none() { usage_error(\"--pcap: 需要 --wifi 或 --wifi-sta，否则没有站点可抓。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if !o.wifi.is_empty() { usage_error(\"--wifi-sta and --wifi together (a virtual access point and a virtual station at once) are not modelled yet\"); }",
+      "zh": "        if !o.wifi.is_empty() { usage_error(\"--wifi-sta: 不能和 --wifi 同时给，接入点加站点这种共存目前尚未建模。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if o.net_given { usage_error(\"--net configures the network behind --wifi's access point; with --wifi-sta the network is the guest's own\"); }",
+      "zh": "        if o.net_given { usage_error(\"--net: 只能配 --wifi 接入点背后的网络，用 --wifi-sta 时网络由客户机自己提供。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if o.chip != \"esp32\" { usage_error(\"--wifi-sta: only the classic ESP32 so far (--chip esp32)\"); }",
+      "zh": "        if o.chip != \"esp32\" { usage_error(\"--wifi-sta: 目前只支持经典 ESP32，请用 --chip esp32。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if !o.hostfwd.is_empty() && !matches!(o.net.split(',').next(), Some(\"nat\" | \"user\")) { usage_error(\"--hostfwd requires --net nat\"); }",
+      "zh": "    if !o.hostfwd.is_empty() && !matches!(o.net.split(',').next(), Some(\"nat\" | \"user\")) { usage_error(\"--hostfwd: 需要 --net nat 或 --net user。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if (o.ble_observe || o.ble_scan) && !o.ble_full { usage_error(\"BLE central/observer use requires --ble full\"); }",
+      "zh": "    if (o.ble_observe || o.ble_scan) && !o.ble_full { usage_error(\"--ble-scan: 需要 --ble full，--ble-observe 同理；central 和 observer 要走 HCI 模式。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if o.ble_full && o.ble { usage_error(\"--ble full and --ble are mutually exclusive\"); }",
+      "zh": "    if o.ble_full && o.ble { usage_error(\"--ble: 不能和 --ble full 同时给，两者互斥。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if !o.ble { usage_error(\"--ble-nearby needs the virtual controller of --ble\"); }",
+      "zh": "        if !o.ble { usage_error(\"--ble-nearby: 需要 --ble 先开一个虚拟控制器。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if o.ble_full && !matches!(o.chip.as_str(), \"c3\" | \"esp32c3\") { usage_error(\"--ble full requires C3\"); }",
+      "zh": "    if o.ble_full && !matches!(o.chip.as_str(), \"c3\" | \"esp32c3\") { usage_error(\"--ble: full 模式目前只支持 C3，请用 --chip c3。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let text = std::fs::read_to_string(path).unwrap_or_else(|e| usage_error(&format!(\"script: {e}\")));",
+      "zh": "        let text = std::fs::read_to_string(path).unwrap_or_else(|e| usage_error(&file_error(\"--script\", path, &e)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "                .unwrap_or_else(|e| usage_error(&format!(\"script: line {}: {e}\", ln + 1)));",
+      "zh": "                .unwrap_or_else(|e| usage_error(&format!(\"--script: 第 {} 行：{e}\", ln + 1)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            if o.ble_full && matches!(command, esp_soc::ble::peer::Command::Discover | esp_soc::ble::peer::Command::Read(_) | esp_soc::ble::peer::Command::Write(..)) { usage_error(&format!(\"script: line {}: command requires HCI --ble\", ln + 1)); }",
+      "zh": "            if o.ble_full && matches!(command, esp_soc::ble::peer::Command::Discover | esp_soc::ble::peer::Command::Read(_) | esp_soc::ble::peer::Command::Write(..)) { usage_error(&format!(\"--script: 第 {} 行：该命令需要 HCI 模式的 --ble。\", ln + 1)); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            if !o.ble && !o.ble_full { usage_error(&format!(\"script: line {}: BLE requires --ble and the application ELF\", ln + 1)); }",
+      "zh": "            if !o.ble && !o.ble_full { usage_error(&format!(\"--script: 第 {} 行：BLE 需要 --ble 和应用 ELF。\", ln + 1)); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if o.cam_stream.is_some() != o.cam_size.is_some() { usage_error(\"--cam-stream and --cam-size must be supplied together\"); }",
+      "zh": "    if o.cam_stream.is_some() != o.cam_size.is_some() { usage_error(\"--cam-stream: 要和 --cam-size 一起给。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        c => { eprintln!(\"--chip {}: esp32, s3, c3, c6, p4 or s31\", c); std::process::exit(2) }",
+      "zh": "        c => { eprintln!(\"--chip {}: 没有这个芯片，可选 esp32、s3、c3、c6、p4 或 s31。\", c); std::process::exit(2) }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if !matches!(o.chip.as_str(), \"c6\" | \"esp32c6\") { eprintln!(\"--cooja: only the ESP32-C6 speaks the Cooja-NG lock-step protocol\"); std::process::exit(2); }",
+      "zh": "    if !matches!(o.chip.as_str(), \"c6\" | \"esp32c6\") { eprintln!(\"--cooja: 只有 ESP32-C6 会说 Cooja-NG 锁步协议\"); std::process::exit(2); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if o.max_insns != u64::MAX { eprintln!(\"--cooja: --max-insns is unsupported; use --max-seconds\"); std::process::exit(2); }",
+      "zh": "    if o.max_insns != u64::MAX { eprintln!(\"--cooja: 不支持 --max-insns，请改用 --max-seconds。\"); std::process::exit(2); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if !matches!(o.chip.as_str(), \"p4\" | \"esp32p4\") { usage_error(\"--coproc: the co-processor joins an ESP32-P4 (--chip p4)\"); }",
+      "zh": "    if !matches!(o.chip.as_str(), \"p4\" | \"esp32p4\") { usage_error(\"--coproc: 协处理器只能配 ESP32-P4，请用 --chip p4。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        .unwrap_or_else(|| usage_error(\"--coproc: no esp32c6_rev0_rom.elf found (rom=FILE)\"));",
+      "zh": "        .unwrap_or_else(|| usage_error(\"--coproc: 没找到 esp32c6_rev0_rom.elf，可以用 rom=FILE 指定。\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    let image = std::fs::read(&rom).unwrap_or_else(|e| usage_error(&format!(\"--coproc rom {}: {e}\", rom.display())));",
+      "zh": "    let image = std::fs::read(&rom).unwrap_or_else(|e| usage_error(&file_error(\"--coproc\", &rom.display().to_string(), &e)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    m.load_rom(&image).unwrap_or_else(|e| usage_error(&format!(\"--coproc rom {}: {e}\", rom.display())));",
+      "zh": "    m.load_rom(&image).unwrap_or_else(|e| usage_error(&format!(\"--coproc ROM {}: {e}\", rom.display())));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    let read = |p: &str| std::fs::read(p).unwrap_or_else(|e| usage_error(&format!(\"--coproc {p}: {e}\")));",
+      "zh": "    let read = |p: &str| std::fs::read(p).unwrap_or_else(|e| usage_error(&file_error(\"--coproc\", p, &e)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let addr = m.resolve_stub(name).unwrap_or_else(|| usage_error(&format!(\"--coproc stub: unknown symbol {name}\")));",
+      "zh": "        let addr = m.resolve_stub(name).unwrap_or_else(|| usage_error(&format!(\"--coproc: stub 里找不到符号 {name}。\")));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        (\"--cam-stream requires --board waveshare-cam\", o.cam_stream.is_some() && o.board != \"waveshare-cam\"),",
+      "zh": "        (\"--cam-stream: 需要 --board waveshare-cam。\", o.cam_stream.is_some() && o.board != \"waveshare-cam\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    m.bus.board = esp32s3::board::make_board(&o.board).unwrap_or_else(|| { eprintln!(\"unknown board '{}' (atech14, waveshare-cam, waveshare-lcd4b, waveshare-amoled18-v2, stopwatch, none)\", o.board); std::process::exit(2) });",
+      "zh": "    m.bus.board = esp32s3::board::make_board(&o.board).unwrap_or_else(|| { eprintln!(\"--board: 没有 '{}' 这块板，可选 atech14、waveshare-cam、waveshare-lcd4b、waveshare-amoled18-v2、stopwatch、none。\", o.board); std::process::exit(2) });",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        assert_eq!(m.bus.board.name(), \"waveshare-amoled18-v2\", \"--measured-te requires the AMOLED V2 board\");",
+      "zh": "        if m.bus.board.name() != \"waveshare-amoled18-v2\" { usage_error(\"--measured-te: 只支持 waveshare-amoled18-v2。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let txt = std::fs::read_to_string(p).expect(\"efuse file\");",
+      "zh": "        let txt = std::fs::read_to_string(p).unwrap_or_else(|e| usage_error(&file_error(\"--efuse-regs\", p, &e)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let txt = std::fs::read_to_string(p).expect(\"regs-init file\");",
+      "zh": "        let txt = std::fs::read_to_string(p).unwrap_or_else(|e| usage_error(&file_error(\"--regs-init\", p, &e)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if o.wifi.is_empty() { usage_error(\"--wifi-nearby needs the access point of --wifi\"); }",
+      "zh": "    if o.wifi.is_empty() { usage_error(\"--wifi-nearby: 需要 --wifi 的接入点。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            _ => usage_error(&format!(\"--net: unknown option {kv:?} (epoch=UNIX_SECONDS)\")),",
+      "zh": "            _ => usage_error(&format!(\"--net: 不认识 {kv:?}，只支持 epoch=UNIX_SECONDS。\")),",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if on { eprintln!(\"{} is not available on the C3\", flag); std::process::exit(2); }",
+      "zh": "        if on { usage_error(&format!(\"{flag}: C3 上不支持，请去掉它。\")); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    m.bus.board = esp32::board::make_board(board).unwrap_or_else(|| usage_error(&format!(\"unknown classic ESP32 board '{board}' (none, bare, esp32dev, ttgo-tdisplay, cyd, ai-thinker-cam, ulanzi-tc001)\")));",
+      "zh": "    m.bus.board = esp32::board::make_board(board).unwrap_or_else(|| usage_error(&format!(\"--board: 经典 ESP32 上没有 '{board}' 这块板，可选 none、bare、esp32dev、ttgo-tdisplay、cyd、ai-thinker-cam、ulanzi-tc001。\")));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if !matches!(mb, 0 | 4) { usage_error(\"--psram-mb: classic ESP32 supports only 0 or 4 MiB\"); }",
+      "zh": "        if !matches!(mb, 0 | 4) { usage_error(\"--psram-mb: 经典 ESP32 只支持 0 或 4 MiB。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if on { eprintln!(\"{} is not available on the classic ESP32\", flag); std::process::exit(2); }",
+      "zh": "        if on { usage_error(&format!(\"{flag}: 经典 ESP32 上不支持，请去掉它。\")); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    match esp32c6::board::make_board(name) { Some(b) => m.bus.board = b, None => { eprintln!(\"--board {}: none, waveshare-c6-lcd147 or xiao-esp32c6 on the C6\", name); std::process::exit(2) } }",
+      "zh": "    match esp32c6::board::make_board(name) { Some(b) => m.bus.board = b, None => { eprintln!(\"--board: C6 上没有 {name} 这块板，可选 none、waveshare-c6-lcd147 或 xiao-esp32c6。\"); std::process::exit(2) } }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if on { eprintln!(\"{} is not available on the C6\", flag); std::process::exit(2); }",
+      "zh": "        if on { usage_error(&format!(\"{flag}: C6 上不支持，请去掉它。\")); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    match esp32p4::board::make_board(board) { Some(b) => m.bus.board = b, None => usage_error(&format!(\"--board {board}: none or waveshare-p4-lcd35 on the P4\")) }",
+      "zh": "    match esp32p4::board::make_board(board) { Some(b) => m.bus.board = b, None => usage_error(&format!(\"--board: P4 上没有 {board} 这块板，可选 none 或 waveshare-p4-lcd35。\")) }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if on { eprintln!(\"{} is not available on the P4{}\", flag, if flag == \"--wifi\" { \" (it goes to a co-processor: --coproc)\" } else { \"\" }); std::process::exit(2); }",
+      "zh": "        if on { usage_error(&if flag == \"--wifi\" { \"--wifi: P4 自己不带 WiFi，请改用 --coproc 里的 C6。\".to_string() } else { format!(\"{flag}: P4 上不支持，请去掉它。\") }); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            .unwrap_or_else(|| usage_error(&format!(\"--flash-mb {}: 1, 2, 4, 8 or 16 on the S31\", flash >> 20)))",
+      "zh": "            .unwrap_or_else(|| usage_error(&format!(\"--flash-mb: S31 上只支持 1、2、4、8 或 16 MiB，收到 {}。\", flash >> 20)))",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if on {\n            eprintln!(\"{flag} is not available on the S31\");\n            std::process::exit(2);\n        }",
+      "zh": "        if on { usage_error(&format!(\"{flag}: S31 上不支持，请去掉它。\")); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if mode > 1 { usage_error(\"--imu-motion: modes are 0 (at rest) and 1 (the 30 s handling script)\"); }",
+      "zh": "    if mode > 1 { usage_error(\"--imu-motion: 模式只有 0（静止）和 1（30 秒动作脚本）。\"); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if !board.set_imu_motion(mode) { usage_error(&format!(\"--imu-motion: board '{}' has no IMU model (waveshare-amoled18-v2 on the S3, mosaico on the S31)\", board.name())); }",
+      "zh": "    if !board.set_imu_motion(mode) { usage_error(&format!(\"--imu-motion: 开发板 '{}' 上没有 IMU 模型，S3 用 waveshare-amoled18-v2，S31 用 mosaico。\", board.name())); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let text = std::fs::read_to_string(path).unwrap_or_else(|e| usage_error(&format!(\"--usb-host {path}: {e}\")));",
+      "zh": "        let text = std::fs::read_to_string(path).unwrap_or_else(|e| usage_error(&file_error(\"--usb-host\", path, &e)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let cmds = esp_soc::usb_host::script::parse(&text).unwrap_or_else(|e| usage_error(&format!(\"--usb-host {path}: {e}\")));",
+      "zh": "        let cmds = esp_soc::usb_host::script::parse(&text).unwrap_or_else(|e| usage_error(&format!(\"--usb-host: {path} 的脚本有错，{e}\")));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let file = std::fs::File::create(path).unwrap_or_else(|e| usage_error(&format!(\"--pcap {path}: {e}\")));",
+      "zh": "        let file = std::fs::File::create(path).unwrap_or_else(|e| usage_error(&file_error(\"--pcap\", path, &e)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        cap.set_pcap(Box::new(file)).unwrap_or_else(|e| usage_error(&format!(\"--pcap {path}: {e}\")));",
+      "zh": "        cap.set_pcap(Box::new(file)).unwrap_or_else(|e| usage_error(&file_error(\"--pcap\", path, &e)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        Some(r) => match std::fs::read(r) { Ok(d) => { m.load_rom(&d).expect(\"rom\"); eprintln!(\"[emu] ROM loaded from {}\", r.display()); } Err(e) => eprintln!(\"[emu] no ROM ({}): {}\", r.display(), e) },\n        None if boot == \"rom\" => { eprintln!(\"[emu] no {} mask ROM ELF found (pass --rom, or use --boot app)\", S::NAME); std::process::exit(2) }",
+      "zh": "        Some(r) => match std::fs::read(r) {\n            Ok(d) => { m.load_rom(&d).unwrap_or_else(|e| { eprintln!(\"[emu] ROM {} 无法加载:{e}\", r.display()); std::process::exit(2) }); eprintln!(\"[emu] ROM loaded from {}\", r.display()); }\n            Err(e) => eprintln!(\"[emu] 没能读取 ROM({}):{e}\", r.display()),\n        },\n        None if boot == \"rom\" => { eprintln!(\"[emu] 没找到 {} 的 mask ROM ELF(请传 --rom,或改用 --boot app)\", S::NAME); std::process::exit(2) }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if let Some(p) = &o.flash_image { let d = std::fs::read(p).expect(\"flash image\"); refuse(p, esp_soc::load::check_flash_image::<S>(&d)); m.write_flash(0, &d).unwrap(); }",
+      "zh": "    if let Some(p) = &o.flash_image { let d = std::fs::read(p).unwrap_or_else(|e| usage_error(&file_error(\"--flash-image\", p, &e))); refuse(p, esp_soc::load::check_flash_image::<S>(&d)); m.write_flash(0, &d).unwrap(); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if let Some(p) = &o.bootloader { let d = std::fs::read(p).expect(\"bootloader\"); refuse(p, S::check_image(&d)); m.write_flash(S::BOOTLOADER_OFFSET, &d).unwrap(); }",
+      "zh": "    if let Some(p) = &o.bootloader { let d = std::fs::read(p).unwrap_or_else(|e| usage_error(&file_error(\"--bootloader\", p, &e))); refuse(p, S::check_image(&d)); m.write_flash(S::BOOTLOADER_OFFSET, &d).unwrap(); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if let Some(p) = &o.ptable { m.write_flash(0x8000, &std::fs::read(p).expect(\"ptable\")).unwrap(); }",
+      "zh": "    if let Some(p) = &o.ptable { m.write_flash(0x8000, &std::fs::read(p).unwrap_or_else(|e| usage_error(&file_error(\"--ptable\", p, &e)))).unwrap(); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if let Some(p) = &o.app { let d = std::fs::read(p).expect(\"app\"); refuse(p, S::check_image(&d)); m.write_flash(0x10000, &d).unwrap(); }",
+      "zh": "    if let Some(p) = &o.app { let d = std::fs::read(p).unwrap_or_else(|e| usage_error(&file_error(\"--app\", p, &e))); refuse(p, S::check_image(&d)); m.write_flash(0x10000, &d).unwrap(); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let (off, path) = spec.split_once('=').unwrap_or_else(|| { eprintln!(\"--flash-at needs OFFSET=FILE\"); std::process::exit(2) });",
+      "zh": "        let (off, path) = spec.split_once('=').unwrap_or_else(|| { eprintln!(\"--flash-at: 需要 OFFSET=FILE 的形式。\"); std::process::exit(2) });",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let off = usize::from_str_radix(off.trim_start_matches(\"0x\"), 16).unwrap_or_else(|_| { eprintln!(\"--flash-at: bad offset {}\", off); std::process::exit(2) });",
+      "zh": "        let off = usize::from_str_radix(off.trim_start_matches(\"0x\"), 16).unwrap_or_else(|_| { eprintln!(\"--flash-at: 偏移要写成十六进制，收到 {}。\", off); std::process::exit(2) });",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let data = std::fs::read(path).unwrap_or_else(|e| { eprintln!(\"--flash-at: {}: {}\", path, e); std::process::exit(2) });",
+      "zh": "        let data = std::fs::read(path).unwrap_or_else(|e| { eprintln!(\"{}\", file_error(\"--flash-at\", path, &e)); std::process::exit(2) });",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let image = image.unwrap_or_else(|e| usage_error(&format!(\"--sd {path}: {e}\")));",
+      "zh": "        let image = image.unwrap_or_else(|e| usage_error(&file_error(\"--sd\", path, &e)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let data = std::fs::read(p).expect(\"elf\");",
+      "zh": "        let data = std::fs::read(p).unwrap_or_else(|e| usage_error(&file_error(\"--elf\", p, &e)));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        m.add_symbols(&data).expect(\"elf symbols\");",
+      "zh": "        m.add_symbols(&data).unwrap_or_else(|e| usage_error(&format!(\"--elf: {p}，{e}\")));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if o.ble { let elf = esp_soc::elf::parse(&data).expect(\"BLE ELF symbols\"); if elf.by_name.contains_key(\"esp_bt_controller_init\") { ble_elf = elf; } }",
+      "zh": "        if o.ble { let elf = esp_soc::elf::parse(&data).unwrap_or_else(|e| usage_error(&format!(\"--elf: {p} 解析不了，{e}\"))); if elf.by_name.contains_key(\"esp_bt_controller_init\") { ble_elf = elf; } }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if let Some(p) = &o.script { m.load_script(&std::fs::read_to_string(p).unwrap_or_else(|e| usage_error(&format!(\"script: {e}\")))).unwrap_or_else(|e| usage_error(&format!(\"script: {e}\"))); }",
+      "zh": "    if let Some(p) = &o.script { m.load_script(&std::fs::read_to_string(p).unwrap_or_else(|e| usage_error(&file_error(\"--script\", p, &e)))).unwrap_or_else(|e| usage_error(&format!(\"--script: {p}，{e}\"))); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let addr = m.resolve_stub(name).unwrap_or_else(|| { eprintln!(\"--stub: unknown symbol {}\", name); std::process::exit(2) });",
+      "zh": "        let addr = m.resolve_stub(name).unwrap_or_else(|| { eprintln!(\"--stub: 找不到符号 {}。\", name); std::process::exit(2) });",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        _ => { eprintln!(\"--boot app|rom\"); std::process::exit(2); }",
+      "zh": "        _ => { eprintln!(\"--boot: 只能是 app 或 rom。\"); std::process::exit(2); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "    if let Some(p) = &o.regtrace { m.add_observer(Box::new(RegTrace::new(std::fs::File::create(p).expect(\"regtrace file\"), o.regtrace_max, o.regtrace_from_pc))); }",
+      "zh": "    if let Some(p) = &o.regtrace { m.add_observer(Box::new(RegTrace::new(std::fs::File::create(p).unwrap_or_else(|e| usage_error(&file_error(\"--regtrace\", p, &e))), o.regtrace_max, o.regtrace_from_pc))); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        let w = esp_soc::web::WebServer::start(port, dir.clone()).expect(\"web server\");",
+      "zh": "        let w = esp_soc::web::WebServer::start(port, dir.clone()).unwrap_or_else(|e| usage_error(&format!(\"--web: 端口 {port} 上起不来服务，{e}\")));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            let [p, h, a] = fields[..] else { return Err(\"expected PORT:HZ:AMPLITUDE\".into()); };",
+      "zh": "            let [p, h, a] = fields[..] else { return Err(\"需要 PORT:HZ:AMPLITUDE 的形式。\".into()); };",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "            Ok((p.parse().map_err(|_| \"invalid port\")?, h.parse().map_err(|_| \"invalid frequency\")?, a.parse().map_err(|_| \"invalid amplitude\")?))",
+      "zh": "            Ok((p.parse().map_err(|_| \"端口号无效\")?, h.parse().map_err(|_| \"频率无效\")?, a.parse().map_err(|_| \"幅度无效\")?))",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "        if let Err(e) = result { eprintln!(\"--mic-wav {spec}: {e}\"); std::process::exit(2); }",
+      "zh": "        if let Err(e) = result { eprintln!(\"--mic-wav: {spec}，{e}\"); std::process::exit(2); }",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/tests.rs",
+      "en": "            assert!(validate_timing(&parse(&args, chip)).unwrap_err().contains(\"require --chip s3\"));",
+      "zh": "            assert!(validate_timing(&parse(&args, chip)).unwrap_err().contains(\"都要求 --chip s3\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/tests.rs",
+      "en": "    assert!(validate_timing(&o).unwrap_err().contains(\"requires --approximate-memory\"));",
+      "zh": "    assert!(validate_timing(&o).unwrap_err().contains(\"需要 --approximate-memory\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/src/tests.rs",
+      "en": "    assert!(validate_timing(&o).unwrap_err().contains(\"requires --boot rom\"));",
+      "zh": "    assert!(validate_timing(&o).unwrap_err().contains(\"需要 --boot rom\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/adc_option.rs",
+      "en": "    assert!(stderr.contains(\"--adc-raw: GPIO99 is not an ADC pad\"), \"{stderr}\");",
+      "zh": "    assert!(stderr.contains(\"--adc-raw: GPIO99 在本芯片上不是 ADC 通道\"), \"{stderr}\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/ble.rs",
+      "en": "        assert!(stderr.contains(if line.ends_with(\"conect\") { \"line 1: expected connect\" } else { \"line 1: BLE requires --ble\" }), \"{stderr}\");",
+      "zh": "        assert!(stderr.contains(if line.ends_with(\"conect\") { \"第 1 行：expected connect\" } else { \"第 1 行：BLE 需要 --ble 和应用 ELF\" }), \"{stderr}\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/ble.rs",
+      "en": "        assert!(String::from_utf8_lossy(&result.stderr).contains(if args.iter().filter(|&&a| a == \"--ble\").count() == 2 { \"mutually exclusive\" } else { \"requires C3\" }));",
+      "zh": "        assert!(String::from_utf8_lossy(&result.stderr).contains(if args.iter().filter(|&&a| a == \"--ble\").count() == 2 { \"互斥\" } else { \"只支持 C3\" }));",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/ble.rs",
+      "en": "    assert!(String::from_utf8_lossy(&result.stderr).contains(\"requires --ble full\"));",
+      "zh": "    assert!(String::from_utf8_lossy(&result.stderr).contains(\"需要 --ble full\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/ble.rs",
+      "en": "    assert!(stderr.contains(\"line 1: command requires HCI --ble\"), \"{stderr}\");",
+      "zh": "    assert!(stderr.contains(\"第 1 行：该命令需要 HCI 模式的 --ble\"), \"{stderr}\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/ble_nearby_option.rs",
+      "en": "        (&[\"--ble-nearby\", \"name=Thermo\"][..], \"--ble-nearby needs the virtual controller of --ble\"),",
+      "zh": "        (&[\"--ble-nearby\", \"name=Thermo\"][..], \"--ble-nearby: 需要 --ble 先开一个虚拟控制器。\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/classic_psram_option.rs",
+      "en": "        assert!(String::from_utf8_lossy(&output.stderr).contains(\"classic ESP32 supports only 0 or 4 MiB\"));",
+      "zh": "        assert!(String::from_utf8_lossy(&output.stderr).contains(\"经典 ESP32 只支持 0 或 4 MiB\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/classic_wifi_option.rs",
+      "en": "    assert!(!stderr.contains(\"not available on the classic ESP32\"), \"{stderr}\");",
+      "zh": "    assert!(!stderr.contains(\"在经典 ESP32 上不可用\"), \"{stderr}\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/classic_wifi_option.rs",
+      "en": "    assert!(String::from_utf8(output.stderr).unwrap().contains(\"--psram-mb: classic ESP32 supports only 0 or 4 MiB\"));",
+      "zh": "    assert!(String::from_utf8(output.stderr).unwrap().contains(\"--psram-mb: 经典 ESP32 只支持 0 或 4 MiB\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/cooja.rs",
+      "en": "    assert!(String::from_utf8_lossy(&output.stderr).contains(\"--max-insns is unsupported; use --max-seconds\"));",
+      "zh": "    assert!(String::from_utf8_lossy(&output.stderr).contains(\"不支持 --max-insns，请改用 --max-seconds\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/flash_octal_option.rs",
+      "en": "    for (chip, name) in [(\"esp32\", \"the classic ESP32\"), (\"c3\", \"the C3\"), (\"c6\", \"the C6\")] {",
+      "zh": "    for (chip, message) in [\n        (\"esp32\", \"--flash-octal: 经典 ESP32 上不支持，请去掉它。\"),\n        (\"c3\", \"--flash-octal: C3 上不支持，请去掉它。\"),\n        (\"c6\", \"--flash-octal: C6 上不支持，请去掉它。\"),\n    ] {",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/flash_octal_option.rs",
+      "en": "        assert!(stderr.contains(&format!(\"--flash-octal is not available on {name}\")), \"{chip}: {stderr}\");",
+      "zh": "        assert!(stderr.contains(message), \"{chip}: {stderr}\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/hostfwd.rs",
+      "en": "    assert!(String::from_utf8(output.stderr).unwrap().contains(\"--hostfwd requires --wifi\"));",
+      "zh": "    assert!(String::from_utf8(output.stderr).unwrap().contains(\"--hostfwd: 需要 --wifi\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/hostfwd.rs",
+      "en": "    assert!(String::from_utf8(output.stderr).unwrap().contains(\"--hostfwd requires --net nat\"));",
+      "zh": "    assert!(String::from_utf8(output.stderr).unwrap().contains(\"--hostfwd: 需要 --net nat\"));",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/hostfwd.rs",
+      "en": "    assert!(!stderr.contains(\"--hostfwd requires\"), \"{stderr}\");",
+      "zh": "    assert!(!stderr.contains(\"--hostfwd 需要\"), \"{stderr}\");",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/timing_options.rs",
+      "en": "        (vec![\"--chip\", \"c3\", \"--approximate-timing\"], None, \"require --chip s3\"),",
+      "zh": "        (vec![\"--chip\", \"c3\", \"--approximate-timing\"], None, \"都要求 --chip s3\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/timing_options.rs",
+      "en": "        (vec![\"--chip\", \"c6\", \"--cooja\", \"--approximate-cache\"], None, \"require --chip s3\"),",
+      "zh": "        (vec![\"--chip\", \"c6\", \"--cooja\", \"--approximate-cache\"], None, \"都要求 --chip s3\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/timing_options.rs",
+      "en": "        (vec![\"--memory-contention\"], None, \"requires --approximate-memory\"),",
+      "zh": "        (vec![\"--memory-contention\"], None, \"需要 --approximate-memory\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/timing_options.rs",
+      "en": "        (vec![\"--approximate-memory\", \"3\"], None, \"requires --boot rom\"),",
+      "zh": "        (vec![\"--approximate-memory\", \"3\"], None, \"需要 --boot rom\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/timing_options.rs",
+      "en": "        (vec![\"--approximate-memory\", \"wrong\"], None, \"--approximate-memory: expected\"),",
+      "zh": "        (vec![\"--approximate-memory\", \"wrong\"], None, \"--approximate-memory: 需要\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/timing_options.rs",
+      "en": "        (vec![\"--approximate-cache\"], Some((\"ESP32SIM_CACHE_FILL\", \"wrong\")), \"ESP32SIM_CACHE_FILL: expected\"),",
+      "zh": "        (vec![\"--approximate-cache\"], Some((\"ESP32SIM_CACHE_FILL\", \"wrong\")), \"ESP32SIM_CACHE_FILL: 需要\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/timing_options.rs",
+      "en": "        (vec![\"--approximate-cache\"], Some((\"ESP32SIM_CACHE_WRITEBACK\", \"-1\")), \"ESP32SIM_CACHE_WRITEBACK: expected\"),",
+      "zh": "        (vec![\"--approximate-cache\"], Some((\"ESP32SIM_CACHE_WRITEBACK\", \"-1\")), \"ESP32SIM_CACHE_WRITEBACK: 需要\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/timing_options.rs",
+      "en": "        (vec![\"--approximate-memory\", \"3\", \"--boot\", \"rom\", \"--approximate-cache\"], Some((\"ESP32SIM_CACHE_FILL\", \"wrong\")), \"ESP32SIM_CACHE_FILL: expected\"),",
+      "zh": "        (vec![\"--approximate-memory\", \"3\", \"--boot\", \"rom\", \"--approximate-cache\"], Some((\"ESP32SIM_CACHE_FILL\", \"wrong\")), \"ESP32SIM_CACHE_FILL: 需要\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/wifi_sta_option.rs",
+      "en": "        (&[\"--chip\", \"s3\", \"--wifi-sta\", \"ssid=lab\"][..], \"only the classic ESP32 so far\"),",
+      "zh": "        (&[\"--chip\", \"s3\", \"--wifi-sta\", \"ssid=lab\"][..], \"目前只支持经典 ESP32\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/wifi_sta_option.rs",
+      "en": "        (&[\"--chip\", \"esp32\", \"--wifi-sta\", \"ssid=lab\", \"--wifi\", \"ssid=demo\"][..], \"are not modelled yet\"),",
+      "zh": "        (&[\"--chip\", \"esp32\", \"--wifi-sta\", \"ssid=lab\", \"--wifi\", \"ssid=demo\"][..], \"目前尚未建模\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/wifi_sta_option.rs",
+      "en": "        (&[\"--chip\", \"esp32\", \"--wifi-sta\", \"ssid=lab\", \"--wifi-sta\", \"ssid=lab2\"][..], \"one for now\"),",
+      "zh": "        (&[\"--chip\", \"esp32\", \"--wifi-sta\", \"ssid=lab\", \"--wifi-sta\", \"ssid=lab2\"][..], \"目前只支持一个\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/wifi_sta_option.rs",
+      "en": "        (&[\"--chip\", \"esp32\", \"--wifi-sta\", \"ssid=lab\", \"--net\", \"none,epoch=1767225600\"][..], \"--net configures the network behind --wifi's access point\"),",
+      "zh": "        (&[\"--chip\", \"esp32\", \"--wifi-sta\", \"ssid=lab\", \"--net\", \"none,epoch=1767225600\"][..], \"--net: 只能配 --wifi 接入点背后的网络\"),",
+      "occ": 1
+    },
+    {
+      "file": "cli/tests/wifi_sta_option.rs",
+      "en": "    assert!(!stderr.contains(\"--pcap requires\") && !stderr.contains(\"panicked\"), \"{stderr}\");",
+      "zh": "    assert!(!stderr.contains(\"--pcap 需要\") && !stderr.contains(\"panicked\"), \"{stderr}\");",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "    d.get(off..).and_then(|tail| tail.get(..len)).ok_or_else(|| \"truncated ELF data\".into())",
+      "zh": "    d.get(off..).and_then(|tail| tail.get(..len)).ok_or_else(|| \"ELF 数据被截断\".into())",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "    if entsize < minimum { return Err(\"ELF entry size is too small\".into()); }",
+      "zh": "    if entsize < minimum { return Err(\"ELF 表项过小\".into()); }",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "    let len = count.checked_mul(entsize).ok_or(\"ELF table size overflows\")?;",
+      "zh": "    let len = count.checked_mul(entsize).ok_or(\"ELF 表大小溢出\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "    let tail = strings.get(off..).ok_or(\"ELF string offset is out of bounds\")?;",
+      "zh": "    let tail = strings.get(off..).ok_or(\"ELF 字符串偏移越界\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "    let end = tail.iter().position(|&c| c == 0).ok_or(\"unterminated ELF string\")?;",
+      "zh": "    let end = tail.iter().position(|&c| c == 0).ok_or(\"ELF 字符串缺少结束符\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "        Err(_) => raw.len().checked_mul(3).ok_or(\"ELF name size overflows\")?,",
+      "zh": "        Err(_) => raw.len().checked_mul(3).ok_or(\"ELF 名字长度溢出\")?,",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "        .ok_or(\"ELF name size overflows\")?;",
+      "zh": "        .ok_or(\"ELF 名字长度溢出\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "    *remaining = remaining.checked_sub(charge).ok_or(\"ELF copied names and payload exceed 256 MiB limit\")?;",
+      "zh": "    *remaining = remaining.checked_sub(charge).ok_or(\"ELF 复制的名字和数据超过 256 MiB 上限\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "    if d.len() < 52 || &d[0..4] != b\"\\x7fELF\" { return Err(\"not an ELF file\".into()); }",
+      "zh": "    if d.len() < 52 || &d[0..4] != b\"\\x7fELF\" { return Err(\"不是 ELF 文件\".into()); }",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "    if d[4] != 1 || d[5] != 1 { return Err(\"need ELF32 little-endian\".into()); }",
+      "zh": "    if d[4] != 1 || d[5] != 1 { return Err(\"需要 ELF32 小端格式\".into()); }",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "        if filesz > memsz as usize { return Err(\"ELF segment file size exceeds memory size\".into()); }",
+      "zh": "        if filesz > memsz as usize { return Err(\"ELF 段的文件大小超过内存大小\".into()); }",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "        remaining = remaining.checked_sub(payload.len()).ok_or(\"ELF copied payload exceeds 256 MiB limit\")?;",
+      "zh": "        remaining = remaining.checked_sub(payload.len()).ok_or(\"ELF 复制的数据超过 256 MiB 上限\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "        let s = section_headers.clone().nth(shstrndx).ok_or(\"ELF section-name table index is out of bounds\")?;",
+      "zh": "        let s = section_headers.clone().nth(shstrndx).ok_or(\"ELF 节名表索引越界\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "                remaining = remaining.checked_sub(payload.len()).ok_or(\"ELF copied payload exceeds 256 MiB limit\")?;",
+      "zh": "                remaining = remaining.checked_sub(payload.len()).ok_or(\"ELF 复制的数据超过 256 MiB 上限\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "        if entsize < 16 { return Err(\"ELF symbol entry size is too small\".into()); }",
+      "zh": "        if entsize < 16 { return Err(\"ELF 符号表项过小\".into()); }",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "        if records.len() % entsize != 0 { return Err(\"truncated ELF symbol table\".into()); }",
+      "zh": "        if records.len() % entsize != 0 { return Err(\"ELF 符号表被截断\".into()); }",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/elf.rs",
+      "en": "        let strings_header = section_headers.clone().nth(link).ok_or(\"ELF symbol string table index is out of bounds\")?;",
+      "zh": "        let strings_header = section_headers.clone().nth(link).ok_or(\"ELF 符号字符串表索引越界\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/image.rs",
+      "en": "    if d.len() < 24 || d[0] != 0xE9 { return Err(\"not an ESP image (magic 0xE9 missing)\".into()); }",
+      "zh": "    if d.len() < 24 || d[0] != 0xE9 { return Err(\"不是 ESP 镜像(缺少 magic 0xE9)\".into()); }",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/image.rs",
+      "en": "        let header = d.get(off..).and_then(|tail| tail.get(..8)).ok_or(\"truncated image segment header\")?;",
+      "zh": "        let header = d.get(off..).and_then(|tail| tail.get(..8)).ok_or(\"镜像段头被截断\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/image.rs",
+      "en": "        let end = off.checked_add(len as usize).filter(|&end| end <= d.len()).ok_or(\"truncated image segment data\")?;",
+      "zh": "        let end = off.checked_add(len as usize).filter(|&end| end <= d.len()).ok_or(\"镜像段数据被截断\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/image.rs",
+      "en": "        let file_off = u32::try_from(off).map_err(|_| \"image segment offset exceeds 32 bits\")?;",
+      "zh": "        let file_off = u32::try_from(off).map_err(|_| \"镜像段偏移超出 32 位\")?;",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/load.rs",
+      "en": "    if name.is_empty() { return Err(\"stub name must not be empty\".into()); }",
+      "zh": "    if name.is_empty() { return Err(\"stub 名字不能为空\".into()); }",
+      "occ": 1
+    },
+    {
+      "file": "esp-soc/src/load.rs",
+      "en": "        }.map_err(|_| format!(\"invalid return value in {spec:?}: expected u32, true or false\"))?,",
+      "zh": "        }.map_err(|_| format!(\"{spec:?} 的返回值无效：需要 u32、true 或 false\"))?,",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--cam-stream', '-'], /must be supplied together/],",
+      "zh": "    [['--cam-stream', '-'], /要和 --cam-size 一起给/],",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--cam-size', '2x2'], /must be supplied together/],",
+      "zh": "    [['--cam-size', '2x2'], /要和 --cam-size 一起给/],",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--cam-stream', '-', '--cam-size', '2x2'], /requires --board waveshare-cam/],",
+      "zh": "    [['--cam-stream', '-', '--cam-size', '2x2'], /需要 --board waveshare-cam/],",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--board', 'waveshare-cam', '--cam-stream', '-', '--cam-size', '12'], /--cam-size requires WIDTHxHEIGHT/],",
+      "zh": "    [['--board', 'waveshare-cam', '--cam-stream', '-', '--cam-size', '12'], /--cam-size: 需要 WIDTHxHEIGHT/],",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--board', 'waveshare-cam', '--cam-stream', '-', '--cam-size', '0x0'], /camera frame must be nonempty and fit the 8 MiB host input limit/],",
+      "zh": "    [['--board', 'waveshare-cam', '--cam-stream', '-', '--cam-size', '0x0'], /帧不能为空/],",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--board', 'waveshare-cam', '--cam-stream', '-', '--cam-size', '+2x+2'], /--cam-size requires unsigned decimal WIDTHxHEIGHT/],",
+      "zh": "    [['--board', 'waveshare-cam', '--cam-stream', '-', '--cam-size', '+2x+2'], /--cam-size: WIDTH 和 HEIGHT 都要无符号十进制数/],",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--board', 'waveshare-cam', '--cam-stream', '-', '--cam-size', '4096x4096'], /camera frame must be nonempty and fit the 8 MiB host input limit/],",
+      "zh": "    [['--board', 'waveshare-cam', '--cam-stream', '-', '--cam-size', '4096x4096'], /帧不能为空/],",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--cooja', '--cam-stream', '-'], /must be supplied together/],",
+      "zh": "    [['--cooja', '--cam-stream', '-'], /要和 --cam-size 一起给/],",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--chip', 'c6', '--cooja', '--cam-stream', '-'], /must be supplied together/],",
+      "zh": "    [['--chip', 'c6', '--cooja', '--cam-stream', '-'], /要和 --cam-size 一起给/],",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--chip', 'c3', '--cam-stream', '-', '--cam-size', '2x2'], /--cam-stream is not available on the C3/],",
+      "zh": "    [['--chip', 'c3', '--cam-stream', '-', '--cam-size', '2x2'], /--cam-stream: C3 上不支持/],",
+      "occ": 1
+    },
+    {
+      "file": "tools/camera-cli-test.mjs",
+      "en": "    [['--chip', 'c6', '--cam-stream', '-', '--cam-size', '2x2'], /--cam-stream is not available on the C6/],",
+      "zh": "    [['--chip', 'c6', '--cam-stream', '-', '--cam-size', '2x2'], /--cam-stream: C6 上不支持/],",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "<html lang=\"en\">",
+      "zh": "<html lang=\"zh-CN\">",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "<title>esp32sim — real ESP32 firmware in your browser, and a test bench for coding agents</title>",
+      "zh": "<title>esp32sim — 在浏览器里运行真实 ESP32 固件，也是给编程智能体准备的测试台</title>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "<meta name=\"description\" content=\"An instruction-level emulator for the ESP32, S3, C3, C6, P4 and S31 in Rust. Boots the real mask ROM, the real bootloader and unmodified firmware — in this browser tab, or on the command line as a deterministic hardware test bench for coding agents.\">",
+      "zh": "<meta name=\"description\" content=\"用 Rust 写的 ESP32、S3、C3、C6、P4、S31 指令级模拟器。它启动真实的 mask ROM、真实的 bootloader 和未经修改的固件。就在这个浏览器标签页里跑，或者作为命令行工具，给编程智能体当确定性硬件测试台。\">",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "<meta property=\"og:title\" content=\"esp32sim — real ESP32 firmware in your browser\">",
+      "zh": "<meta property=\"og:title\" content=\"esp32sim — 在你的浏览器里运行真实 ESP32 固件\">",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "<meta property=\"og:description\" content=\"Boot unmodified ESP32, S3, C3, C6, P4 and S31 firmware in a browser tab, or give a coding agent a deterministic board on the command line.\">",
+      "zh": "<meta property=\"og:description\" content=\"在浏览器标签页里启动未经修改的 ESP32、S3、C3、C6、P4、S31 固件，或者在命令行上给编程智能体一块确定性的开发板。\">",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "<meta property=\"og:image:alt\" content=\"esp32sim: real ESP32 firmware in your browser, an emulated touch panel and Linux booting on an ESP32-S3\">",
+      "zh": "<meta property=\"og:image:alt\" content=\"esp32sim:在你的浏览器里运行真实 ESP32 固件，一块模拟的触摸面板，以及 Linux 在 ESP32-S3 上启动\">",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"#demos\">Demos</a>",
+      "zh": "    <a href=\"#demos\">演示</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"#agents\">For coding agents</a>",
+      "zh": "    <a href=\"#agents\">面向编程智能体</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"#inside\">What's inside</a>",
+      "zh": "    <a href=\"#inside\">内部实现</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/quick-start.md\">Quick start</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/quick-start.md\">快速上手</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim#readme\">Docs</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim#readme\">文档</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <button class=\"theme\" type=\"button\" title=\"Light or dark\" aria-label=\"Switch between light and dark\" onclick=\"toggleTheme()\"></button>",
+      "zh": "    <button class=\"theme\" type=\"button\" title=\"浅色或深色\" aria-label=\"在浅色与深色之间切换\" onclick=\"toggleTheme()\"></button>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <span class=\"kicker\">ESP32 · S3 · C3 · C6 · P4 · S31 — Xtensa and RISC-V</span>",
+      "zh": "    <span class=\"kicker\">ESP32 · S3 · C3 · C6 · P4 · S31 — Xtensa 与 RISC-V</span>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <h1>Real ESP32 firmware.<br><span>In your browser.</span></h1>",
+      "zh": "    <h1>真实的 ESP32 固件。<br><span>就在你的浏览器里。</span></h1>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <p class=\"lede\">esp32sim is an instruction-level emulator for Espressif's ESP32-S3, C3, C6, P4, S31 and the classic ESP32, written in Rust. It boots the real mask ROM, the real bootloader and an unmodified application image — here in this tab, or on your command line as a hardware test bench that a coding agent can drive.</p>",
+      "zh": "    <p class=\"lede\">esp32sim 是一个指令级模拟器，用 Rust 写成，面向乐鑫的 ESP32-S3、C3、C6、P4、S31 以及经典 ESP32。它启动真实的 mask ROM、真实的 bootloader 和未经修改的应用镜像。就在这个标签页里跑，或者作为命令行工具，让编程智能体驱动一台确定性硬件。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <a class=\"button primary\" href=\"run.html?wasm&amp;fw=panel\">Run the touch panel →</a>",
+      "zh": "      <a class=\"button primary\" href=\"run.html?wasm&amp;fw=panel\">运行触摸面板 →</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <a class=\"button secondary\" href=\"#demos\">All demos</a>",
+      "zh": "      <a class=\"button secondary\" href=\"#demos\">全部演示</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <a class=\"button secondary\" href=\"#agents\">Use it with an agent</a>",
+      "zh": "      <a class=\"button secondary\" href=\"#agents\">配合智能体使用</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <div class=\"facts\"><span>ROM → bootloader → app</span><span>no patched firmware</span><span>no cloud, no accounts</span><span>MIT</span></div>",
+      "zh": "    <div class=\"facts\"><span>ROM → bootloader → app</span><span>无需修改固件</span><span>无云端，无账号</span><span>MIT</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a class=\"device\" href=\"run.html?wasm&amp;fw=panel\" title=\"Run the Touch-LCD-4B energy panel\"><img src=\"assets/demo-panel.webp\" width=\"480\" height=\"480\" alt=\"The energy panel firmware's first page: a price histogram for the day and four tiles\"></a>",
+      "zh": "    <a class=\"device\" href=\"run.html?wasm&amp;fw=panel\" title=\"运行 Touch-LCD-4B 能量面板\"><img src=\"assets/demo-panel.webp\" width=\"480\" height=\"480\" alt=\"能量面板固件的首页：当天的电价柱状图和四个磁贴\"></a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <figcaption>the frame the emulator wrote with --tft-png, 5 s after power-on</figcaption>",
+      "zh": "    <figcaption>模拟器用 --tft-png 写出的这一帧，上电 5 s 之后</figcaption>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a class=\"run\" href=\"run.html?wasm&amp;fw=panel\">▶ Run it</a>",
+      "zh": "    <a class=\"run\" href=\"run.html?wasm&amp;fw=panel\">▶ 运行</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <div><span class=\"kicker\">Demos</span><h2>Pick something to boot.</h2></div>",
+      "zh": "    <div><span class=\"kicker\">演示</span><h2>挑一个来启动。</h2></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <p>Every demo is a real firmware image booting through the real ROM inside this tab. Nothing runs on a server. The first load fetches the emulator (about 5 MB); firmware after that is small, except Linux's 16 MB flash and Pocket Tank's 7.6 MB model.</p>",
+      "zh": "    <p>每个演示都是真实固件镜像，在这个标签页里经真实 ROM 启动。没有任何东西跑在服务器上。首次加载会取回模拟器（约 5 MB）；之后的固件都很小，只有 Linux 的 16 MB flash 和 Pocket Tank 的 7.6 MB 模型例外。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-S3</span><span>LVGL · touch · audio</span></div>",
+      "zh": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-S3</span><span>LVGL · 触控 · 音频</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <h3>Touch-LCD-4B energy panel</h3>",
+      "zh": "        <h3>Touch-LCD-4B 能量面板</h3>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>An LVGL home-energy panel on a 480×480 RGB display with GT911 touch. Swipe between pages, toggle tiles, then enable audio and play a SID tune from the last page.</p>",
+      "zh": "        <p>480×480 RGB 屏上的一块 LVGL 家庭能源面板，带 GT911 触控。在页面之间滑动、切换磁贴，然后启用音频，从最后一页播放一首 SID 曲子。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=panel\">Run →</a><a href=\"run.html?wasm&amp;fw=panel-sid\">…with the SID player</a><span class=\"src\">firmware: Joakim's esp32-screen</span></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=panel\">运行 →</a><a href=\"run.html?wasm&amp;fw=panel-sid\">…含 SID 播放器</a><span class=\"src\">固件：Joakim 的 esp32-screen</span></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-S3</span><span>4-bit LLM · PIE SIMD</span></div>",
+      "zh": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-S3</span><span>4 位 LLM · PIE SIMD</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <h3>Pocket Tank, an LLM aquarium</h3>",
+      "zh": "        <h3>Pocket Tank，一座 LLM 水族箱</h3>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>A 14.3M-parameter transformer decides what each fish does, running from flash on the S3's PIE vector unit while the other core draws the tank. Slower than real time in a browser.</p>",
+      "zh": "        <p>一个 1430 万参数的 transformer 决定每条鱼做什么，从 flash 里跑在 S3 的 PIE 向量单元上，另一个核负责画水族箱。在浏览器里比实时慢。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=pocket-tank\">Run →</a><a class=\"src\" href=\"https://github.com/mediacutlet/pocket-tank\">source · MIT ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=pocket-tank\">运行 →</a><a class=\"src\" href=\"https://github.com/mediacutlet/pocket-tank\">源码 · MIT ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <h3>Linux in a real terminal</h3>",
+      "zh": "        <h3>真实终端里的 Linux</h3>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>Linux-on-esp32-S3: the network adapter on core 0, Linux executing in place from flash on core 1. Log in as root, run top, edit in vi, start MicroPython.</p>",
+      "zh": "        <p>Linux-on-esp32-S3:网络适配器在核 0,Linux 在核 1 上从 flash 原地执行。以 root 登录，运行 top，在 vi 里编辑，启动 MicroPython。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=linux-term\">Open terminal →</a><a href=\"run.html?wasm&amp;fw=linux\">raw console</a><a class=\"src\" href=\"https://github.com/svermigo/Linux-on-esp32-S3\">source · GPL-3.0 ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=linux-term\">打开终端 →</a><a href=\"run.html?wasm&amp;fw=linux\">原始控制台</a><a class=\"src\" href=\"https://github.com/svermigo/Linux-on-esp32-S3\">源码 · GPL-3.0 ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-S3</span><span>encoder · LEDs · SID</span></div>",
+      "zh": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-S3</span><span>编码器 · LED · SID</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <h3>Pocket Synth on the Atech 14-port board</h3>",
+      "zh": "        <h3>Atech 14 端口扩展板上的 Pocket Synth</h3>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>Arduino firmware with an ST7735 display, a WS2812 ring, an encoder and buttons. Turn the knob, press the buttons, hear the SID voice. The jukebox variant plays real C64 tunes.</p>",
+      "zh": "        <p>Arduino 固件，带 ST7735 显示屏、WS2812 灯环、一个编码器和若干按键。转动旋钮、按下按键，就能听到 SID 音色。点唱机版本播放真实的 C64 曲子。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=atech\">Play →</a><a href=\"run.html?wasm&amp;fw=atech-sid\">C64 jukebox</a><a class=\"src\" href=\"https://github.com/joakimeriksson/atech-firmware\">source ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=atech\">试听 →</a><a href=\"run.html?wasm&amp;fw=atech-sid\">C64 点唱机</a><a class=\"src\" href=\"https://github.com/joakimeriksson/atech-firmware\">源码 ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <div class=\"body\"><div class=\"meta\"><span>ESP32 (classic)</span><span>MicroPython · ST7789 · LX6</span></div>",
+      "zh": "      <div class=\"body\"><div class=\"meta\"><span>ESP32（经典）</span><span>MicroPython · ST7789 · LX6</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <h3>Spot prices on a TTGO T-Display</h3>",
+      "zh": "        <h3>TTGO T-Display 上的现货电价</h3>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>Stock MicroPython v1.29.0 booted by the mask ROM on the original dual-core ESP32, running a pure-Python spot-price app on the LilyGO T-Display's ST7789 over VSPI. Demo data from its own filesystem, since the browser has no sockets; the two buttons are below the panel.</p>",
+      "zh": "        <p>由 mask ROM 在原版双核 ESP32 上启动的原版 MicroPython v1.29.0，通过 VSPI 在 LilyGO T-Display 的 ST7789 上运行一个纯 Python 的现货电价应用。演示数据来自它自己的文件系统，因为浏览器没有套接字；两个按键在面板下方。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=tdisplay-prices\">Run →</a><a class=\"src\" href=\"https://github.com/mikroverk/esp32sim/tree/main/examples/ttgo-tdisplay\">source · MIT ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=tdisplay-prices\">运行 →</a><a class=\"src\" href=\"https://github.com/mikroverk/esp32sim/tree/main/examples/ttgo-tdisplay\">源码 · MIT ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <a class=\"shot\" href=\"run.html?wasm&amp;fw=tdisplay-schematik\"><img src=\"assets/demo-schematik-tdisplay.webp\" width=\"240\" height=\"135\" alt=\"Schematik T-Display on the emulated T-Display\"></a>",
+      "zh": "      <a class=\"shot\" href=\"run.html?wasm&amp;fw=tdisplay-schematik\"><img src=\"assets/demo-schematik-tdisplay.webp\" width=\"240\" height=\"135\" alt=\"模拟的 T-Display 上运行的 Schematik T-Display\"></a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <div class=\"body\"><div class=\"meta\"><span>ESP32 (classic)</span><span>Arduino · ST7789 · buttons</span></div>",
+      "zh": "      <div class=\"body\"><div class=\"meta\"><span>ESP32（经典）</span><span>Arduino · ST7789 · 按键</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>A little hardware optimism on a TTGO T-Display. GPIO35 cycles through the schematik wordmark, four fun lines and emulator specs; GPIO0 powers off into deep sleep and wakes back to the wordmark.</p>",
+      "zh": "        <p>TTGO T-Display 上的一点点硬件乐观主义。GPIO35 循环切换 schematik 字标、四句玩笑话和模拟器规格；GPIO0 断电进入深度睡眠，再醒来时回到字标。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=tdisplay-schematik\">Run →</a><a class=\"src\" href=\"https://github.com/mikroverk/esp32sim/tree/main/examples/schematik-tdisplay\">source · MIT ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=tdisplay-schematik\">运行 →</a><a class=\"src\" href=\"https://github.com/mikroverk/esp32sim/tree/main/examples/schematik-tdisplay\">源码 · MIT ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <h3>802.15.4 energy scanner</h3>",
+      "zh": "        <h3>802.15.4 能量扫描器</h3>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>The Waveshare C6-LCD-1.47 scanning channels 11–26 with energy detect from the emulated radio, LVGL over SPI and DMA, the WS2812 blinking per scan. Press BOOT for single-channel mode.</p>",
+      "zh": "        <p>Waveshare C6-LCD-1.47 扫描 11–26 信道，从模拟的无线电读取能量检测，LVGL 走 SPI 加 DMA,WS2812 每次扫描闪一下。按 BOOT 进入单信道模式。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=c6-energy-scan\">Run →</a><a class=\"src\" href=\"https://github.com/joakimeriksson/esp32\">source ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=c6-energy-scan\">运行 →</a><a class=\"src\" href=\"https://github.com/joakimeriksson/esp32\">源码 ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-S31</span><span>LVGL · touch · IMU</span></div>",
+      "zh": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-S31</span><span>LVGL · 触控 · IMU</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <h3>ESP-Mosaico compass</h3>",
+      "zh": "        <h3>ESP-Mosaico 指南针</h3>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>Espressif's newest chip on its ESP-Mosaico board: LVGL through the board's own BSP on the round 480×480 AMOLED, a compass needle from the magnetometer and a rolling ball from the accelerometer while the board is turned. Tap it; the AI button recolours it and buzzes the motor.</p>",
+      "zh": "        <p>乐鑫最新的芯片，装在 ESP-Mosaico 开发板上。LVGL 经开发板自己的 BSP，跑在圆形 480×480 AMOLED 上。磁力计给出指南针指针，加速度计在板子转动时滚动小球。点它一下，AI 按钮会换颜色并震动马达。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=s31-mosaico\">Run →</a><a class=\"src\" href=\"https://github.com/mikroverk/esp32sim/tree/main/examples/mosaico-demo\">source · MIT ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=s31-mosaico\">运行 →</a><a class=\"src\" href=\"https://github.com/mikroverk/esp32sim/tree/main/examples/mosaico-demo\">源码 · MIT ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <a class=\"shot\" href=\"run.html?wasm&amp;fw=p4-lcd35-synth\"><img src=\"assets/demo-p4-lcd35-synth.webp\" width=\"480\" height=\"320\" alt=\"The Scintilla synth's first page: preset, octave, volume and a keyboard\"></a>",
+      "zh": "      <a class=\"shot\" href=\"run.html?wasm&amp;fw=p4-lcd35-synth\"><img src=\"assets/demo-p4-lcd35-synth.webp\" width=\"480\" height=\"320\" alt=\"Scintilla 合成器的首页：预设、八度、音量和一块键盘\"></a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-P4</span><span>LVGL · touch · audio</span></div>",
+      "zh": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-P4</span><span>LVGL · 触控 · 音频</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <h3>Scintilla synth on the P4</h3>",
+      "zh": "        <h3>P4 上的 Scintilla 合成器</h3>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>The Elka Synthex in integer C on the Waveshare ESP32-P4-WIFI6-Touch-LCD-3.5: LVGL on the ST7796, FT5x06 touch and the ES8311 codec. Enable audio, play the keys, tap the red display for 80 presets. Slower than real time in a browser.</p>",
+      "zh": "        <p>用整型 C 重写的 Elka Synthex，跑在 Waveshare ESP32-P4-WIFI6-Touch-LCD-3.5 上：LVGL 在 ST7796 上，FT5x06 触控，ES8311 编解码器。启用音频、弹琴键、点红色显示屏换 80 个预设。在浏览器里比实时慢。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=p4-lcd35-synth\">Play →</a><a href=\"run.html?wasm&amp;fw=p4-c6-hosted\">WiFi through a C6</a><a class=\"src\" href=\"https://github.com/joakimeriksson/esp32\">source · GPL-3.0 ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=p4-lcd35-synth\">试听 →</a><a href=\"run.html?wasm&amp;fw=p4-c6-hosted\">经 C6 使用 WiFi</a><a class=\"src\" href=\"https://github.com/joakimeriksson/esp32\">源码 · GPL-3.0 ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <a class=\"shot\" href=\"run.html?wasm&amp;fw=c6-rpl-net\"><div style=\"width:100%\"><div class=\"net\"><div class=\"mote\"><i></i>node 1</div><div class=\"air\"><span>UDP over 6LoWPAN · RPL</span></div><div class=\"mote\"><i></i>node 2</div></div>",
+      "zh": "      <a class=\"shot\" href=\"run.html?wasm&amp;fw=c6-rpl-net\"><div style=\"width:100%\"><div class=\"net\"><div class=\"mote\"><i></i>节点 1</div><div class=\"air\"><span>UDP over 6LoWPAN · RPL</span></div><div class=\"mote\"><i></i>节点 2</div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <h3>A radio network in one tab</h3>",
+      "zh": "        <h3>一个标签页里的无线电网络</h3>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>Two emulated C6 motes on one 802.15.4 medium: Contiki-NG's rpl-udp server as the DAG root and a client that joins, then sends a UDP request every 10 s and gets a reply. Hardware ACKs included.</p>",
+      "zh": "        <p>同一块 802.15.4 介质上两个模拟的 C6 节点。Contiki-NG 的 rpl-udp 服务器作为 DAG 根，一个客户端加入进来。然后每 10 s 发一次 UDP 请求并收到回复，硬件 ACK 也在内。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=c6-rpl-net\">Start network →</a><a href=\"run.html?wasm&amp;fw=c6-contiki-net\">two broadcasters</a><a class=\"src\" href=\"https://github.com/joakimeriksson/contiki-ng-esp32\">source ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=c6-rpl-net\">启动网络 →</a><a href=\"run.html?wasm&amp;fw=c6-contiki-net\">两个广播方</a><a class=\"src\" href=\"https://github.com/joakimeriksson/contiki-ng-esp32\">源码 ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <a class=\"shot\" href=\"run.html?wasm&amp;fw=c6-wifi\"><img src=\"assets/demo-c6-wifi.webp\" width=\"640\" height=\"513\" alt=\"The Network panel: the station's DHCP, ARP and ICMP frames, both ways\"></a>",
+      "zh": "      <a class=\"shot\" href=\"run.html?wasm&amp;fw=c6-wifi\"><img src=\"assets/demo-c6-wifi.webp\" width=\"640\" height=\"513\" alt=\"网络面板：station 的 DHCP、ARP 和 ICMP 帧，两个方向都有\"></a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <h3>Watch the WiFi traffic</h3>",
+      "zh": "        <h3>观察 WiFi 流量</h3>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>A station firmware scans two virtual access points and three networks around them, joins one with WPA2, takes a DHCP lease and pings the gateway. The Network panel lists every frame both ways, dissects the one you click and saves them all as a pcap.</p>",
+      "zh": "        <p>一个 station 固件扫描两个虚拟接入点以及它们周围的三个网络，用 WPA2 加入其中一个，取得 DHCP 租约并 ping 网关。网络面板按两个方向列出每一帧，解析你点击的那一帧，并把它们全部保存成 pcap。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=c6-wifi\">Run →</a><a href=\"run.html?wasm&amp;fw=p4-c6-hosted\">a P4 through its C6</a><a class=\"src\" href=\"https://github.com/mikroverk/esp32sim/tree/main/examples/c6-wifi-station\">source · MIT ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=c6-wifi\">运行 →</a><a href=\"run.html?wasm&amp;fw=p4-c6-hosted\">P4 经它的 C6 联网</a><a class=\"src\" href=\"https://github.com/mikroverk/esp32sim/tree/main/examples/c6-wifi-station\">源码 · MIT ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <a class=\"shot\" href=\"run.html?wasm&amp;fw=c6-xiao\"><img src=\"assets/demo-c6-xiao.webp\" width=\"664\" height=\"436\" alt=\"The XIAO's user LED lit and its console reporting the BOOT button pressed\"></a>",
+      "zh": "      <a class=\"shot\" href=\"run.html?wasm&amp;fw=c6-xiao\"><img src=\"assets/demo-c6-xiao.webp\" width=\"664\" height=\"436\" alt=\"XIAO 的用户 LED 点亮，控制台报告 BOOT 按键被按下\"></a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-C6</span><span>GPIO · LED · button</span></div>",
+      "zh": "      <div class=\"body\"><div class=\"meta\"><span>ESP32-C6</span><span>GPIO · LED · 按键</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <p>Our blink firmware on Seeed's XIAO: the low-active user LED on GPIO 15 lights while the pin sinks current, and the BOOT button on GPIO 9 reads back. The script presses it at 2 s; the page's BOOT button presses it too.</p>",
+      "zh": "        <p>我们的闪烁固件跑在 Seeed 的 XIAO 上：GPIO 15 上的低电平有效用户 LED 在引脚灌电流时点亮，GPIO 9 上的 BOOT 按键能读回状态。脚本在第 2 s 按下它；页面上的 BOOT 按键也能按。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=c6-xiao\">Run →</a><a class=\"src\" href=\"https://github.com/mikroverk/esp32sim/tree/main/examples/xiao-esp32c6\">source · MIT ↗</a></div></div>",
+      "zh": "        <div class=\"go\"><a href=\"run.html?wasm&amp;fw=c6-xiao\">运行 →</a><a class=\"src\" href=\"https://github.com/mikroverk/esp32sim/tree/main/examples/xiao-esp32c6\">源码 · MIT ↗</a></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "  <div class=\"all\" id=\"alldemos\"><noscript><p><a href=\"run.html?wasm\">Every demo is listed on the emulator page.</a></p></noscript></div>",
+      "zh": "  <div class=\"all\" id=\"alldemos\"><noscript><p><a href=\"run.html?wasm\">所有演示都列在模拟器页面上。</a></p></noscript></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <span class=\"kicker\">For coding agents</span>",
+      "zh": "      <span class=\"kicker\">面向编程智能体</span>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <h2>A board the agent can run a thousand times.</h2>",
+      "zh": "      <h2>一块智能体可以跑上一千次的板子。</h2>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <p class=\"lede\">Agents write embedded code well and test it badly: a board on a desk cannot be scripted, read back or reset from a shell. esp32sim can. It is the same emulator as the demos above, as a command-line tool any agent with shell access already knows how to use.</p>",
+      "zh": "      <p class=\"lede\">智能体写嵌入式代码写得不错，测试却测得很糟。桌面上那块板子没法脚本化，没法读回，也没法从 shell 里复位。esp32sim 可以。它和上面的演示是同一个模拟器，只是换成了命令行工具。任何有 shell 访问权的智能体都早已会用。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <li><b>Build the firmware as usual.</b><span>ESP-IDF, PlatformIO or Arduino, unmodified. The emulator boots the real ROM and bootloader, so the app is the one that would go on the board.</span></li>",
+      "zh": "        <li><b>照常构建固件。</b><span>ESP-IDF、PlatformIO 或 Arduino，不做任何修改。模拟器启动真实的 ROM 和 bootloader，所以跑的就是要烧到板子上的那个应用。</span></li>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <li><b>Run it with a script.</b><span>Touches, button presses, encoder turns, GPIO levels and serial input at exact emulated times, with a run limit so the command always returns.</span></li>",
+      "zh": "        <li><b>用脚本运行它。</b><span>在精确的模拟时刻给出触摸、按键、编码器转动、GPIO 电平和串口输入。再配一个运行上限，让命令总会返回。</span></li>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <li><b>Read the evidence.</b><span>Console text on stdout, the display as PNG, audio as WAV, GPIO and interrupts as VCD, block coverage, profiles, interrupt latency — files a program can check.</span></li>",
+      "zh": "        <li><b>读取证据。</b><span>控制台文本走 stdout，显示输出成 PNG，音频成 WAV,GPIO 和中断成 VCD，还有块覆盖率、profile、中断延迟 —— 全是程序能检查的文件。</span></li>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <li><b>Fix, run again.</b><span>The same input gives the same run, down to the instruction count, so a failing check stays failing until the fix is real. The project's own golden tests pin console text, WAV hashes and instruction counts.</span></li>",
+      "zh": "        <li><b>修，再跑。</b><span>同样的输入给出同样的运行，精确到指令数，所以一个失败的检查会一直失败，直到修复是真的。项目自己的黄金测试把控制台文本、WAV 哈希和指令数钉死。</span></li>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/cli.md\">CLI reference</a>",
+      "zh": "        <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/cli.md\">CLI 参考</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/cli.md#action-scripts\">action scripts</a>",
+      "zh": "        <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/cli.md#action-scripts\">动作脚本</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/boards.md\">boards</a>",
+      "zh": "        <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/boards.md\">开发板</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/peripherals.md\">peripherals</a>",
+      "zh": "        <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/peripherals.md\">外设</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "        <a href=\"https://github.com/mikroverk/esp32sim/releases\">releases</a>",
+      "zh": "        <a href=\"https://github.com/mikroverk/esp32sim/releases\">发行版</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <div class=\"term\"><div class=\"bar\"><i></i><i></i><i></i><span>the loop, from a shell</span></div>",
+      "zh": "      <div class=\"term\"><div class=\"bar\"><i></i><i></i><i></i><span>在 shell 里的完整闭环</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <p style=\"margin-top:14px;color:#c9d0e6;font-size:14px\">Point an agent at <a style=\"color:#fff\" href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/cli.md\">docs/cli.md</a> and a board name. Runs are single-process with no daemon and no device, so they parallelise like unit tests, and <code style=\"background:#1e2a5c;color:#fff\">--no-jit</code> is the oracle when a result looks wrong.</p>",
+      "zh": "      <p style=\"margin-top:14px;color:#c9d0e6;font-size:14px\">把智能体指向 <a style=\"color:#fff\" href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/cli.md\">docs/cli.md</a> 和一个板型名字。每次运行都是单进程，没有守护进程也没有设备，所以它们像单元测试一样并行；当结果看起来不对时，<code style=\"background:#1e2a5c;color:#fff\">--no-jit</code> 就是判据。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <div><span class=\"kicker\">What's inside</span><h2>Software that behaves like the chip.</h2></div>",
+      "zh": "    <div><span class=\"kicker\">内部实现</span><h2>行为与芯片一致的软件。</h2></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <p>Six SoCs across both of Espressif's CPU architectures. Most of the SoC model is shared; only the CPU crates are separate. The numbers are from the README and its tests.</p>",
+      "zh": "    <p>六款 SoC，横跨乐鑫两套 CPU 架构。SoC 模型大部分是共享的，只有 CPU crate 是分开的。数字来自 README 和它的测试。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <div class=\"chip\"><h3>ESP32-S3 <small>mature</small></h3><dl>",
+      "zh": "    <div class=\"chip\"><h3>ESP32-S3 <small>成熟</small></h3><dl>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boots</dt><dd>ROM → bootloader → FreeRTOS → app</dd>",
+      "zh": "      <dt>启动</dt><dd>ROM → bootloader → FreeRTOS → app</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boards</dt><dd>ST7735, ST7701S 480×480 + touch, AMOLED 1.8, M5Stack StopWatch, WS2812, camera, I²S audio</dd>",
+      "zh": "      <dt>开发板</dt><dd>ST7735、ST7701S 480×480 + 触控、AMOLED 1.8、M5Stack StopWatch、WS2812、摄像头、I²S 音频</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Wi-Fi</dt><dd>virtual APs and networks around them, WPA2, DHCP/DNS/NTP, NAT to the real network, HTTPS, pcap</dd>",
+      "zh": "      <dt>Wi-Fi</dt><dd>虚拟 AP 以及它们周围的网络，WPA2、DHCP/DNS/NTP、到真实网络的 NAT、HTTPS、pcap</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Speed</dt><dd>block interpreter + AArch64 JIT, ~150–240 Minsn/s</dd>",
+      "zh": "      <dt>速度</dt><dd>块解释器 + AArch64 JIT，约 150–240 Minsn/s</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>vs silicon</dt><dd>JTAG lock-step, 8000 steps, 0 PC divergences</dd>",
+      "zh": "      <dt>对比真机</dt><dd>JTAG 锁步，8000 步，0 处 PC 分歧</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <div class=\"chip\"><h3>ESP32 (classic) <small>early</small></h3><dl>",
+      "zh": "    <div class=\"chip\"><h3>ESP32（经典）<small>早期</small></h3><dl>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>CPU</dt><dd>2 × Xtensa LX6 @ 240 MHz, on the S3's Xtensa core crate</dd>",
+      "zh": "      <dt>CPU</dt><dd>2 × Xtensa LX6 @ 240 MHz，跑在 S3 的 Xtensa 核心 crate 上</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boots</dt><dd>ECO3 ROM → bootloader → FreeRTOS → app; stock MicroPython</dd>",
+      "zh": "      <dt>启动</dt><dd>ECO3 ROM → bootloader → FreeRTOS → app;原版 MicroPython</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boards</dt><dd>LilyGO TTGO T-Display, the ESP32-2432S028 Cheap Yellow Display (ILI9341 + touch), Ulanzi TC001 (32×8 WS2812), AI-Thinker ESP32-CAM (OV2640, raw capture)</dd>",
+      "zh": "      <dt>开发板</dt><dd>LilyGO TTGO T-Display、ESP32-2432S028 Cheap Yellow Display（ILI9341 + 触控）、Ulanzi TC001(32×8 WS2812)、AI-Thinker ESP32-CAM（OV2640，原始采集）</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Wi-Fi</dt><dd>the same virtual APs: WPA2, DHCP, NAT; MicroPython joins and fetches over HTTPS; or the guest as the access point, joined by a virtual station</dd>",
+      "zh": "      <dt>Wi-Fi</dt><dd>同样的虚拟 AP:WPA2、DHCP、NAT;MicroPython 加入并通过 HTTPS 取数据；或者让 guest 当接入点，由一个虚拟 station 加入</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Inside</dt><dd>UART, I²C, LEDC, SPI + DMA, RMT, AES/SHA/RSA, ADC/DAC/touch pads, I²S RX and camera, 4 MB PSRAM, BLE</dd>",
+      "zh": "      <dt>内部</dt><dd>UART、I²C、LEDC、SPI + DMA、RMT、AES/SHA/RSA、ADC/DAC/触摸焊盘、I²S 接收和摄像头、4 MB PSRAM、BLE</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Not yet</dt><dd>double-precision FPU arithmetic, a recorded comparison with a board</dd>",
+      "zh": "      <dt>尚未支持</dt><dd>双精度 FPU 运算、与实机的一次记录对比</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <div class=\"chip\"><h3>ESP32-C3 <small>draft</small></h3><dl>",
+      "zh": "    <div class=\"chip\"><h3>ESP32-C3 <small>试验性</small></h3><dl>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boots</dt><dd>ROM → bootloader → FreeRTOS → app</dd>",
+      "zh": "      <dt>启动</dt><dd>ROM → bootloader → FreeRTOS → app</dd>",
+      "occ": 2
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boards</dt><dd>console only</dd>",
+      "zh": "      <dt>开发板</dt><dd>仅控制台</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Wi-Fi</dt><dd>the same virtual APs and networks around them: scan, WPA2, DHCP, NAT</dd>",
+      "zh": "      <dt>Wi-Fi</dt><dd>同样的虚拟 AP 以及它们周围的网络：扫描、WPA2、DHCP、NAT</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Decoder</dt><dd>161 k instructions vs objdump, 0 mismatches</dd>",
+      "zh": "      <dt>解码器</dt><dd>对照 objdump 的 161 k 条指令，0 处不符</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>vs silicon</dt><dd>console diff, 205/208 lines identical</dd>",
+      "zh": "      <dt>对比真机</dt><dd>控制台 diff,205/208 行一致</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <div class=\"chip\"><h3>ESP32-C6 <small>draft</small></h3><dl>",
+      "zh": "    <div class=\"chip\"><h3>ESP32-C6 <small>试验性</small></h3><dl>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boots</dt><dd>ROM → bootloader → FreeRTOS → app</dd>",
+      "zh": "      <dt>启动</dt><dd>ROM → bootloader → FreeRTOS → app</dd>",
+      "occ": 3
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boards</dt><dd>Waveshare C6-LCD-1.47: ST7789 172×320 over SPI + DMA, WS2812, an 802.15.4 MAC with a shared medium; Seeed XIAO ESP32-C6: user LED, BOOT button</dd>",
+      "zh": "      <dt>开发板</dt><dd>Waveshare C6-LCD-1.47:ST7789 172×320 走 SPI + DMA、WS2812、带共享介质的 802.15.4 MAC;Seeed XIAO ESP32-C6:用户 LED、BOOT 按键</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Wi-Fi</dt><dd>the same virtual APs and networks around them: scan, WPA2, DHCP, NAT</dd>",
+      "zh": "      <dt>Wi-Fi</dt><dd>同样的虚拟 AP 以及它们周围的网络：扫描、WPA2、DHCP、NAT</dd>",
+      "occ": 2
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Decoder</dt><dd>126 k instructions vs objdump, 0 mismatches</dd>",
+      "zh": "      <dt>解码器</dt><dd>对照 objdump 的 126 k 条指令，0 处不符</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>vs silicon</dt><dd>console diff, 203/204 lines identical</dd>",
+      "zh": "      <dt>对比真机</dt><dd>控制台 diff,203/204 行一致</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <div class=\"chip\"><h3>ESP32-P4 <small>draft</small></h3><dl>",
+      "zh": "    <div class=\"chip\"><h3>ESP32-P4 <small>试验性</small></h3><dl>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>CPU</dt><dd>2 × RISC-V RV32IMAFC @ 360 MHz, CLIC; rev &lt; 3 and ≥ 3</dd>",
+      "zh": "      <dt>CPU</dt><dd>2 × RISC-V RV32IMAFC @ 360 MHz,CLIC;rev &lt; 3 与 ≥ 3</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boots</dt><dd>ROM → bootloader → FreeRTOS → app on one or both cores</dd>",
+      "zh": "      <dt>启动</dt><dd>ROM → bootloader → FreeRTOS → app，单核或双核</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boards</dt><dd>Waveshare ESP32-P4-WIFI6-Touch-LCD-3.5: ST7796 320×480 over SPI + AXI-GDMA, FT5x06 touch, ES8311 audio</dd>",
+      "zh": "      <dt>开发板</dt><dd>Waveshare ESP32-P4-WIFI6-Touch-LCD-3.5:ST7796 320×480 走 SPI + AXI-GDMA、FT5x06 触控、ES8311 音频</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Wi-Fi</dt><dd>no radio on the chip: an emulated ESP32-C6 on SDIO runs the unmodified ESP-Hosted slave, in lock-step</dd>",
+      "zh": "      <dt>Wi-Fi</dt><dd>芯片上没有射频：SDIO 上一个模拟的 ESP32-C6 运行未经修改的 ESP-Hosted slave，两者锁步</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Inside</dt><dd>SD/MMC host and SD card, high-speed USB-OTG with a host on the other end, esptool flashing</dd>",
+      "zh": "      <dt>内部</dt><dd>SD/MMC 主机和 SD 卡、对端接主机的 USB-OTG 高速口、esptool 烧写</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Not yet</dt><dd>MIPI-DSI, DMA2D and PPA for the MIPI display boards; Xesppie</dd>",
+      "zh": "      <dt>尚未支持</dt><dd>MIPI-DSI、给 MIPI 屏板用的 DMA2D 和 PPA;Xesppie</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <div class=\"chip\"><h3>ESP32-S31 <small>draft</small></h3><dl>",
+      "zh": "    <div class=\"chip\"><h3>ESP32-S31 <small>试验性</small></h3><dl>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>CPU</dt><dd>2 × RISC-V RV32IMAFC @ 320 MHz with Zb*, Zc*, hardware loops and the PIE subset</dd>",
+      "zh": "      <dt>CPU</dt><dd>2 × RISC-V RV32IMAFC @ 320 MHz，带 Zb*、Zc*、硬件循环和 PIE 子集</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boots</dt><dd>ROM → bootloader → FreeRTOS → app, ESP-IDF v6.1</dd>",
+      "zh": "      <dt>启动</dt><dd>ROM → bootloader → FreeRTOS → app,ESP-IDF v6.1</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Boards</dt><dd>Espressif ESP-Mosaico: CO5300 480×480 AMOLED over QSPI, touch, ES8311 audio and mic, IMU and magnetometers, keys, motor</dd>",
+      "zh": "      <dt>开发板</dt><dd>Espressif ESP-Mosaico:CO5300 480×480 AMOLED 走 QSPI、触控、ES8311 音频和麦克风、IMU 和磁力计、按键、马达</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Wi-Fi</dt><dd>the same virtual APs: scan, WPA2 through the AES block, DHCP, NAT; OTA updates</dd>",
+      "zh": "      <dt>Wi-Fi</dt><dd>同样的虚拟 AP:扫描、经 AES 块的 WPA2、DHCP、NAT;OTA 更新</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Firmware</dt><dd>the Mosaico's factory firmware (ESP-Claw) runs to its home screen</dd>",
+      "zh": "      <dt>固件</dt><dd>Mosaico 的出厂固件(ESP-Claw)能跑到它的主屏</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <dt>Not yet</dt><dd>a recorded comparison with a board</dd>",
+      "zh": "      <dt>尚未支持</dt><dd>与实机的一次记录对比</dd>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/architecture.md\">architecture</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/architecture.md\">架构</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/peripherals.md\">peripheral matrix</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/peripherals.md\">外设矩阵</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/boards.md\">board models</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/boards.md\">开发板模型</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/wasm.md\">WebAssembly build</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/wasm.md\">WebAssembly 构建</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/esp32.md\">classic ESP32 status</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/esp32.md\">经典 ESP32 状态</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/esp32c3.md\">C3 status</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/esp32c3.md\">C3 状态</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/esp32c6.md\">C6 status</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/esp32c6.md\">C6 状态</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/esp32p4.md\">P4 status</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/esp32p4.md\">P4 状态</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/esp32s31.md\">S31 status</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/esp32s31.md\">S31 状态</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/decisions.md\">decisions</a>",
+      "zh": "    <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/decisions.md\">决策记录</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <div><span class=\"kicker\">Your own firmware</span><h2 style=\"font-size:26px\">Boot your build in this tab.</h2>",
+      "zh": "    <div><span class=\"kicker\">你自己的固件</span><h2 style=\"font-size:26px\">在这个标签页里启动你的构建。</h2>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "      <p>Choose the chip and board, pick your bootloader, partition table and app (or a whole flash image), add ELF symbols and a script if you like, and boot. The mask ROM comes from this site; files stay in the browser; nothing is uploaded. On your own machine, the <a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/quick-start.md\">quick start</a> does the same from a release tarball in three steps.</p></div>",
+      "zh": "      <p>选芯片和开发板，挑你的 bootloader、partition table 和 app（或者整个 flash 镜像），再加上 ELF 符号和脚本（如果你愿意），然后启动。mask ROM 来自本站；文件留在浏览器里，不会上传。在你自己机器上，<a href=\"https://github.com/mikroverk/esp32sim/blob/main/docs/quick-start.md\">快速上手</a> 用发布包三步做到同样的事。</p></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    <a class=\"button primary\" href=\"run.html?wasm\">Configure a machine →</a>",
+      "zh": "    <a class=\"button primary\" href=\"run.html?wasm\">配置一台机器 →</a>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "  <div class=\"row\"><a href=\"https://github.com/mikroverk/esp32sim\">source</a><a href=\"https://github.com/mikroverk/esp32sim#readme\">README</a><a href=\"https://github.com/mikroverk/esp32sim/blob/main/LICENSE\">MIT license</a><a href=\"https://github.com/mikroverk/esp32sim/releases\">releases</a></div>",
+      "zh": "  <div class=\"row\"><a href=\"https://github.com/mikroverk/esp32sim\">源码</a><a href=\"https://github.com/mikroverk/esp32sim#readme\">README</a><a href=\"https://github.com/mikroverk/esp32sim/blob/main/LICENSE\">MIT 许可证</a><a href=\"https://github.com/mikroverk/esp32sim/releases\">发行版</a></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "  <p>Third-party pieces on this site: the mask ROM ELFs (Apache-2.0, espressif/esp-rom-elfs), the Linux flash image (GPL-3.0, svermigo/Linux-on-esp32-S3), Pocket Tank (MIT, mediacutlet/pocket-tank), the MicroPython ESP32_GENERIC image (MIT, micropython.org) with Russ Hughes's st7789py driver and fonts (MIT, russhughes/st7789py_mpy), xterm.js (MIT), dpkt-js for the Network panel (BSD-3-Clause, vendored in vendor/dpkt-js), the Scintilla synth for the ESP32-P4 (GPL-3.0, joakimeriksson/esp32; licences in wasm/fw/public/p4-scintilla-NOTICE.txt). The demos run entirely in your browser.</p>",
+      "zh": "  <p>本站包含的第三方部件：mask ROM ELF(Apache-2.0,espressif/esp-rom-elfs)、Linux flash 镜像(GPL-3.0,svermigo/Linux-on-esp32-S3)、Pocket Tank(MIT,mediacutlet/pocket-tank)、MicroPython 的 ESP32_GENERIC 镜像(MIT,micropython.org)及其 Russ Hughes 的 st7789py 驱动和字体(MIT,russhughes/st7789py_mpy)、xterm.js(MIT)、网络面板用的 dpkt-js（BSD-3-Clause，放在 vendor/dpkt-js）、给 ESP32-P4 的 Scintilla 合成器（GPL-3.0,joakimeriksson/esp32;许可证在 wasm/fw/public/p4-scintilla-NOTICE.txt）。演示完全在你的浏览器里运行。</p>",
+      "occ": 1
+    },
+    {
+      "file": "web/index.html",
+      "en": "    const col = document.createElement('div'); const h = document.createElement('h3'); h.textContent = name + ' · all demos'; const ul = document.createElement('ul'); ul.append(...items); col.append(h, ul); root.append(col);",
+      "zh": "    const col = document.createElement('div'); const h = document.createElement('h3'); h.textContent = name + ' · 全部演示'; const ul = document.createElement('ul'); ul.append(...items); col.append(h, ul); root.append(col);",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "    card.innerHTML = `<details id=\"netmondetails\"><summary class=\"row\" style=\"cursor:pointer;list-style:revert\"><strong>Network</strong><span class=\"st\" id=\"netmonstat\">the station's Ethernet frames, both ways</span></summary>",
+      "zh": "    card.innerHTML = `<details id=\"netmondetails\"><summary class=\"row\" style=\"cursor:pointer;list-style:revert\"><strong>网络</strong><span class=\"st\" id=\"netmonstat\">station 的以太网帧，两个方向</span></summary>",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "      <div class=\"row\" style=\"margin-top:8px\"><input type=\"text\" id=\"netmonfilter\" placeholder=\"filter: dhcp, icmp, 10.0.2.2, ↑…\" style=\"flex:1;min-width:120px\">",
+      "zh": "      <div class=\"row\" style=\"margin-top:8px\"><input type=\"text\" id=\"netmonfilter\" placeholder=\"筛选： dhcp, icmp, 10.0.2.2, ↑…\" style=\"flex:1;min-width:120px\">",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "        <label class=\"st\"><input type=\"checkbox\" id=\"netmonscroll\" checked> auto-scroll</label>",
+      "zh": "        <label class=\"st\"><input type=\"checkbox\" id=\"netmonscroll\" checked> 自动滚动</label>",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "        <button class=\"act\" id=\"netmonpause\">pause</button><button class=\"act\" id=\"netmonclear\">clear</button><button class=\"act\" id=\"netmonpcap\">download pcap</button></div>",
+      "zh": "        <button class=\"act\" id=\"netmonpause\">暂停</button><button class=\"act\" id=\"netmonclear\">清空</button><button class=\"act\" id=\"netmonpcap\">下载 pcap</button></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "    $('netmonpause').onclick = () => { paused = !paused; $('netmonpause').textContent = paused ? 'resume' : 'pause'; if (!paused) render(); };",
+      "zh": "    $('netmonpause').onclick = () => { paused = !paused; $('netmonpause').textContent = paused ? '继续' : '暂停'; if (!paused) render(); };",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "      $('netmonstat').textContent = 'dpkt-js could not load: frames are shown as length and hex';",
+      "zh": "      $('netmonstat').textContent = 'dpkt-js 加载失败：帧只显示长度和十六进制';",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "    try { tree = dissector ? dissector.dissect(f.data, f.ts / 1e6) : dpkt.dissectFrame(1, f.data); } catch (e) { return `${f.data.length} B  (dissection failed: ${e.message})`; }",
+      "zh": "    try { tree = dissector ? dissector.dissect(f.data, f.ts / 1e6) : dpkt.dissectFrame(1, f.data); } catch (e) { return `${f.data.length} B  （解析失败：${e.message}）`; }",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "    return `<div data-seq=\"${f.seq}\" style=\"${style}padding:1px 10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\" title=\"${arrow === '↑' ? 'sent by the station' : 'received by the station'}\"><span style=\"color:#9ca3af\">${t}</span> <span style=\"color:${f.dir === 0 ? '#7dd3fc' : '#86efac'}\">${arrow}</span> ${esc(f.summary)}</div>`;",
+      "zh": "    return `<div data-seq=\"${f.seq}\" style=\"${style}padding:1px 10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\" title=\"${arrow === '↑' ? '由 station 发出' : '由 station 收到'}\"><span style=\"color:#9ca3af\">${t}</span> <span style=\"color:${f.dir === 0 ? '#7dd3fc' : '#86efac'}\">${arrow}</span> ${esc(f.summary)}</div>`;",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "    $('netmonstat').textContent = `${frames.length} frames · ${up} ↑ sent by the station · ${frames.length - up} ↓ received` + (dpktState === 'loading' ? ' · loading dpkt-js…' : '');",
+      "zh": "    $('netmonstat').textContent = `${frames.length} 帧 · ${up} ↑ 由 station 发出 · ${frames.length - up} ↓ 收到` + (dpktState === 'loading' ? ' · 正在加载 dpkt-js…' : '');",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "    if (dpkt) { try { body = treeHtml(dpkt.dissectFrame(1, f.data)); } catch (e) { body = `<div style=\"color:#fca5a5\">dissection failed: ${esc(e.message)}</div>`; } }",
+      "zh": "    if (dpkt) { try { body = treeHtml(dpkt.dissectFrame(1, f.data)); } catch (e) { body = `<div style=\"color:#fca5a5\">解析失败：${esc(e.message)}</div>`; } }",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "    else body = `<div style=\"color:#9ca3af\">dpkt-js is not loaded: raw frame</div>`;",
+      "zh": "    else body = `<div style=\"color:#9ca3af\">dpkt-js 未加载：原始帧</div>`;",
+      "occ": 1
+    },
+    {
+      "file": "web/netmon.js",
+      "en": "    box.innerHTML = `<div style=\"color:#9ca3af\">#${f.seq} · ${(f.ts / 1e6).toFixed(6)} s · ${f.dir === 0 ? '↑ sent by the station' : '↓ received by the station'} · ${f.data.length} bytes</div>${body}<pre style=\"margin:6px 0 0;white-space:pre-wrap;color:#9ca3af\">${hex(f.data, f.data.length)}</pre>`;",
+      "zh": "    box.innerHTML = `<div style=\"color:#9ca3af\">#${f.seq} · ${(f.ts / 1e6).toFixed(6)} s · ${f.dir === 0 ? '↑ 由 station 发出' : '↓ 由 station 收到'} · ${f.data.length} bytes</div>${body}<pre style=\"margin:6px 0 0;white-space:pre-wrap;color:#9ca3af\">${hex(f.data, f.data.length)}</pre>`;",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "<html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"icon\" href=\"assets/esp32sim-logo-icon.png\"><meta property=\"og:title\" content=\"esp32sim — run real ESP32 firmware in your browser\"><meta property=\"og:description\" content=\"Unmodified ESP32, S3, C3, C6, P4 and S31 firmware booting through the real mask ROM and bootloader, in this tab.\"><meta property=\"og:type\" content=\"website\"><meta property=\"og:url\" content=\"https://mikroverk.github.io/esp32sim/run.html\"><meta property=\"og:image\" content=\"https://mikroverk.github.io/esp32sim/assets/social-card.png\"><meta property=\"og:image:width\" content=\"1200\"><meta property=\"og:image:height\" content=\"630\"><meta property=\"og:image:alt\" content=\"esp32sim: real ESP32 firmware in your browser, an emulated touch panel and Linux booting on an ESP32-S3\"><meta name=\"twitter:card\" content=\"summary_large_image\"><script>try{const t=localStorage.getItem('esp32sim-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script><script>if(!new URLSearchParams(location.search).has('plain')){const r=document.documentElement;r.classList.add('workbench-pending');setTimeout(()=>r.classList.remove('workbench-pending'),4000)}</script><title>esp32sim — ESP32 emulator</title>",
+      "zh": "<html lang=\"zh-CN\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"icon\" href=\"assets/esp32sim-logo-icon.png\"><meta property=\"og:title\" content=\"esp32sim — 在浏览器里运行真实 ESP32 固件\"><meta property=\"og:description\" content=\"未经修改的 ESP32、S3、C3、C6、P4、S31 固件，在这个标签页里经真实的 mask ROM 和 bootloader 启动。\"><meta property=\"og:type\" content=\"website\"><meta property=\"og:url\" content=\"https://mikroverk.github.io/esp32sim/run.html\"><meta property=\"og:image\" content=\"https://mikroverk.github.io/esp32sim/assets/social-card.png\"><meta property=\"og:image:width\" content=\"1200\"><meta property=\"og:image:height\" content=\"630\"><meta property=\"og:image:alt\" content=\"esp32sim:在你的浏览器里运行真实 ESP32 固件，一块模拟的触摸面板，以及 Linux 在 ESP32-S3 上启动\"><meta name=\"twitter:card\" content=\"summary_large_image\"><script>try{const t=localStorage.getItem('esp32sim-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}</script><script>if(!new URLSearchParams(location.search).has('plain')){const r=document.documentElement;r.classList.add('workbench-pending');setTimeout(()=>r.classList.remove('workbench-pending'),4000)}</script><title>esp32sim — ESP32 模拟器</title>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "<header><h1>ESP32 emulator</h1><span class=\"st\" id=\"status\">connecting…</span><span style=\"flex:1\"></span>",
+      "zh": "<header><h1>ESP32 模拟器</h1><span class=\"st\" id=\"status\">connecting…</span><span style=\"flex:1\"></span>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "  <span class=\"st\" id=\"stat\"></span><button class=\"act\" id=\"audioBtn\">🔇 enable audio</button></header>",
+      "zh": "  <span class=\"st\" id=\"stat\"></span><button class=\"act\" id=\"audioBtn\">🔇 启用音频</button></header>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"mod knob\" id=\"knob\" title=\"Knob V1.1 - ports 1+2\">",
+      "zh": "      <div class=\"mod knob\" id=\"knob\" title=\"旋钮 V1.1 - 端口 1+2\">",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"mod btn btn1\" id=\"btn1\" title=\"Button V1.1 - port 3\"><div class=\"cell\" data-pin=\"17\"></div></div>",
+      "zh": "      <div class=\"mod btn btn1\" id=\"btn1\" title=\"按键 V1.1 - 端口 3\"><div class=\"cell\" data-pin=\"17\"></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"mod btn btn2\" id=\"btn2\" title=\"Button V1.1 - port 4\"><div class=\"cell\" data-pin=\"16\"></div></div>",
+      "zh": "      <div class=\"mod btn btn2\" id=\"btn2\" title=\"按键 V1.1 - 端口 4\"><div class=\"cell\" data-pin=\"16\"></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"mod spk\" title=\"Speaker V1.1 - ports 5+6\"></div>",
+      "zh": "      <div class=\"mod spk\" title=\"扬声器 V1.1 - 端口 5+6\"></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"mod lgrid grid7\" id=\"grid7\" title=\"Light V1.1 - port 7\"><div class=\"cells\"></div></div>",
+      "zh": "      <div class=\"mod lgrid grid7\" id=\"grid7\" title=\"灯 V1.1 - 端口 7\"><div class=\"cells\"></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"mod usbc\" title=\"USBC V1.1 - port 8\"></div>",
+      "zh": "      <div class=\"mod usbc\" title=\"USBC V1.1 - 端口 8\"></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"mod disp\" title=\"Screen V1.1 - ports 9+10\"><div class=\"scr\"><canvas id=\"tft\" width=\"80\" height=\"160\"></canvas></div></div>",
+      "zh": "      <div class=\"mod disp\" title=\"屏幕 V1.1 - 端口 9+10\"><div class=\"scr\"><canvas id=\"tft\" width=\"80\" height=\"160\"></canvas></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"mod lgrid grid11\" id=\"grid11\" title=\"Light V1.1 - port 11\"><div class=\"cells\"></div></div>",
+      "zh": "      <div class=\"mod lgrid grid11\" id=\"grid11\" title=\"灯 V1.1 - 端口 11\"><div class=\"cells\"></div></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "    <meter id=\"vu\" min=\"0\" max=\"1\" value=\"0\" title=\"speaker output\"></meter>",
+      "zh": "    <meter id=\"vu\" min=\"0\" max=\"1\" value=\"0\" title=\"扬声器输出\"></meter>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "    <div class=\"st\">wheel / drag on the knob to turn &middot; click the cap or press Space to push it &middot; &larr;/&rarr; keys turn</div>",
+      "zh": "    <div class=\"st\">在旋钮上滚轮 / 拖动来转动 &middot; 点击旋钮帽或按空格键按下它 &middot; &larr;/&rarr; 方向键也能转</div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\"><strong>Panel</strong><span class=\"st\" id=\"lcdstat\">ST7701S 480×480 over the RGB bus — click/drag to touch</span><span style=\"flex:1\"></span><label class=\"st\">rotate <select id=\"lcdrot\"><option value=\"0\">0°</option><option value=\"90\">90°</option><option value=\"180\">180°</option><option value=\"270\">270°</option></select></label></div>",
+      "zh": "      <div class=\"row\"><strong>面板</strong><span class=\"st\" id=\"lcdstat\">ST7701S 480×480 走 RGB 总线 — 点击/拖动即可触摸</span><span style=\"flex:1\"></span><label class=\"st\">旋转 <select id=\"lcdrot\"><option value=\"0\">0°</option><option value=\"90\">90°</option><option value=\"180\">180°</option><option value=\"270\">270°</option></select></label></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\" id=\"lcdextras\" style=\"display:none;margin-top:8px\"><span class=\"boardbtn\" id=\"lcdboot\" data-pin=\"9\">BOOT</span><span class=\"st\">press to switch all-channel / single-channel scan</span><span class=\"led\" id=\"lcdled\" title=\"WS2812\"></span><span class=\"st\">WS2812</span></div>",
+      "zh": "      <div class=\"row\" id=\"lcdextras\" style=\"display:none;margin-top:8px\"><span class=\"boardbtn\" id=\"lcdboot\" data-pin=\"9\">BOOT</span><span class=\"st\">按一下可在全信道 / 单信道扫描之间切换</span><span class=\"led\" id=\"lcdled\" title=\"WS2812\"></span><span class=\"st\">WS2812</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\" id=\"mosaicobuttons\" style=\"display:none;margin-top:8px\"><span class=\"boardbtn\" data-pin=\"7\">AI button (GPIO 7)</span><span class=\"boardbtn\" data-pin=\"61\">Boot key (GPIO 61)</span><span class=\"st\">click = single press, hold = long press</span><span class=\"led\" id=\"mosaicomotor\" title=\"vibration motor (GPIO 8)\"></span><span class=\"st\">vibration motor</span></div>",
+      "zh": "      <div class=\"row\" id=\"mosaicobuttons\" style=\"display:none;margin-top:8px\"><span class=\"boardbtn\" data-pin=\"7\">AI 按钮(GPIO 7)</span><span class=\"boardbtn\" data-pin=\"61\">启动键(GPIO 61)</span><span class=\"st\">点击 = 短按，按住 = 长按</span><span class=\"led\" id=\"mosaicomotor\" title=\"震动马达(GPIO 8)\"></span><span class=\"st\">震动马达</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\" id=\"tdbuttons\" style=\"display:none;margin-top:8px\"><span class=\"boardbtn\" data-pin=\"0\">left (GPIO 0)</span><span class=\"boardbtn\" data-pin=\"35\">right (GPIO 35)</span><span class=\"st\">the board's two buttons</span></div>",
+      "zh": "      <div class=\"row\" id=\"tdbuttons\" style=\"display:none;margin-top:8px\"><span class=\"boardbtn\" data-pin=\"0\">左键(GPIO 0)</span><span class=\"boardbtn\" data-pin=\"35\">右键(GPIO 35)</span><span class=\"st\">这块开发板的两个按键</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\" id=\"tc001buttons\" style=\"display:none;margin-top:8px\"><span class=\"boardbtn\" data-pin=\"26\">left (GPIO 26)</span><span class=\"boardbtn\" data-pin=\"27\">select (GPIO 27)</span><span class=\"boardbtn\" data-pin=\"14\">right (GPIO 14)</span><span class=\"st\">the clock's three buttons</span></div>",
+      "zh": "      <div class=\"row\" id=\"tc001buttons\" style=\"display:none;margin-top:8px\"><span class=\"boardbtn\" data-pin=\"26\">左(GPIO 26)</span><span class=\"boardbtn\" data-pin=\"27\">选择(GPIO 27)</span><span class=\"boardbtn\" data-pin=\"14\">右(GPIO 14)</span><span class=\"st\">这块时钟的三个按键</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\"><strong>Seeed XIAO ESP32‑C6</strong><span class=\"st\">the user LED on GPIO 15 (low active: the pin sinks the current) and the BOOT button on GPIO 9</span></div>",
+      "zh": "      <div class=\"row\"><strong>Seeed XIAO ESP32‑C6</strong><span class=\"st\">GPIO 15 上的用户 LED（低电平有效：引脚灌电流）和 GPIO 9 上的 BOOT 按键</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\" id=\"xiaoextras\" style=\"margin-top:8px\"><span class=\"led\" id=\"xiaoled\" title=\"user LED (GPIO 15)\"></span><span class=\"st\">user LED</span><span class=\"boardbtn\" data-pin=\"9\">BOOT</span><span class=\"st\">press to hold the boot button (GPIO 9, active low)</span></div>",
+      "zh": "      <div class=\"row\" id=\"xiaoextras\" style=\"margin-top:8px\"><span class=\"led\" id=\"xiaoled\" title=\"用户 LED(GPIO 15)\"></span><span class=\"st\">用户 LED</span><span class=\"boardbtn\" data-pin=\"9\">BOOT</span><span class=\"st\">按住以保持 boot 按键（GPIO 9，低电平有效）</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\"><strong>Network</strong><span class=\"st\" id=\"netstat\">two emulated ESP32-C6 motes on one 802.15.4 medium</span></div>",
+      "zh": "      <div class=\"row\"><strong>网络</strong><span class=\"st\" id=\"netstat\">同一块 802.15.4 介质上的两个模拟 ESP32-C6 节点</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\"><strong>Camera</strong><span class=\"st\" id=\"camwhat\">what the OV5640 sees — a picture file or your webcam (frames go to the DVP port at 10 fps)</span></div>",
+      "zh": "      <div class=\"row\"><strong>相机</strong><span class=\"st\" id=\"camwhat\">OV5640 看到的东西 — 一个图片文件，或者你的摄像头（帧以 10 fps 送到 DVP 端口）</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "        <input type=\"file\" id=\"camfile\" accept=\"image/*\"><button class=\"act\" id=\"camwebcam\">📷 use webcam</button><button class=\"act\" id=\"camstop\" style=\"display:none\">stop webcam</button>",
+      "zh": "        <input type=\"file\" id=\"camfile\" accept=\"image/*\"><button class=\"act\" id=\"camwebcam\">📷 使用摄像头</button><button class=\"act\" id=\"camstop\" style=\"display:none\">停止摄像头</button>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "        <span class=\"st\" id=\"camstat\"></span><meter id=\"vu2\" min=\"0\" max=\"1\" value=\"0\" style=\"width:120px\" title=\"speaker\"></meter><span class=\"st\">speaker</span>",
+      "zh": "        <span class=\"st\" id=\"camstat\"></span><meter id=\"vu2\" min=\"0\" max=\"1\" value=\"0\" style=\"width:120px\" title=\"扬声器\"></meter><span class=\"st\">扬声器</span>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "    <div class=\"card\" id=\"tftcard\"><div class=\"row\"><strong>Display (readable)</strong><span class=\"st\">ST7735 160×80, decoded from the bit‑banged SPI</span></div><canvas id=\"tftbig\" width=\"160\" height=\"80\"></canvas></div>",
+      "zh": "    <div class=\"card\" id=\"tftcard\"><div class=\"row\"><strong>显示（可读）</strong><span class=\"st\">ST7735 160×80，从位翻转(bit-banged)的 SPI 解码而来</span></div><canvas id=\"tftbig\" width=\"160\" height=\"80\"></canvas></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row tabs\"><strong>Console</strong>",
+      "zh": "      <div class=\"row tabs\"><strong>控制台</strong>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "        <button class=\"on chiptab\" data-src=\"usb\">USB‑CDC (Serial)</button><button class=\"chiptab\" data-src=\"uart0\">UART0 (ROM/bootloader)</button><button class=\"chiptab\" data-src=\"term\">Terminal (UART0, xterm.js)</button><button class=\"chiptab\" data-src=\"all\">both</button><button data-src=\"node0\" class=\"nodetab\" style=\"display:none\">node 1</button><button data-src=\"node1\" class=\"nodetab\" style=\"display:none\">node 2</button><button data-src=\"all\" class=\"nodetab\" style=\"display:none\">both consoles</button><button data-src=\"uart0+c6\" class=\"c6tab\" style=\"display:none\">both chips</button><button data-src=\"c6\" class=\"c6tab\" style=\"display:none\">ESP32‑C6 (co‑processor)</button>",
+      "zh": "        <button class=\"on chiptab\" data-src=\"usb\">USB‑CDC（串口）</button><button class=\"chiptab\" data-src=\"uart0\">UART0(ROM/bootloader)</button><button class=\"chiptab\" data-src=\"term\">终端(UART0,xterm.js)</button><button class=\"chiptab\" data-src=\"all\">两者</button><button data-src=\"node0\" class=\"nodetab\" style=\"display:none\">节点 1</button><button data-src=\"node1\" class=\"nodetab\" style=\"display:none\">节点 2</button><button data-src=\"all\" class=\"nodetab\" style=\"display:none\">两个控制台</button><button data-src=\"uart0+c6\" class=\"c6tab\" style=\"display:none\">两颗芯片</button><button data-src=\"c6\" class=\"c6tab\" style=\"display:none\">ESP32‑C6（协处理器）</button>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "        <span style=\"flex:1\"></span><button class=\"act\" id=\"clear\">clear</button></div>",
+      "zh": "        <span style=\"flex:1\"></span><button class=\"act\" id=\"clear\">清空</button></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div id=\"console\" tabindex=\"0\" title=\"click, then type: keys go to the console shown\"></div>",
+      "zh": "      <div id=\"console\" tabindex=\"0\" title=\"点击后开始输入：按键会送到当前显示的控制台\"></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\" style=\"margin-top:4px\"><span class=\"st\" id=\"keyhint\">click the console and type — keys go straight to the UART (Enter, Backspace, arrows, Ctrl‑C…); paste works too</span></div>",
+      "zh": "      <div class=\"row\" style=\"margin-top:4px\"><span class=\"st\" id=\"keyhint\">点击控制台然后输入 —— 按键直接送到 UART（Enter、Backspace、方向键、Ctrl‑C……）；粘贴也可以</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row\" style=\"margin-top:8px\"><input type=\"text\" id=\"line\" placeholder='a line for the console; Enter sends it'/><button class=\"act\" id=\"send\">send to USB‑CDC</button></div>",
+      "zh": "      <div class=\"row\" style=\"margin-top:8px\"><input type=\"text\" id=\"line\" placeholder='给控制台的一行；按 Enter 发送'/><button class=\"act\" id=\"send\">发送到 USB‑CDC</button></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      <div class=\"row chips\" id=\"presets\" style=\"margin-top:6px\"><span class=\"st\">actions:</span></div>",
+      "zh": "      <div class=\"row chips\" id=\"presets\" style=\"margin-top:6px\"><span class=\"st\">动作：</span></div>",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "function showTerm(on) { $('#term').style.display = on ? 'block' : 'none'; con.style.display = on ? 'none' : ''; $('#line').parentElement.style.display = on ? 'none' : ''; $('#keyhint').textContent = on ? 'a VT100 terminal on UART0 — click it and type; the guest can run `stty cols 100 rows 30` to match' : 'click the console and type — keys go straight to the UART (Enter, Backspace, arrows, Ctrl‑C…); paste works too';",
+      "zh": "function showTerm(on) { $('#term').style.display = on ? 'block' : 'none'; con.style.display = on ? 'none' : ''; $('#line').parentElement.style.display = on ? 'none' : ''; $('#keyhint').textContent = on ? 'UART0 上的 VT100 终端 —— 点它然后输入；guest 可以运行 `stty cols 100 rows 30` 来对齐尺寸' : '点击控制台然后输入 —— 按键直接送到 UART（Enter、Backspace、方向键、Ctrl‑C……）；粘贴也可以';",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "const PANEL_TEXT = { cyd: 'ILI9341 320×240 over SPI, XPT2046 touch — click the screen to tap', 'waveshare-c6-lcd147': 'ST7789 172×320 over SPI2 + GDMA', 'ttgo-tdisplay': 'ST7789 135×240 over VSPI', 'ulanzi-tc001': '256 WS2812, 32×8, on GPIO 32 via RMT', stopwatch: 'CO5300 468×466 QSPI · CST820 touch' };",
+      "zh": "const PANEL_TEXT = { cyd: 'ILI9341 320×240 走 SPI,XPT2046 触控 — 点击屏幕即可点按', 'waveshare-c6-lcd147': 'ST7789 172×320 走 SPI2 + GDMA', 'ttgo-tdisplay': 'ST7789 135×240 走 VSPI', 'ulanzi-tc001': 'GPIO 32 上经 RMT 驱动的 256 颗 WS2812,32×8', stopwatch: 'CO5300 468×466 QSPI · CST820 触控' };",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "  c.width = w; c.height = h; ctx.putImageData(img, 0, 0); const st = $('#camstat'); if (st && !st.textContent) st.textContent = 'picture from --cam-image';",
+      "zh": "  c.width = w; c.height = h; ctx.putImageData(img, 0, 0); const st = $('#camstat'); if (st && !st.textContent) st.textContent = '来自 --cam-image 的图片';",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "  return demo || (board === 'atech14' ? '{\"action\":\"set_note\",\"value\":\"5\"}' : 'a line for the console; Enter sends it');",
+      "zh": "  return demo || (board === 'atech14' ? '{\"action\":\"set_note\",\"value\":\"5\"}' : '给控制台的一行；按 Enter 发送');",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "    else if (m.t === 'board') { boardName = m.name; setLcdRotation(new URLSearchParams(location.search).get('rotate') ?? (window.EmuLink && window.EmuLink.displayRotate) ?? PANEL_ROTATE[m.name] ?? 0); document.body.classList.toggle('bare', m.name !== 'atech14'); $('#line').placeholder = lineHint(m.name); if (m.name === 'atech14') { document.querySelector('h1').textContent = 'ESP32‑S3 emulator — Atech 14‑port board'; } else if (m.name === 'esp32c3') { document.querySelector('h1').textContent = 'ESP32‑C3 emulator — RISC-V, console only'; } else if (m.name === 'esp32c6') { document.querySelector('h1').textContent = 'ESP32‑C6 emulator — RISC-V, console only'; } else if (m.name === 'waveshare-c6-lcd147') { document.querySelector('h1').textContent = 'ESP32‑C6 emulator — Waveshare ESP32‑C6‑LCD‑1.47'; $('#lcdpanel').style.display = ''; $('#lcdstat').textContent = 'ST7789 172×320 over SPI2 + GDMA — nothing drawn yet: this firmware has not written the display'; $('#lcd').style.display = 'none'; $('#lcdextras').style.display = ''; } else if (m.name === 'xiao-esp32c6') { document.querySelector('h1').textContent = 'ESP32‑C6 emulator — Seeed Studio XIAO ESP32‑C6'; $('#xiaocard').style.display = ''; } else if (m.name === 'ttgo-tdisplay') { document.querySelector('h1').textContent = 'ESP32 emulator — LilyGO TTGO T-Display'; $('#lcdpanel').style.display = ''; $('#lcdstat').textContent = 'ST7789 135×240 over VSPI — nothing drawn yet: this firmware has not written the display'; $('#lcd').style.display = 'none'; $('#tdbuttons').style.display = ''; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); } else if (m.name === 'cyd') { document.querySelector('h1').textContent = 'ESP32 emulator — ESP32-2432S028 Cheap Yellow Display'; $('#lcdpanel').style.display = ''; $('#lcdstat').textContent = 'ILI9341 320×240 over SPI, XPT2046 touch — click the screen to tap'; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); } else if (m.name === 'ulanzi-tc001') { document.querySelector('h1').textContent = 'ESP32 emulator — Ulanzi TC001 pixel clock'; $('#lcdpanel').style.display = ''; $('#lcdstat').textContent = '256 WS2812, 32×8, on GPIO 32 via RMT — nothing drawn yet: this firmware has not sent a frame'; $('#lcd').style.display = 'none'; $('#tc001buttons').style.display = ''; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); } else if (/^esp32p4(-rev3)?-c6$/.test(m.name)) { document.querySelector('h1').textContent = 'ESP32‑P4 + ESP32‑C6 — WiFi through ESP‑Hosted over SDIO, two chips in lock‑step'; document.querySelectorAll('.c6tab').forEach(b => b.style.display = ''); document.querySelector('.chiptab[data-src=\"usb\"]').style.display = 'none'; document.querySelector('.chiptab[data-src=\"all\"]').style.display = 'none'; document.querySelector('.chiptab[data-src=\"uart0\"]').textContent = 'ESP32‑P4 (UART0)'; document.querySelector('.c6tab[data-src=\"uart0+c6\"]').click(); } else if (m.name === 'none') { document.querySelector('h1').textContent = ({ esp32: 'ESP32', esp32c3: 'ESP32‑C3', esp32c6: 'ESP32‑C6', esp32p4: 'ESP32‑P4', esp32s31: 'ESP32‑S31' }[m.chip] || 'ESP32‑S3') + ' emulator — bare module'; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); } if (m.name === 'waveshare-cam') { document.querySelector('h1').textContent = 'ESP32‑S3 emulator — Waveshare ESP32‑S3‑CAM‑OV5640'; $('#campanel').style.display = ''; } if (m.name === 'ai-thinker-cam') { document.querySelector('h1').textContent = 'ESP32 emulator — AI‑Thinker ESP32‑CAM'; $('#camwhat').textContent = 'what the OV2640 sees — a picture file or your webcam (raw RGB565/YUV422 frames over I2S0 at about 10 fps)'; $('#campanel').style.display = ''; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); } if (m.name === 'waveshare-lcd4b') { document.querySelector('h1').textContent = 'ESP32‑S3 emulator — Waveshare ESP32‑S3‑Touch‑LCD‑4B'; $('#lcdpanel').style.display = ''; }  syncTitle(); }",
+      "zh": "    else if (m.t === 'board') { boardName = m.name; setLcdRotation(new URLSearchParams(location.search).get('rotate') ?? (window.EmuLink && window.EmuLink.displayRotate) ?? PANEL_ROTATE[m.name] ?? 0); document.body.classList.toggle('bare', m.name !== 'atech14'); $('#line').placeholder = lineHint(m.name); if (m.name === 'atech14') { document.querySelector('h1').textContent = 'ESP32‑S3 模拟器 — Atech 14 端口扩展板'; } else if (m.name === 'esp32c3') { document.querySelector('h1').textContent = 'ESP32‑C3 模拟器 — RISC-V，仅控制台'; } else if (m.name === 'esp32c6') { document.querySelector('h1').textContent = 'ESP32‑C6 模拟器 — RISC-V，仅控制台'; } else if (m.name === 'waveshare-c6-lcd147') { document.querySelector('h1').textContent = 'ESP32‑C6 模拟器 — Waveshare ESP32‑C6‑LCD‑1.47'; $('#lcdpanel').style.display = ''; $('#lcdstat').textContent = 'ST7789 172×320 走 SPI2 + GDMA — 还没有画面：这个固件尚未写过显示屏'; $('#lcd').style.display = 'none'; $('#lcdextras').style.display = ''; } else if (m.name === 'xiao-esp32c6') { document.querySelector('h1').textContent = 'ESP32‑C6 模拟器 — Seeed Studio XIAO ESP32‑C6'; $('#xiaocard').style.display = ''; } else if (m.name === 'ttgo-tdisplay') { document.querySelector('h1').textContent = 'ESP32 模拟器 — LilyGO TTGO T-Display'; $('#lcdpanel').style.display = ''; $('#lcdstat').textContent = 'ST7789 135×240 走 VSPI — 还没有画面：这个固件尚未写过显示屏'; $('#lcd').style.display = 'none'; $('#tdbuttons').style.display = ''; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); } else if (m.name === 'cyd') { document.querySelector('h1').textContent = 'ESP32 模拟器 — ESP32-2432S028 Cheap Yellow Display'; $('#lcdpanel').style.display = ''; $('#lcdstat').textContent = 'ILI9341 320×240 走 SPI,XPT2046 触控 — 点击屏幕即可点按'; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); } else if (m.name === 'ulanzi-tc001') { document.querySelector('h1').textContent = 'ESP32 模拟器 — Ulanzi TC001 像素时钟'; $('#lcdpanel').style.display = ''; $('#lcdstat').textContent = 'GPIO 32 上经 RMT 驱动的 256 颗 WS2812,32×8 — 还没有画面：这个固件尚未发过一帧'; $('#lcd').style.display = 'none'; $('#tc001buttons').style.display = ''; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); } else if (/^esp32p4(-rev3)?-c6$/.test(m.name)) { document.querySelector('h1').textContent = 'ESP32‑P4 + ESP32‑C6 — 经 SDIO 上的 ESP‑Hosted 使用 WiFi，两颗芯片锁步运行'; document.querySelectorAll('.c6tab').forEach(b => b.style.display = ''); document.querySelector('.chiptab[data-src=\"usb\"]').style.display = 'none'; document.querySelector('.chiptab[data-src=\"all\"]').style.display = 'none'; document.querySelector('.chiptab[data-src=\"uart0\"]').textContent = 'ESP32‑P4 (UART0)'; document.querySelector('.c6tab[data-src=\"uart0+c6\"]').click(); } else if (m.name === 'none') { document.querySelector('h1').textContent = ({ esp32: 'ESP32', esp32c3: 'ESP32‑C3', esp32c6: 'ESP32‑C6', esp32p4: 'ESP32‑P4', esp32s31: 'ESP32‑S31' }[m.chip] || 'ESP32‑S3') + ' 模拟器 — 裸模块'; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); } if (m.name === 'waveshare-cam') { document.querySelector('h1').textContent = 'ESP32‑S3 模拟器 — Waveshare ESP32‑S3‑CAM‑OV5640'; $('#campanel').style.display = ''; } if (m.name === 'ai-thinker-cam') { document.querySelector('h1').textContent = 'ESP32 模拟器 — AI‑Thinker ESP32‑CAM'; $('#camwhat').textContent = 'OV2640 看到的东西 — 一个图片文件，或者你的摄像头（原始 RGB565/YUV422 帧经 I2S0 以约 10 fps 送入）'; $('#campanel').style.display = ''; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); } if (m.name === 'waveshare-lcd4b') { document.querySelector('h1').textContent = 'ESP32‑S3 模拟器 — Waveshare ESP32‑S3‑Touch‑LCD‑4B'; $('#lcdpanel').style.display = ''; }  syncTitle(); }",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "    if (m.t === 'board' && m.name === 'waveshare-p4-lcd35') { document.querySelector('h1').textContent = 'ESP32‑P4 emulator, Waveshare ESP32‑P4‑WIFI6‑Touch‑LCD‑3.5'; $('#lcdstat').textContent = 'ST7796 320×480 over SPI2 + AXI‑GDMA, FT5x06 touch: click or drag to touch'; const lcd = $('#lcd'); const quarter = lcdRotation === 90 || lcdRotation === 270; lcd.style.width = (quarter ? 480 : 320) + 'px'; lcd.style.height = (quarter ? 320 : 480) + 'px'; $('#lcdpanel').style.display = ''; syncTitle(); }",
+      "zh": "    if (m.t === 'board' && m.name === 'waveshare-p4-lcd35') { document.querySelector('h1').textContent = 'ESP32‑P4 模拟器，Waveshare ESP32‑P4‑WIFI6‑Touch‑LCD‑3.5'; $('#lcdstat').textContent = 'ST7796 320×480 走 SPI2 + AXI‑GDMA,FT5x06 触控：点击或拖动即可触摸'; const lcd = $('#lcd'); const quarter = lcdRotation === 90 || lcdRotation === 270; lcd.style.width = (quarter ? 480 : 320) + 'px'; lcd.style.height = (quarter ? 320 : 480) + 'px'; $('#lcdpanel').style.display = ''; syncTitle(); }",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "    if (m.t === 'board' && m.name === 'mosaico') { document.querySelector('h1').textContent = 'ESP32‑S31 emulator, Espressif ESP‑Mosaico'; $('#lcdstat').textContent = 'CO5300 480×480 over QSPI (GP‑SPI2), CST9220 touch: click or drag to touch'; const lcd = $('#lcd'); lcd.style.width = '480px'; lcd.style.height = '480px'; $('#lcdpanel').style.display = ''; $('#mosaicobuttons').style.display = ''; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); syncTitle(); }",
+      "zh": "    if (m.t === 'board' && m.name === 'mosaico') { document.querySelector('h1').textContent = 'ESP32‑S31 模拟器，Espressif ESP‑Mosaico'; $('#lcdstat').textContent = 'CO5300 480×480 走 QSPI(GP‑SPI2),CST9220 触控：点击或拖动即可触摸'; const lcd = $('#lcd'); lcd.style.width = '480px'; lcd.style.height = '480px'; $('#lcdpanel').style.display = ''; $('#mosaicobuttons').style.display = ''; document.querySelector(`.tabs button[data-src=\"${window.EmuLink && window.EmuLink.terminal ? 'term' : 'uart0'}\"]`).click(); syncTitle(); }",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "    if (m.t === 'board' && m.name === 'waveshare-amoled18-v2') { document.querySelector('h1').textContent = 'ESP32‑S3 emulator, Waveshare ESP32‑S3‑Touch‑AMOLED‑1.8 V2'; $('#lcdstat').textContent = 'CO5300 368×448 over QSPI, click or drag to touch'; const lcd = $('#lcd'); const quarter = lcdRotation === 90 || lcdRotation === 270; lcd.style.width = (quarter ? 448 : 368) + 'px'; lcd.style.height = (quarter ? 368 : 448) + 'px'; $('#lcdpanel').style.display = ''; syncTitle(); }",
+      "zh": "    if (m.t === 'board' && m.name === 'waveshare-amoled18-v2') { document.querySelector('h1').textContent = 'ESP32‑S3 模拟器，Waveshare ESP32‑S3‑Touch‑AMOLED‑1.8 V2'; $('#lcdstat').textContent = 'CO5300 368×448 走 QSPI，点击或拖动即可触摸'; const lcd = $('#lcd'); const quarter = lcdRotation === 90 || lcdRotation === 270; lcd.style.width = (quarter ? 448 : 368) + 'px'; lcd.style.height = (quarter ? 368 : 448) + 'px'; $('#lcdpanel').style.display = ''; syncTitle(); }",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "        document.querySelector('h1').textContent = 'ESP32‑S3 emulator — M5Stack StopWatch';",
+      "zh": "        document.querySelector('h1').textContent = 'ESP32‑S3 模拟器 — M5Stack StopWatch';",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      document.querySelector('h1').textContent = 'ESP32‑C6 network — ' + m.nodes.length + ' motes on one 802.15.4 medium'; syncTitle();",
+      "zh": "      document.querySelector('h1').textContent = 'ESP32‑C6 网络 — ' + m.nodes.length + ' 个节点共享一块 802.15.4 介质'; syncTitle();",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      $('#netstat').textContent = `t = ${m.sec.toFixed(1)} s` + (m.behind > 0.05 ? ` · ⚠ ${m.behind.toFixed(2)} s behind` : ' · real time');",
+      "zh": "      $('#netstat').textContent = `t = ${m.sec.toFixed(1)} s` + (m.behind > 0.05 ? ` · ⚠ 落后 ${m.behind.toFixed(2)} s` : ' · 实时');",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "      if (row.children.length !== m.nodes.length) { row.innerHTML = m.nodes.map((_, i) => `<span class=\"motecard\"><span class=\"led\" id=\"netled${i}\"></span><b>node ${i + 1}</b> <span class=\"st\" id=\"netinfo${i}\"></span></span>`).join(''); }",
+      "zh": "      if (row.children.length !== m.nodes.length) { row.innerHTML = m.nodes.map((_, i) => `<span class=\"motecard\"><span class=\"led\" id=\"netled${i}\"></span><b>节点 ${i + 1}</b> <span class=\"st\" id=\"netinfo${i}\"></span></span>`).join(''); }",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "        $('#netinfo' + i).textContent = `sent ${n.tx} · heard ${n.rx}` + (n.dropped ? ` · ${n.dropped} lost` : '') + (n.halted ? ' · halted' : '');",
+      "zh": "        $('#netinfo' + i).textContent = `已发 ${n.tx} · 收到 ${n.rx}` + (n.dropped ? ` · 丢失 ${n.dropped}` : '') + (n.halted ? ' · 已停机' : '');",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "    else if (m.t === 'stat') { $('#stat').textContent = `t = ${m.time.toFixed(2)} s · ${(m.insns/1e6).toFixed(1)} M insns · ${m.frames} frames` + (m.speed == null ? '' : m.speed < 0.95 ? ` · ⚠ ${Math.floor(m.speed * 100)}% of real time` : ' · real time') + (m.resyncs ? ` · ${m.resyncs} resync` : '') + (m.cam ? ` · ${m.cam} camera frames` : ''); $('#stat').style.color = m.speed != null && m.speed < 0.95 ? '#f66' : ''; }",
+      "zh": "    else if (m.t === 'stat') { $('#stat').textContent = `t = ${m.time.toFixed(2)} s · ${(m.insns/1e6).toFixed(1)} M 条指令 · ${m.frames} 帧` + (m.speed == null ? '' : m.speed < 0.95 ? ` · ⚠ 实时的 ${Math.floor(m.speed * 100)}%` : ' · 实时') + (m.resyncs ? ` · ${m.resyncs} 次重同步` : '') + (m.cam ? ` · ${m.cam} 帧摄像头` : ''); $('#stat').style.color = m.speed != null && m.speed < 0.95 ? '#f66' : ''; }",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('on')); b.classList.add('on'); view = b.dataset.src; $('#send').textContent = keySrc() === 'uart0' ? 'send to UART0' : 'send to USB‑CDC'; showTerm(view === 'term'); render(); });",
+      "zh": "document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('on')); b.classList.add('on'); view = b.dataset.src; $('#send').textContent = keySrc() === 'uart0' ? '发送到 UART0' : '发送到 USB‑CDC'; showTerm(view === 'term'); render(); });",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "$('#audioBtn').onclick = async () => { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)({sampleRate: ctxRate}); await audioCtx.resume(); $('#audioBtn').textContent = '🔊 audio on'; };",
+      "zh": "$('#audioBtn').onclick = async () => { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)({sampleRate: ctxRate}); await audioCtx.resume(); $('#audioBtn').textContent = '🔊 音频已开'; };",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "const presets = [['set_note C','{\"action\":\"set_note\",\"value\":\"0\"}'],['set_note A','{\"action\":\"set_note\",\"value\":\"5\"}'],['octave 5','{\"action\":\"set_octave\",\"value\":\"5\"}'],['trigger_note','{\"action\":\"trigger_note\",\"value\":\"\"}'],['chord','{\"action\":\"play_chord_voices\",\"value\":\"\"}'],['play_note 880','{\"action\":\"play_note\",\"value\":\"{\\\\\"frequency\\\\\":880,\\\\\"duration\\\\\":300}\"}'],['volume 1.0','{\"action\":\"set_volume\",\"value\":\"1.0\"}'],['ring red','{\"action\":\"set_ring_color\",\"value\":\"{\\\\\"r\\\\\":255,\\\\\"g\\\\\":0,\\\\\"b\\\\\":40}\"}']];",
+      "zh": "const presets = [['音符 C','{\"action\":\"set_note\",\"value\":\"0\"}'],['音符 A','{\"action\":\"set_note\",\"value\":\"5\"}'],['八度 5','{\"action\":\"set_octave\",\"value\":\"5\"}'],['触发音符','{\"action\":\"trigger_note\",\"value\":\"\"}'],['和弦','{\"action\":\"play_chord_voices\",\"value\":\"\"}'],['播放音符 880','{\"action\":\"play_note\",\"value\":\"{\\\\\"frequency\\\\\":880,\\\\\"duration\\\\\":300}\"}'],['音量 1.0','{\"action\":\"set_volume\",\"value\":\"1.0\"}'],['灯环红色','{\"action\":\"set_ring_color\",\"value\":\"{\\\\\"r\\\\\":255,\\\\\"g\\\\\":0,\\\\\"b\\\\\":40}\"}']];",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "$('#camfile').onchange = (e) => { const f = e.target.files[0]; if (!f) return; const im = new Image(); im.onload = () => { camCtx.drawImage(im, 0, 0, camCanvas.width, camCanvas.height); sendCamFrame(); $('#camstat').textContent = `picture ${im.width}×${im.height} sent`; URL.revokeObjectURL(im.src); }; im.src = URL.createObjectURL(f); };",
+      "zh": "$('#camfile').onchange = (e) => { const f = e.target.files[0]; if (!f) return; const im = new Image(); im.onload = () => { camCtx.drawImage(im, 0, 0, camCanvas.width, camCanvas.height); sendCamFrame(); $('#camstat').textContent = `图片 ${im.width}×${im.height} 已发送`; URL.revokeObjectURL(im.src); }; im.src = URL.createObjectURL(f); };",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "  if (!navigator.mediaDevices?.getUserMedia) { $('#camstat').textContent = 'Webcam requires HTTPS or localhost and a browser with camera support.'; return; }",
+      "zh": "  if (!navigator.mediaDevices?.getUserMedia) { $('#camstat').textContent = '摄像头需要 HTTPS 或 localhost，以及支持摄像头的浏览器。'; return; }",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "  } catch (e) { $('#camstat').textContent = 'webcam: ' + e.message; return; }",
+      "zh": "  } catch (e) { $('#camstat').textContent = '摄像头： ' + e.message; return; }",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "  camTimer = setInterval(() => { if (v.videoWidth) { camCtx.drawImage(v, 0, 0, camCanvas.width, camCanvas.height); sendCamFrame(); $('#camstat').textContent = 'webcam live'; } }, 250);",
+      "zh": "  camTimer = setInterval(() => { if (v.videoWidth) { camCtx.drawImage(v, 0, 0, camCanvas.width, camCanvas.height); sendCamFrame(); $('#camstat').textContent = '摄像头实时'; } }, 250);",
+      "occ": 1
+    },
+    {
+      "file": "web/run.html",
+      "en": "function stopWebcam() { camGeneration++; clearInterval(camTimer); if (camStream) camStream.getTracks().forEach(t => t.stop()); camStream = null; $('#camwebcam').style.display = ''; $('#camstop').style.display = 'none'; $('#camvideo').srcObject = null; $('#camstat').textContent = 'webcam stopped (last frame stays)'; }",
+      "zh": "function stopWebcam() { camGeneration++; clearInterval(camTimer); if (camStream) camStream.getTracks().forEach(t => t.stop()); camStream = null; $('#camwebcam').style.display = ''; $('#camstop').style.display = 'none'; $('#camvideo').srcObject = null; $('#camstat').textContent = '摄像头已停止（保留最后一帧）'; }",
+      "occ": 1
+    },
+    {
+      "file": "web/terminal.js",
+      "en": "        if (!window.Terminal) { container.innerHTML = '<span style=\"color:#9aa\">xterm.js is not here — run <code>tools/fetch-web-vendor.sh</code> once (the Pages build does); the plain UART0 tab works without it</span>'; return; }",
+      "zh": "        if (!window.Terminal) { container.innerHTML = '<span style=\"color:#9aa\">xterm.js 不在这里 —— 先运行一次 <code>tools/fetch-web-vendor.sh</code>（Pages 构建里已经做过）;纯 UART0 标签页没有它也能用</span>'; return; }",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'waveshare-lcd4b': { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'Waveshare Touch-LCD-4B', peripherals: 'ST7701S 480×480 RGB · GT911 touch · I²S audio' },",
+      "zh": "    'waveshare-lcd4b': { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'Waveshare Touch-LCD-4B', peripherals: 'ST7701S 480×480 RGB · GT911 触控 · I²S 音频' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'waveshare-amoled18-v2': { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'Waveshare AMOLED-1.8 V2', peripherals: 'CO5300 368×448 QSPI · CST820 touch' },",
+      "zh": "    'waveshare-amoled18-v2': { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'Waveshare AMOLED-1.8 V2', peripherals: 'CO5300 368×448 QSPI · CST820 触控' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    stopwatch: { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'M5Stack StopWatch', peripherals: 'CO5300 468×466 QSPI · CST820 touch · M5PM1 · M5IOE1' },",
+      "zh": "    stopwatch: { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'M5Stack StopWatch', peripherals: 'CO5300 468×466 QSPI · CST820 触控 · M5PM1 · M5IOE1' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    atech14: { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'Atech 14-port', peripherals: 'ST7735 · WS2812 · encoder · buttons · I²S audio' },",
+      "zh": "    atech14: { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'Atech 14-port', peripherals: 'ST7735 · WS2812 · 编码器 · 按键 · I²S 音频' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'waveshare-cam': { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'Waveshare S3-CAM-OV5640', peripherals: 'OV5640 DVP camera · I²S audio · CH32V003' },",
+      "zh": "    'waveshare-cam': { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'Waveshare S3-CAM-OV5640', peripherals: 'OV5640 DVP 摄像头 · I²S 音频 · CH32V003' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    esp32c3: { soc: 'ESP32-C3 rev 3', cpu: '1× RISC-V RV32IMC @ 160 MHz', board: 'Bare ESP32-C3', peripherals: 'UART · USB-Serial/JTAG · timers · flash' },",
+      "zh": "    esp32c3: { soc: 'ESP32-C3 rev 3', cpu: '1× RISC-V RV32IMC @ 160 MHz', board: 'ESP32-C3 裸模块', peripherals: 'UART · USB-Serial/JTAG · 定时器 · flash' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    esp32c6: { soc: 'ESP32-C6 rev 0', cpu: '1× RISC-V RV32IMAC @ 160 MHz', board: 'Bare ESP32-C6', peripherals: 'UART · USB-Serial/JTAG · timers · flash' },",
+      "zh": "    esp32c6: { soc: 'ESP32-C6 rev 0', cpu: '1× RISC-V RV32IMAC @ 160 MHz', board: 'ESP32-C6 裸模块', peripherals: 'UART · USB-Serial/JTAG · 定时器 · flash' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'xiao-esp32c6': { soc: 'ESP32-C6 rev 0', cpu: '1× RISC-V RV32IMAC @ 160 MHz', board: 'Seeed Studio XIAO ESP32-C6', peripherals: 'user LED (GPIO 15, low active) · BOOT button (GPIO 9) · RF switch' },",
+      "zh": "    'xiao-esp32c6': { soc: 'ESP32-C6 rev 0', cpu: '1× RISC-V RV32IMAC @ 160 MHz', board: 'Seeed Studio XIAO ESP32-C6', peripherals: '用户 LED（GPIO 15，低电平有效） · BOOT 按键(GPIO 9) · RF 开关' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    esp32: { soc: 'ESP32-D0WD rev 3', cpu: '2× Xtensa LX6 @ 240 MHz', board: 'Bare ESP32 (esp32dev)', peripherals: 'UART · timers · flash' },",
+      "zh": "    esp32: { soc: 'ESP32-D0WD rev 3', cpu: '2× Xtensa LX6 @ 240 MHz', board: 'ESP32 裸模块(esp32dev)', peripherals: 'UART · 定时器 · flash' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'ai-thinker-cam': { soc: 'ESP32-D0WD rev 3', cpu: '2× Xtensa LX6 @ 240 MHz', board: 'AI-Thinker ESP32-CAM', peripherals: 'OV2640 on SCCB · DVP over I²S0 · raw RGB565/YUV422' },",
+      "zh": "    'ai-thinker-cam': { soc: 'ESP32-D0WD rev 3', cpu: '2× Xtensa LX6 @ 240 MHz', board: 'AI-Thinker ESP32-CAM', peripherals: 'SCCB 上的 OV2640 · 经 I²S0 的 DVP · 原始 RGB565/YUV422' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    cyd: { soc: 'ESP32-D0WD', cpu: '2× Xtensa LX6 @ 240 MHz', board: 'ESP32-2432S028 Cheap Yellow Display', peripherals: 'ILI9341 320×240 · XPT2046 touch' },",
+      "zh": "    cyd: { soc: 'ESP32-D0WD', cpu: '2× Xtensa LX6 @ 240 MHz', board: 'ESP32-2432S028 Cheap Yellow Display', peripherals: 'ILI9341 320×240 · XPT2046 触控' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'ttgo-tdisplay': { soc: 'ESP32-D0WD rev 3', cpu: '2× Xtensa LX6 @ 240 MHz', board: 'LilyGO TTGO T-Display', peripherals: 'ST7789 135×240 · VSPI · two buttons' },",
+      "zh": "    'ttgo-tdisplay': { soc: 'ESP32-D0WD rev 3', cpu: '2× Xtensa LX6 @ 240 MHz', board: 'LilyGO TTGO T-Display', peripherals: 'ST7789 135×240 · VSPI · 两个按键' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'ulanzi-tc001': { soc: 'ESP32-D0WD rev 3', cpu: '2× Xtensa LX6 @ 240 MHz', board: 'Ulanzi TC001', peripherals: '256 WS2812 32×8 · RMT · three buttons' },",
+      "zh": "    'ulanzi-tc001': { soc: 'ESP32-D0WD rev 3', cpu: '2× Xtensa LX6 @ 240 MHz', board: 'Ulanzi TC001', peripherals: '256 WS2812 32×8 · RMT · 三个按键' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    esp32p4: { soc: 'ESP32-P4 rev < 3 (v1.0)', cpu: '2× RISC-V RV32IMAFC @ 360 MHz', board: 'Bare ESP32-P4', peripherals: 'UART · USB-Serial/JTAG · timers · SDMMC · flash' },",
+      "zh": "    esp32p4: { soc: 'ESP32-P4 rev < 3 (v1.0)', cpu: '2× RISC-V RV32IMAFC @ 360 MHz', board: 'ESP32-P4 裸模块', peripherals: 'UART · USB-Serial/JTAG · 定时器 · SDMMC · flash' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'esp32p4-rev3': { soc: 'ESP32-P4 rev ≥ 3 (v3.1)', cpu: '2× RISC-V RV32IMAFC @ 360 MHz', board: 'Bare ESP32-P4', peripherals: 'UART · USB-Serial/JTAG · timers · flash' },",
+      "zh": "    'esp32p4-rev3': { soc: 'ESP32-P4 rev ≥ 3 (v3.1)', cpu: '2× RISC-V RV32IMAFC @ 360 MHz', board: 'ESP32-P4 裸模块', peripherals: 'UART · USB-Serial/JTAG · 定时器 · flash' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'esp32p4-c6': { soc: 'ESP32-P4 rev < 3 + ESP32-C6', cpu: '2× RV32IMAFC @ 360 MHz + 1× RV32IMAC @ 160 MHz', board: 'P4 with a C6 on SDIO, as the Waveshare ESP32-P4-WIFI6', peripherals: 'SDIO 4-bit · ESP-Hosted 2.12.13 · the C6\\'s WiFi on a virtual AP' },",
+      "zh": "    'esp32p4-c6': { soc: 'ESP32-P4 rev < 3 + ESP32-C6', cpu: '2× RV32IMAFC @ 360 MHz + 1× RV32IMAC @ 160 MHz', board: 'P4 加一颗 SDIO 上的 C6，即 Waveshare ESP32-P4-WIFI6', peripherals: 'SDIO 4 位 · ESP-Hosted 2.12.13 · C6 的 WiFi 走虚拟 AP' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'waveshare-p4-lcd35': { soc: 'ESP32-P4 rev ≥ 3 (v3.1)', cpu: '2× RISC-V RV32IMAFC @ 360 MHz', board: 'Waveshare ESP32-P4-WIFI6-Touch-LCD-3.5', peripherals: 'ST7796 320×480 SPI · FT5x06 touch · ES8311 I²S audio' },",
+      "zh": "    'waveshare-p4-lcd35': { soc: 'ESP32-P4 rev ≥ 3 (v3.1)', cpu: '2× RISC-V RV32IMAFC @ 360 MHz', board: 'Waveshare ESP32-P4-WIFI6-Touch-LCD-3.5', peripherals: 'ST7796 320×480 SPI · FT5x06 触控 · ES8311 I²S 音频' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    esp32s31: { soc: 'ESP32-S31 rev 0', cpu: '2× RISC-V RV32IMAFC @ 320 MHz', board: 'Bare ESP32-S31', peripherals: 'UART · USB-Serial/JTAG · timers · flash' },",
+      "zh": "    esp32s31: { soc: 'ESP32-S31 rev 0', cpu: '2× RISC-V RV32IMAFC @ 320 MHz', board: 'ESP32-S31 裸模块', peripherals: 'UART · USB-Serial/JTAG · 定时器 · flash' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    mosaico: { soc: 'ESP32-S31 rev 0', cpu: '2× RISC-V RV32IMAFC @ 320 MHz', board: 'Espressif ESP-Mosaico v1.2', peripherals: 'CO5300 480×480 QSPI · CST9220 touch · BMI270 · 2× BMM150 · motor' },",
+      "zh": "    mosaico: { soc: 'ESP32-S31 rev 0', cpu: '2× RISC-V RV32IMAFC @ 320 MHz', board: 'Espressif ESP-Mosaico v1.2', peripherals: 'CO5300 480×480 QSPI · CST9220 触控 · BMI270 · 2× BMM150 · 马达' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'esp32p4-rev3-c6': { soc: 'ESP32-P4 rev ≥ 3 (v3.1) + ESP32-C6', cpu: '2× RV32IMAFC @ 360 MHz + 1× RV32IMAC @ 160 MHz', board: 'P4 with a C6 on SDIO, as the Waveshare ESP32-P4-WIFI6', peripherals: 'SDIO 4-bit · ESP-Hosted 2.12.13 · the C6\\'s WiFi on a virtual AP' },",
+      "zh": "    'esp32p4-rev3-c6': { soc: 'ESP32-P4 rev ≥ 3 (v3.1) + ESP32-C6', cpu: '2× RV32IMAFC @ 360 MHz + 1× RV32IMAC @ 160 MHz', board: 'P4 加一颗 SDIO 上的 C6，即 Waveshare ESP32-P4-WIFI6', peripherals: 'SDIO 4 位 · ESP-Hosted 2.12.13 · C6 的 WiFi 走虚拟 AP' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    none: { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'Bare ESP32-S3', peripherals: 'UART · USB-Serial/JTAG · timers · flash' },",
+      "zh": "    none: { soc: 'ESP32-S3 rev 0', cpu: '2× Xtensa LX7 @ 240 MHz', board: 'ESP32-S3 裸模块', peripherals: 'UART · USB-Serial/JTAG · 定时器 · flash' },",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    panel: ['Swipe between pages on the real LVGL UI', 'Tap a tile to toggle it', 'Enable audio, then visit the SID player'],",
+      "zh": "    panel: ['在真实的 LVGL 界面上滑动翻页', '点一下磁贴即可切换', '启用音频，然后去 SID 播放器'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'panel-sid': ['The script opens the SID player', 'Enable audio to hear the guest', 'Swipe back to inspect the energy pages'],",
+      "zh": "    'panel-sid': ['脚本会打开 SID 播放器', '启用音频就能听到 guest 的声音', '滑回去看看能源页面'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    atech: ['Wheel or drag the encoder', 'Click the cap or press Space', 'Press the two board buttons'],",
+      "zh": "    atech: ['滚轮或拖动来转动编码器', '点旋钮帽或按空格键', '按一下板上的两个按键'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'atech-sid': ['Enable audio for the SID jukebox', 'Watch the firmware-driven LED ring', 'Use the console while the tune plays'],",
+      "zh": "    'atech-sid': ['启用音频来听 SID 点唱机', '看固件驱动的 LED 灯环', '曲子播放时也能用控制台'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    linux: ['Open the UART0 Terminal tab', 'Log in as root', 'Try top, vi, or MicroPython'],",
+      "zh": "    linux: ['打开 UART0 终端标签页', '以 root 登录', '试试 top、vi 或 MicroPython'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'linux-login': ['Watch the scripted login', 'Open the Terminal tab', 'Type a command into UART0'],",
+      "zh": "    'linux-login': ['看脚本自动登录', '打开终端标签页', '往 UART0 里敲一条命令'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'linux-term': ['Click the terminal and type', 'Try top, vi, or ls --color', 'Paste and Ctrl-C work'],",
+      "zh": "    'linux-term': ['点一下终端然后输入', '试试 top、vi 或 ls --color', '粘贴和 Ctrl-C 都能用'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'c6-rpl-net': ['Watch both node consoles', 'Observe sent and received counters', 'Wait for the UDP request and response'],",
+      "zh": "    'c6-rpl-net': ['同时看两个节点的控制台', '观察发送和接收计数', '等一次 UDP 请求和响应'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'c6-contiki-net': ['Watch both motes boot', 'Observe radio counters', 'See deterministic collision behavior'],",
+      "zh": "    'c6-contiki-net': ['看两个节点启动', '观察无线电计数', '看看确定性的碰撞行为'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'c6-energy-scan': ['Watch channels 11–26', 'Press BOOT for single-channel mode', 'Observe the WS2812 heartbeat'],",
+      "zh": "    'c6-energy-scan': ['观察 11–26 信道', '按 BOOT 进入单信道模式', '看 WS2812 的心跳'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'c6-contiki': ['Watch Contiki-NG boot on the console', 'A broadcast every 5 s', 'The WS2812 blinks through the RMT'],",
+      "zh": "    'c6-contiki': ['在控制台看 Contiki-NG 启动', '每 5 s 一次广播', 'WS2812 经 RMT 闪烁'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'pocket-tank': ['Tap or drag to touch the tank', 'Type feed 6 or shadow in the line box', 'help lists the director commands'],",
+      "zh": "    'pocket-tank': ['点或拖动来触摸水族箱', '在输入框里敲 feed 6 或 shadow', 'help 会列出导演命令'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    hello: ['Watch the ROM, the bootloader, then the app', 'The watchdog reboots it: same output again', 'Compare UART0 and USB-CDC'],",
+      "zh": "    hello: ['看 ROM、bootloader，然后是 app', '看门狗会重启它：输出再次相同', '对比 UART0 和 USB-CDC'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'c3-hello': ['The RISC-V mask ROM boots the app', 'Open UART0 for the console', 'Compared line by line with a real C3'],",
+      "zh": "    'c3-hello': ['RISC-V 的 mask ROM 启动这个 app', '打开 UART0 看控制台', '已和真机 C3 逐行比对过'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    's31-mosaico': ['Click or drag on the round panel to touch', 'AI button: next colour and a motor pulse', 'Boot key: the sensor page'],",
+      "zh": "    's31-mosaico': ['在圆形面板上点击或拖动即可触摸', 'AI 按钮：换下一个颜色并让马达脉冲一下', '启动键：传感器页面'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'p4-lcd35-synth': ['Enable audio, then play the keys', 'Tap the red display to pick a preset', 'INSTRUMENT edits the sound while it plays'],",
+      "zh": "    'p4-lcd35-synth': ['启用音频，然后弹琴键', '点红色显示屏选一个预设', 'INSTRUMENT 可以在播放时改音色'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'p4-c6-hosted': ['Both chips boot from their ROMs: [p4] and [c6]', 'The C6 joins the virtual AP for the P4', 'The P4 gets its address over SDIO'],",
+      "zh": "    'p4-c6-hosted': ['两颗芯片都从各自的 ROM 启动：[p4] 和 [c6]', 'C6 加入给 P4 用的虚拟 AP', 'P4 经 SDIO 拿到自己的地址'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'c6-hello': ['The C6 mask ROM boots the app', 'Open UART0 for the console', 'Compared with a Waveshare C6-LCD-1.47'],",
+      "zh": "    'c6-hello': ['C6 的 mask ROM 启动这个 app', '打开 UART0 看控制台', '已和 Waveshare C6-LCD-1.47 比对过'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'c6-wifi': ['The scan lists two access points and three networks', 'Click a frame in the Network panel to dissect it', 'Download the pcap for Wireshark'],",
+      "zh": "    'c6-wifi': ['扫描结果列出两个接入点和三个网络', '在网络面板里点一帧来解析它', '下载 pcap 用 Wireshark 看'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    'c6-xiao': ['The user LED blinks on GPIO 15', 'Press BOOT: the firmware reads GPIO 9', 'The script presses it at 2 s'],",
+      "zh": "    'c6-xiao': ['用户 LED 在 GPIO 15 上闪烁', '按 BOOT:固件会读 GPIO 9', '脚本在第 2 s 按下它'],",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    const intro = addRailSection(rail, fw ? 'Now running' : 'Local machine');",
+      "zh": "    const intro = addRailSection(rail, fw ? '正在运行' : '本机');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    intro.append(make('h2', 'wb-rail-title', demo?.title || fw || (wasmMode ? 'Custom firmware' : 'Native run')));",
+      "zh": "    intro.append(make('h2', 'wb-rail-title', demo?.title || fw || (wasmMode ? '自定义固件' : '本机运行')));",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    intro.append(make('p', 'wb-copy', demo?.note || (wasmMode ? 'The same emulator engine used by the local CLI, running in this browser tab.' : 'The esp32sim process on this computer, streaming its board and consoles to this page.')));",
+      "zh": "    intro.append(make('p', 'wb-copy', demo?.note || (wasmMode ? '和本机 CLI 用的是同一个模拟器内核，跑在这个浏览器标签页里。' : '这台电脑上的 esp32sim 进程，把它的开发板和控制台送到这个页面。')));",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    const hints = HINTS[fw] || (fw?.startsWith('c6-') ? ['Watch the real firmware console', 'Inspect the display and board state', 'Open the manifest and source links'] : ['Select a console and inspect the boot', 'Interact with the modeled board', wasmMode ? 'Open Configure to change the machine' : 'Change the machine with esp32sim\\'s flags']);",
+      "zh": "    const hints = HINTS[fw] || (fw?.startsWith('c6-') ? ['看真实固件的控制台', '检查显示和开发板状态', '打开 manifest 和源码链接'] : ['选一个控制台查看启动过程', '和建模出来的开发板交互', wasmMode ? '打开“配置”来更换机器' : '用 esp32sim 的参数更换机器']);",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    const telemetry = addRailSection(rail, 'Live telemetry');",
+      "zh": "    const telemetry = addRailSection(rail, '实时指标');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    metric('Emulated time', 'wbRuntime', 'starting…');",
+      "zh": "    metric('模拟时间', 'wbRuntime', '启动中…');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    metric('Speed', 'wbPace', 'loading…');",
+      "zh": "    metric('速度', 'wbPace', '加载中…');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    const machine = addRailSection(rail, 'Machine configuration');",
+      "zh": "    const machine = addRailSection(rail, '机器配置');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      link('architecture ↗', 'https://github.com/mikroverk/esp32sim/blob/main/docs/architecture.md'),",
+      "zh": "      link('架构 ↗', 'https://github.com/mikroverk/esp32sim/blob/main/docs/architecture.md'),",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      link('board ↗', 'https://github.com/mikroverk/esp32sim/blob/main/docs/boards.md'),",
+      "zh": "      link('开发板 ↗', 'https://github.com/mikroverk/esp32sim/blob/main/docs/boards.md'),",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      link('peripherals ↗', 'https://github.com/mikroverk/esp32sim/blob/main/docs/peripherals.md'),",
+      "zh": "      link('外设 ↗', 'https://github.com/mikroverk/esp32sim/blob/main/docs/peripherals.md'),",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    const about = addRailSection(rail, 'About esp32sim');",
+      "zh": "    const about = addRailSection(rail, '关于 esp32sim');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    about.append(make('p', 'wb-copy', 'An instruction-level Rust emulator for the ESP32, S3, C3 and C6 across Xtensa and RISC-V. It boots unmodified binaries in the browser or as a deterministic local CLI tool.'));",
+      "zh": "    about.append(make('p', 'wb-copy', '一个用 Rust 写的指令级模拟器，支持横跨 Xtensa 和 RISC-V 的 ESP32、S3、C3、C6。它能在浏览器里启动未经修改的二进制，也能作为确定性的本机 CLI 工具。'));",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      link('source ↗', 'https://github.com/mikroverk/esp32sim'),",
+      "zh": "      link('源码 ↗', 'https://github.com/mikroverk/esp32sim'),",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      const source = make('p', 'wb-copy', `Binary source: ${manifest._source}`);",
+      "zh": "      const source = make('p', 'wb-copy', `二进制来源：${manifest._source}`);",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    const local = addRailSection(rail, 'Use it locally');",
+      "zh": "    const local = addRailSection(rail, '在本机使用');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    local.append(make('p', 'wb-copy', fw ? 'The same run on the command line, from a checkout: deterministic, scriptable, with the display as a PNG. This is what a coding agent gets.' : 'The same emulator on the command line: deterministic, scriptable, with console text, PNG, WAV and VCD outputs a coding agent can read.'));",
+      "zh": "    local.append(make('p', 'wb-copy', fw ? '在命令行上跑同一份东西，从一份 checkout 出发：确定性、可脚本化，显示输出成 PNG。这就是编程智能体拿到的东西。' : '同一个模拟器的命令行形态：确定性、可脚本化，产出编程智能体能读的控制台文本、PNG、WAV 和 VCD。'));",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      configRow(rows, 'Board', spec.board);",
+      "zh": "      configRow(rows, '开发板', spec.board);",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      configRow(rows, 'Memory', wasmMode ? `${manifest?.flash_mb || document.querySelector('#fw_flash')?.value || 8} MB flash · ${manifest?.psram_mb ?? document.querySelector('#fw_psram')?.value ?? 2} MB PSRAM` : 'as given on the command line');",
+      "zh": "      configRow(rows, '内存', wasmMode ? `${manifest?.flash_mb || document.querySelector('#fw_flash')?.value || 8} MB flash · ${manifest?.psram_mb ?? document.querySelector('#fw_psram')?.value ?? 2} MB PSRAM` : '由命令行给出');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      configRow(rows, 'Boot', !wasmMode ? 'as given on the command line' : manifest?.app_direct ? 'application directly' : 'mask ROM → 2nd stage → application');",
+      "zh": "      configRow(rows, '启动', !wasmMode ? '由命令行给出' : manifest?.app_direct ? '直接运行应用' : 'mask ROM → 二级引导 → 应用');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      configRow(rows, 'Peripherals', spec.peripherals);",
+      "zh": "      configRow(rows, '外设', spec.peripherals);",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      configRow(rows, 'Engine', wasmMode ? 'WebAssembly · block/region JIT' : 'native esp32sim process');",
+      "zh": "      configRow(rows, '引擎', wasmMode ? 'WebAssembly · 块/区域 JIT' : '本机 esp32sim 进程');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      configRow(rows, 'Manifest', fw ? `${fw}.json` : wasmMode ? 'local browser files' : 'command-line flags');",
+      "zh": "      configRow(rows, 'Manifest', fw ? `${fw}.json` : wasmMode ? '本地浏览器文件' : '命令行参数');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    localLinks.append(link('for agents ↗', 'index.html#agents'), link('CLI reference ↗', 'https://github.com/mikroverk/esp32sim/blob/main/docs/cli.md'));",
+      "zh": "    localLinks.append(link('给智能体 ↗', 'index.html#agents'), link('CLI 参考 ↗', 'https://github.com/mikroverk/esp32sim/blob/main/docs/cli.md'));",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    brand.title = 'esp32sim: the landing page and every demo';",
+      "zh": "    brand.title = 'esp32sim:首页和全部演示';",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      pick.setAttribute('aria-label', 'Switch demo');",
+      "zh": "      pick.setAttribute('aria-label', '切换演示');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      pick.append(new Option('Demos…', '', true, true));",
+      "zh": "      pick.append(new Option('演示…', '', true, true));",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      heading.append(make('span', 'wb-kicker', 'Local machine setup'), make('h2', '', 'Configure firmware'), make('p', '', 'Choose the emulated board and provide firmware from this computer. Nothing is uploaded.'));",
+      "zh": "      heading.append(make('span', 'wb-kicker', '本机配置'), make('h2', '', '配置固件'), make('p', '', '选择要模拟的开发板，并提供这台电脑上的固件。不会上传任何东西。'));",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      close.setAttribute('aria-label', 'Close configuration');",
+      "zh": "      close.setAttribute('aria-label', '关闭配置');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      const configure = make('button', 'wb-button wb-button-primary', '⚙ Configure');",
+      "zh": "      const configure = make('button', 'wb-button wb-button-primary', '⚙ 配置');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      const configured = make('span', 'st', 'machine configured by local CLI');",
+      "zh": "      const configured = make('span', 'st', '机器由本机 CLI 配置');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    const restart = make('button', 'wb-button', '↻ Restart');",
+      "zh": "    const restart = make('button', 'wb-button', '↻ 重启');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    theme.title = 'Light or dark';",
+      "zh": "    theme.title = '浅色或深色';",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "    theme.setAttribute('aria-label', 'Switch between light and dark');",
+      "zh": "    theme.setAttribute('aria-label', '在浅色与深色之间切换');",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      if (runtime) runtime.textContent = document.getElementById('stat')?.textContent || net || 'starting…';",
+      "zh": "      if (runtime) runtime.textContent = document.getElementById('stat')?.textContent || net || '启动中…';",
+      "occ": 1
+    },
+    {
+      "file": "web/workbench.js",
+      "en": "      if (pace) pace.textContent = wasmMode ? (document.getElementById('pace')?.textContent || document.getElementById('status')?.textContent || 'loading…') : 'native emulator, over its WebSocket';",
+      "zh": "      if (pace) pace.textContent = wasmMode ? (document.getElementById('pace')?.textContent || document.getElementById('status')?.textContent || '加载中…') : '本机模拟器，经它的 WebSocket';",
+      "occ": 1
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+# 流水线脚本与翻译资产统一 LF,避免 Windows 检出后 bash 脚本带 CRLF
+tools/*.sh   text eol=lf
+tools/*.mjs  text eol=lf
+.atomgit/**  text eol=lf
+zh/**        text eol=lf
+docs/zh/**   text eol=lf
