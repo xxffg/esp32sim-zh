@@ -1184,8 +1184,8 @@
     },
     {
       "file": "web/index.html",
-      "en": "    <figcaption>the frame the emulator wrote with --tft-png, 5 s after power-on</figcaption>",
-      "zh": "    <figcaption>模拟器用 --tft-png 写出的这一帧，上电 5 s 之后</figcaption>",
+      "en": "<figcaption><b>A home-energy panel on an ESP32-S3</b>LVGL on a 480×480 touch display, as the emulator drew it 5 s after power-on. Tap it to boot it here.</figcaption>",
+      "zh": "<figcaption><b>ESP32-S3 上的家庭能源面板</b>LVGL 跑在 480×480 触摸屏上，这是模拟器上电 5 秒后画出的画面。点它就能在这里启动。</figcaption>",
       "occ": 1
     },
     {
