@@ -184,13 +184,27 @@ jobs:
           path: dist
           merge-multiple: true
 
+      - name: 读出上游版本号
+        id: ver
+        run: |
+          ver=$(tr -d '\r' < Cargo.toml | sed -n 's/^version = "\(.*\)"$/\1/p' | head -1)
+          echo "version=$ver" >> "$GITHUB_OUTPUT"
+          echo "tag=v${ver}-zh.${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+          echo "版本: $ver / 标签: v${ver}-zh.${{ github.run_number }}"
+
       - name: 汇总校验和
         run: cd dist && sha256sum ./*.tar.gz | tee SHA256SUMS.txt
 
       - name: 发布 Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ needs.translate.outputs.version }}-zh
-          name: esp32sim ${{ needs.translate.outputs.version }} 中文版
-          body: 自动构建:增量翻译 + 三平台交叉编译
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: esp32sim ${{ steps.ver.outputs.version }} 中文版(#${{ github.run_number }})
+          body: |
+            自动构建:发现新文案 → DeepSeek 增量翻译 → 质量门禁 → 三平台交叉编译。
+
+            - 仓库:${{ github.repository }}
+            - 提交:${{ github.sha }}
+            - 产物:linux-x86_64、linux-arm64、windows-x86_64(含 SHA256SUMS)
           files: dist/*
+          fail_on_unmatched_files: true
