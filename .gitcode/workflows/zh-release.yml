@@ -1,0 +1,171 @@
+# 中文版 esp32sim 的发布流水线(AtomGit Action)
+# 目录必须是 .gitcode/workflows/(AtomGit 的流水线沿用 GitCode 的路径)
+# 启用方式:项目设置 → 基础设置 → Actions 权限控制
+# 密钥:项目设置 → Actions 密钥与变量 → 新建仓库密钥 DEEPSEEK_API_KEY
+name: zh-release
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '上游 tag,例如 v0.4.0(留空则取最新)'
+        type: string
+        default: ''
+      skip_translate:
+        description: '跳过翻译,只用现有译文构建'
+        type: string
+        default: 'false'
+  push:
+    branches:
+      - zh
+
+permissions:
+  repository: write
+
+concurrency:
+  enable: true
+  max: 1
+  exceed-action: QUEUE
+
+jobs:
+  release:
+    name: 翻译 + 三平台构建 + 发布
+    runs-on: [ubuntu-latest, x64, small]
+    env:
+      TARGETS: x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu x86_64-pc-windows-gnu
+    steps:
+      - name: 检出代码
+        uses: checkout
+
+      - name: 准备环境
+        run: |
+          set -e
+          node --version || (sudo apt-get update -q && sudo apt-get install -y -q nodejs)
+          rustc --version || true
+          cargo --version || true
+          git --version
+
+      - name: 安装 Rust(缺失时)
+        run: |
+          set -e
+          if ! command -v cargo >/dev/null 2>&1; then
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o /tmp/rustup.sh
+            RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup \
+              sh /tmp/rustup.sh -y --profile minimal --default-toolchain stable
+            echo "$HOME/.cargo/bin" >> "$GITHUB_PATH" 2>/dev/null || true
+            export PATH="$HOME/.cargo/bin:$PATH"
+          fi
+          cargo --version
+
+      - name: 拉取上游 tag
+        run: |
+          set -e
+          git remote add upstream https://atomgit.com/gcw_xrfT46HM/esp32sim-zh-import.git || true
+          if ! git fetch upstream --tags --force; then
+            echo "镜像仓取不到,回退 GitHub"
+            git remote set-url upstream https://github.com/mikroverk/esp32sim.git
+            git fetch upstream --tags --force
+          fi
+          if [ -n "${INPUT_TAG:-}" ]; then echo "目标版本: $INPUT_TAG"; else echo "目标版本: 最新 tag"; fi
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+
+      - name: 增量翻译
+        if: inputs.skip_translate != 'true'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          set -e
+          node tools/zh-translate.mjs --dry-run || true
+          if [ -n "$DEEPSEEK_API_KEY" ]; then node tools/zh-translate.mjs; else echo "未配置 DEEPSEEK_API_KEY,跳过真实翻译"; fi
+
+      - name: 质量门禁
+        run: node tools/zh-check.mjs
+
+      - name: 提交译文变更
+        run: |
+          set -e
+          if git diff --quiet -- zh/; then echo "译文无变化"; exit 0; fi
+          git config user.name "esp32sim-zh bot"
+          git config user.email "bot@atomgit"
+          git add zh/
+          git commit -m "zh: 更新译文"
+          git push "https://oauth2:${ATOMGIT_TOKEN}@atomgit.com/${ATOMGIT_REPOSITORY}.git" HEAD:zh
+
+      - name: 安装交叉工具链
+        run: |
+          set -e
+          sudo apt-get update -q
+          sudo apt-get install -y -q gcc-mingw-w64-x86-64 gcc-aarch64-linux-gnu
+          rustup target add x86_64-pc-windows-gnu aarch64-unknown-linux-gnu 2>/dev/null || true
+
+      - name: 生成 build-src(模式 B:上游 + 翻译)
+        run: |
+          set -e
+          OVL="$PWD/.build/overlay"
+          mkdir -p "$OVL/docs"
+          cp -r docs/zh "$OVL/docs/zh"
+          node tools/apply-zh.mjs --upstream . --out .build/build-src --strings zh/strings.json --overlay "$OVL"
+
+      - name: 编译三个目标
+        run: |
+          set -e
+          export CARGO_TARGET_DIR="$PWD/.build/target"
+          cd .build/build-src
+          cargo build --release -p esp32sim --target x86_64-unknown-linux-gnu
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc \
+            RUSTFLAGS="-C link-arg=-fuse-ld=bfd" \
+            cargo build --release -p esp32sim --target aarch64-unknown-linux-gnu
+          cargo build --release -p esp32sim --target x86_64-pc-windows-gnu
+
+      - name: 打包
+        run: |
+          set -e
+          ver=$(tr -d '\r' < Cargo.toml | sed -n 's/^version = "\(.*\)"$/\1/p' | head -1)
+          for t in $TARGETS; do
+            case "$t" in
+              x86_64-unknown-linux-gnu)   p=linux-x86_64 ;;
+              aarch64-unknown-linux-gnu)  p=linux-arm64 ;;
+              x86_64-pc-windows-gnu)      p=windows-x86_64 ;;
+            esac
+            pkg="esp32sim-${ver}-zh-$p"
+            mkdir -p "dist/$pkg/docs" "dist/$pkg/tools"
+            rel="$PWD/.build/target/$t/release"
+            for b in esp32sim esp32sim-c3 esp32sim-c6 esp32sim-p4 esp32sim-s31; do
+              if [ "$p" = "windows-x86_64" ]; then cp "$rel/$b.exe" "dist/$pkg/$b.exe"; else cp "$rel/$b" "dist/$pkg/$b"; fi
+            done
+            cp LICENSE README.md "dist/$pkg/" 2>/dev/null || true
+            cp .build/build-src/docs/zh/*.md "dist/$pkg/docs/" 2>/dev/null || true
+            cp .build/build-src/tools/fetch-rom-elfs.sh "dist/$pkg/tools/" 2>/dev/null || true
+            cp -r .build/build-src/web "dist/$pkg/web"
+            rm -rf "dist/$pkg/web/wasm/fw/public"
+            tar -czf "dist/$pkg.tar.gz" -C dist "$pkg"
+            rm -rf "dist/$pkg"
+          done
+          cd dist && sha256sum ./*.tar.gz > SHA256SUMS.txt && cat SHA256SUMS.txt
+
+      - name: 冒烟(linux-x86_64 真跑)
+        run: |
+          set -e
+          exe="$PWD/.build/target/x86_64-unknown-linux-gnu/release/esp32sim"
+          "$exe" --version
+          "$exe" --help | head -1 | grep -q '^usage:'
+          set +e; "$exe" --adc x >/dev/null 2>&1; code=$?; set -e
+          [ "$code" = "2" ]
+          echo "冒烟通过"
+
+      - name: 发布(有 RELEASE_TOKEN 时)
+        env:
+          TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          set -e
+          if [ -z "$TOKEN" ]; then echo "未配置 RELEASE_TOKEN,只保留产物"; exit 0; fi
+          ver=$(tr -d '\r' < Cargo.toml | sed -n 's/^version = "\(.*\)"$/\1/p' | head -1)
+          tag="v${ver}-zh"
+          curl -fsS -X POST "https://api.atomgit.com/api/v5/repos/${ATOMGIT_REPOSITORY}/releases" \
+            -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+            -d "{\"tag_name\":\"$tag\",\"name\":\"esp32sim ${ver} 中文版\",\"body\":\"自动构建:翻译 + 三平台交叉编译\"}" \
+            || echo "发布接口未成功,产物仍在工作区"
+          ls -l dist
