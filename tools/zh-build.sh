@@ -90,7 +90,7 @@ if [ "$SMOKE" = "1" ]; then
   echo "== 冒烟(linux-x86_64 真跑) =="
   exe="$CARGO_TARGET_DIR/x86_64-unknown-linux-gnu/release/esp32sim"
   "$exe" --version
-  "$exe" --help | head -1 | grep -q '^usage:' && echo "  --help ok"
+  "$exe" --help 2>&1 | head -1 | grep -q '^usage:' && echo "  --help ok"
   set +e
   "$exe" --adc x >/dev/null 2>&1; code=$?
   set -e

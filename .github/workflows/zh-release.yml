@@ -157,7 +157,7 @@ jobs:
           set -e
           exe="$CARGO_TARGET_DIR/x86_64-unknown-linux-gnu/release/esp32sim"
           "$exe" --version
-          "$exe" --help | head -1 | grep -q '^usage:'
+          "$exe" --help 2>&1 | head -1 | grep -q '^usage:'
           set +e; "$exe" --adc x >/dev/null 2>&1; code=$?; set -e
           [ "$code" = "2" ]
           file "$exe"
