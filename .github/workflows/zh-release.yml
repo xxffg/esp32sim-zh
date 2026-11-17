@@ -175,7 +175,8 @@ jobs:
 
   publish:
     needs: [translate, build]
-    if: always() && needs.build.result == 'success'
+    # 定时与手动才发版;普通 push 只构建验证,避免每推一次就多一个 release
+    if: always() && needs.build.result == 'success' && github.event_name != 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
