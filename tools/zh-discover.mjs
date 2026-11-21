@@ -132,8 +132,11 @@ if (has('--write')) {
     covered.add(line);
     added++;
   }
-  strings.meta.count = strings.units.length;
-  strings.meta.discoveredAt = new Date().toISOString();
-  writeFileSync(stringsPath, JSON.stringify(strings, null, 2) + '\n', 'utf8');
-  console.log(`\n已写入 ${added} 条待译单元(zh 为空,等 zh-translate 填)`);
+  if (added === 0) {
+    console.log('\n没有新增单元,strings.json 保持不变');
+  } else {
+    strings.meta.count = strings.units.length;
+    writeFileSync(stringsPath, JSON.stringify(strings, null, 2) + '\n', 'utf8');
+    console.log(`\n已写入 ${added} 条待译单元(zh 为空,等 zh-translate 填)`);
+  }
 }
