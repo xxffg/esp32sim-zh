@@ -75,6 +75,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: zh
           fetch-depth: 0
 
       - name: 合并 mikroverk/esp32sim 的 main
@@ -92,7 +93,7 @@ jobs:
             exit 1
           fi
           if [ "${{ github.event_name }}" != "push" ]; then
-            git push
+            git push origin HEAD:refs/heads/zh
           else
             echo "push 事件不推回,避免循环触发"
           fi
