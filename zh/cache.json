@@ -2,5 +2,146 @@
   "version": 1,
   "promptVersion": "zh-translate-prompt-v1",
   "glossaryVersion": "1",
-  "entries": {}
+  "entries": {
+    "044c9155377bad2e760d678f49cf0e78a9c5a451f75177e3ffc3e1e0430060ef": {
+      "zh": "eprintln!(\"  --tft-png F, --wav F  在运行结束时保存显示画面 / 音频\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "11cdc124121474c4d065028b84f96aa918a059fd39a30e5769e3adb4bbdc5423": {
+      "zh": "eprintln!(\"  --pcap F              把站点的以太网帧（双向）写入 pcap 文件 F（需要 --wifi 或 --wifi-sta）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "121b0051fa37672b82ce7c857ffa49805a9ff0584a5acb6a5fcb1b50f8a7fd3e": {
+      "zh": "eprintln!(\"  --imu-motion N        脚本化 IMU 运动：0 静止，1 为 30 秒倾斜/翻转/摇晃脚本（amoled18-v2、mosaico）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "134aaf80ac67c5691bac05708bf816a730001d33cf3a42fb11c808dd6ab138d6": {
+      "zh": "m.host.deadline = o.timeout.map(|d| t0.checked_add(d).unwrap_or_else(|| usage_error(\"--timeout：时间过长\")));",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:39:00.045Z"
+    },
+    "166d22c94d2a4c175b40dd211c4f91d3cc5bee2d3aa4cea4ef2193b6b33bfec4": {
+      "zh": "eprintln!(\"  --usb-host F          （P4、S3、S31）在 USB-OTG 端口上运行 F 的 USB 宿主机；--sd-timing（P4）用于定时 SD\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "34d295d8f5bf0fef20a0dbb9316c2c2baede9de13fd5b260c6ac625e7568426e": {
+      "zh": "eprintln!(\"  --max-seconds S       模拟 S 秒后停止（务必指定：运行会返回）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "3c0846ff8164d7bfddbfb59385012b47033002b8582d31f3f7556bc98238466f": {
+      "zh": "eprintln!(\"  --wifi ssid=…,psk=…   虚拟接入点，带 DHCP、DNS、NTP，并 NAT 到宿主机网络\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "5221ed209bb7825ba06c77c598b1bec5ca54c5c0a8b671eda5f3f163f655af93": {
+      "zh": "eprintln!(\"  --web PORT            在 http://127.0.0.1:PORT/ 实时提供开发板界面\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "589da1992d20caeaef397e43993f1bcf7cbf98e51fdda9f70b78ce5ec4508a74": {
+      "zh": "如果 o.uart_tcp.is_some() && o.uart_tcp == o.uart1_tcp && !o.uart_tcp.as_deref().is_some_and(|a| a.ends_with(\":0\")) { usage_error(\"--uart-tcp 与 --uart1-tcp 需要使用不同的地址\"); }",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:39:00.045Z"
+    },
+    "64cd7919f07a92ffdf553cc26025ea2c76d7ed1bcc346bc087b95a1288c6d269": {
+      "zh": "eprintln!(\"  --hostfwd tcp|udp:H:HP-G:GP  在宿主机上发布客户机的 TCP 或 UDP 端口（可重复；需要 --wifi）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "6ee2ec6fd144b3ef463de8ffdba972b70457c03b87c5a6a201322259c9a94f12": {
+      "zh": "如果 !o.inject_ons.is_empty() && o.script.is_some() { usage_error(\"--inject-on 与 --script 同时使用：等待会阻塞脚本；请把它们放进脚本里（waituart0、uart0）\"); }",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:39:00.045Z"
+    },
+    "7336ec30dffa5d4579c26d6a1d477015a10018c4695fadc7f131e295109ec2af": {
+      "zh": "if matches!(o.chip.as_str(), \"p4\" | \"esp32p4\") { usage_error(\"--wifi-sta：P4 自身没有 WiFi，其协处理器的站点也未建模\"); }",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "73b415b54dd28c479d90a8857754565e734f86df9a9b20a51142ab8bac3429d7": {
+      "zh": "eprintln!(\"  --exit-on TEXT        控制台打印 TEXT 后结束运行，状态码 0；若始终未打印，状态码 1\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "904b932b75df26bc1127fe50cf617dbb0f9fd0f126946de15814c8b2089ed119": {
+      "zh": "eprintln!(\"  --console usb|uart0|both|none   打印哪些控制台（uart0 显示 ROM 和引导程序）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "90752d823fe9b15125a0d347c0222475c3e344b4b0524c04878b111498e00431": {
+      "zh": "eprintln!(\"  --rom F               芯片自带 ROM 的 ELF；默认：$ESP32SIM_ROM_DIR，然后是 ~/.espressif/tools/esp-rom-elfs/*/\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "949e10030dec759ca6a33c37e7d46879540f8fcdcb496b820337141a3e2f4232": {
+      "zh": "eprintln!(\"  --mic-wav [PORT:]F    向 I2S RX 播放一次 16 位 PCM WAV（默认控制器 0），会重采样\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "ad02fe86496156006f32071898c7edf29beb6c85d0a5374f74861112d376f1c2": {
+      "zh": "eprintln!(\"                        --uart1-tcp H:P 对 UART1 做同样的事\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "b66c42e9510ab3ea09366fd8e9ef1edb2932617d518444a0b3853a855075da25": {
+      "zh": "if o.exit_on.as_deref() == Some(\"\") || o.inject_ons.iter().any(String::is_empty) { usage_error(\"--exit-on 和 --inject-on 需要非空字符串\"); }",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "c2bc4e8e647aa62f211d40124e95574218272b73d08343c699e1440b57b308c0": {
+      "zh": "eprintln!(\"                        经典款：ttgo-tdisplay、cyd、ulanzi-tc001、ai-thinker-cam、esp32dev、none)\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "c3030ff6490b2d9527f8625b142d9bc0648d8b63d5c251fb759a0ca8b07de6da": {
+      "zh": "if o.inject_ons.len() > o.injects.len() { usage_error(\"每个 --inject-on 都需要一个 --inject：它们按给定顺序配对\"); }",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "c4ff7862f9520c5875481aa150cb3ed049a076615a1cc09ef808184bf078147d": {
+      "zh": "eprintln!(\"  --script F            在模拟时刻执行宿主机动作（按键、触摸、串口输入、停止）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "c98d082a0bc239509992c287c1965f54a7871fb109b38ce65ef0ee9bb0ee1cd4": {
+      "zh": "eprintln!(\"  --elf F               为日志、跟踪和性能采样提供符号（可重复）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "d71c04ba692cf2fe5d858fa611cc28d1aa31caac766be48580fff35cedd722a3": {
+      "zh": "eprintln!(\"  --flash-mb N, --psram-mb N   内存大小（S3 默认 8 / 2，C3、C6 和经典款 4 / 0，P4 16 / 0，S31 2，mosaico 16 / 16）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "e0decef5c76bc0064a39b252bbb0046f0a932dea084c7495e40f93cf796980cd": {
+      "zh": "eprintln!(\"  --wifi-sta ssid=…,psk=…   虚拟站点，加入客户机自己的接入点（不是 P4）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "e674abfb2f6b7bff0f3b8005e1b8a31975e65366a01865a049994d20564be7fd": {
+      "zh": "usage_error(\"--exit-on、--timeout、--inject、--uart-tcp 和 --uart1-tcp 不能与 --cooja 或 --coproc 一起使用\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:39:00.045Z"
+    },
+    "ee1f66e81f85d8aba66125f0ad6007ce4e08af983e97c4bc7a2b55457efa515a": {
+      "zh": "eprintln!(\"  --inject DATA, --inject-on TEXT   将 DATA（\\\\n、\\\\r 转义）注入 UART0，在开始时或 UART0 打印 TEXT 后注入\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    },
+    "f1e9e75cbd8b14c18cb388563dfb49f2af88e5ad0a0ae611c23136c0615e808c": {
+      "zh": "eprintln!(\"                        （乐鑫提供，不在压缩包里：tools/fetch-rom-elfs.sh DIR 可全部下载）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.913Z"
+    },
+    "f3adbb0b75726f0c45422ee7d026c2df1a117a4c812429b0a3f108e71ccf04de": {
+      "zh": "eprintln!(\"  --timeout DUR         经过 DUR 实际时间后结束运行（5s、500ms），状态码 124\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-26T04:38:58.626Z"
+    }
+  }
 }

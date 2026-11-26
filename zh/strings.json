@@ -2,7 +2,7 @@
   "meta": {
     "generator": "tools/zh-bootstrap.mjs",
     "upstream": "HEAD",
-    "count": 495,
+    "count": 517,
     "note": "en/zh 为精确文本(多行用 \\n 连接);en 唯一时唯一匹配,occ 表示取第几次出现",
     "discoveredAt": "2026-11-21T14:09:30.397Z"
   },
@@ -39,12 +39,6 @@
     },
     {
       "file": "cli/src/lib.rs",
-      "en": "    eprintln!(\"  --rom F               the chip's mask ROM ELF; default: $ESP32SIM_ROM_DIR, then ~/.espressif/tools/esp-rom-elfs/*/\");\n    eprintln!(\"                        (Espressif's, not in the tarball: tools/fetch-rom-elfs.sh DIR downloads all of them)\");\n    eprintln!(\"  --board NAME          board model (S3: atech14, waveshare-lcd4b, waveshare-amoled18-v2, waveshare-cam, stopwatch, none;\");\n    eprintln!(\"                        C6: waveshare-c6-lcd147, xiao-esp32c6, none; P4: waveshare-p4-lcd35, none; S31: mosaico, none;\");\n    eprintln!(\"                        classic: ttgo-tdisplay, cyd, ulanzi-tc001, ai-thinker-cam, esp32dev, none)\");\n    eprintln!(\"  --flash-mb N, --psram-mb N   memory sizes (S3 default 8 / 2, C3, C6 and classic 4 / 0, P4 16 / 0, S31 2, mosaico 16 / 16)\");\n    eprintln!(\"  --max-seconds S       stop after S emulated seconds (always give one: the run returns)\");\n    eprintln!(\"  --console usb|uart0|both|none   which consoles to print (uart0 shows the ROM and bootloader)\");\n    eprintln!(\"  --imu-motion N        scripted IMU motion: 0 at rest, 1 the 30 s tilt/flip/shake script (amoled18-v2, mosaico)\");\n    eprintln!(\"  --wifi ssid=…,psk=…   a virtual access point with DHCP, DNS, NTP and NAT to the host network\");\n    eprintln!(\"  --wifi-sta ssid=…,psk=…   a virtual station that joins the guest's own access point (classic ESP32)\");\n    eprintln!(\"  --pcap F              write the station's Ethernet frames (both ways) to pcap F (needs --wifi or --wifi-sta)\");\n    eprintln!(\"  --hostfwd tcp:H:HP-G:GP  publish a guest TCP port on the host (repeatable; needs --wifi)\");\n    eprintln!(\"  --script F            host actions at emulated times (button presses, touches, serial input, stop)\");\n    eprintln!(\"  --tft-png F, --wav F  save the display / the audio at the end of the run\");\n    eprintln!(\"  --mic-wav [PORT:]F    play a 16-bit PCM WAV once into I2S RX (default controller 0), resampled\");\n    eprintln!(\"  --web PORT            serve the board UI at http://127.0.0.1:PORT/ in real time\");\n    eprintln!(\"  --elf F               symbols for logs, traces and profiles (repeatable)\");",
-      "zh": "    eprintln!(\"  --rom F               芯片自带 ROM 的 ELF：先找 $ESP32SIM_ROM_DIR，再找 ~/.espressif/tools/esp-rom-elfs/*/\");\n    eprintln!(\"                        （属 Espressif，不在发布包里；用 tools/fetch-rom-elfs.sh DIR 下载全部）\");\n    eprintln!(\"  --board NAME          开发板型号，不写就用默认板。可选：\");\n    eprintln!(\"                        S3：atech14、waveshare-lcd4b、waveshare-amoled18-v2、waveshare-cam、stopwatch、none\");\n    eprintln!(\"                        C6：waveshare-c6-lcd147、xiao-esp32c6、none；P4：waveshare-p4-lcd35、none\");\n    eprintln!(\"                        S31：mosaico、none\");\n    eprintln!(\"                        经典 ESP32：ttgo-tdisplay、cyd、ulanzi-tc001、ai-thinker-cam、esp32dev、none\");\n    eprintln!(\"  --flash-mb N, --psram-mb N   闪存与 PSRAM 容量，单位 MiB；不给就用默认值：\");\n    eprintln!(\"                               S3 为 8 / 2，C3、C6、经典 ESP32 为 4 / 0，P4 为 16 / 0，S31 为 2，mosaico 为 16 / 16\");\n    eprintln!(\"  --max-seconds S       跑满 S 个模拟秒就停。建议总是给：这样仿真会自己结束。\");\n    eprintln!(\"  --console usb|uart0|both|none   打印哪几路控制台；uart0 会显示 ROM 和引导程序的输出\");\n    eprintln!(\"  --imu-motion N        让 IMU 按脚本运动：0 静止，1 跑 30 秒倾斜、翻转、摇晃；只在 amoled18-v2 和 mosaico 上有\");\n    eprintln!(\"  --wifi ssid=…,psk=…   建一个虚拟热点：自带 DHCP、DNS、NTP，还能 NAT 到本机网络\");\n    eprintln!(\"  --wifi-sta ssid=…,psk=…   让一个虚拟站点加入客户机自己的接入点；只限经典 ESP32\");\n    eprintln!(\"  --pcap F              把站点的以太网帧（收发双向）写成 pcap 文件 F；需要 --wifi 或 --wifi-sta\");\n    eprintln!(\"  --hostfwd tcp:H:HP-G:GP  把客户机的一个 TCP 端口映射到宿主机；可重复，需要 --wifi\");\n    eprintln!(\"  --script F            按脚本在指定模拟时刻做宿主动作：按键、触摸、串口输入、停止\");\n    eprintln!(\"  --tft-png F, --wav F  运行结束时保存屏幕截图和音频\");\n    eprintln!(\"  --mic-wav [PORT:]F    把一段 16 位 PCM WAV 播进 I2S RX，只播一次，会重采样；默认控制器 0\");\n    eprintln!(\"  --web PORT            实时显示开发板界面，地址是 http://127.0.0.1:PORT/\");\n    eprintln!(\"  --elf F               给日志、跟踪和 profile 用的符号表；可重复给多个 ELF\");",
-      "occ": 1
-    },
-    {
-      "file": "cli/src/lib.rs",
       "en": "    eprintln!(\"                        debugging; --no-jit is the oracle when a result looks wrong\");",
       "zh": "    eprintln!(\"                        调试用。结果看着不对时，先加 --no-jit 再跑一遍，作为基准\");",
       "occ": 1
@@ -57,20 +51,8 @@
     },
     {
       "file": "cli/src/lib.rs",
-      "en": "    eprintln!(\"  --sd IMG, --sd-rw IMG (P4) a card in the SD socket, copy-on-write / write-through;\");",
-      "zh": "    eprintln!(\"  --sd IMG, --sd-rw IMG (P4) SD 插槽里放一张卡：写时复制；用 --sd-rw 则直写\");",
-      "occ": 1
-    },
-    {
-      "file": "cli/src/lib.rs",
       "en": "    eprintln!(\"                        --sd-prg-us N, --sd-serial HEX for its programming time and serial\");",
       "zh": "    eprintln!(\"                        --sd-prg-us N 和 --sd-serial HEX 设置这张卡的编程时间和序列号\");",
-      "occ": 1
-    },
-    {
-      "file": "cli/src/lib.rs",
-      "en": "    eprintln!(\"  --usb-host F          (P4, S31) a USB host on the USB-OTG port running F; --sd-timing for timed SD\");",
-      "zh": "    eprintln!(\"  --usb-host F          （P4、S31）在 USB-OTG 口上跑 USB 主机，命令取自文件 F；--sd-timing 让 SD 计时\");",
       "occ": 1
     },
     {
@@ -293,12 +275,6 @@
       "file": "cli/src/lib.rs",
       "en": "        if o.net_given { usage_error(\"--net configures the network behind --wifi's access point; with --wifi-sta the network is the guest's own\"); }",
       "zh": "        if o.net_given { usage_error(\"--net: 只能配 --wifi 接入点背后的网络，用 --wifi-sta 时网络由客户机自己提供。\"); }",
-      "occ": 1
-    },
-    {
-      "file": "cli/src/lib.rs",
-      "en": "        if o.chip != \"esp32\" { usage_error(\"--wifi-sta: only the classic ESP32 so far (--chip esp32)\"); }",
-      "zh": "        if o.chip != \"esp32\" { usage_error(\"--wifi-sta: 目前只支持经典 ESP32，请用 --chip esp32。\"); }",
       "occ": 1
     },
     {
@@ -831,12 +807,6 @@
     },
     {
       "file": "cli/tests/wifi_sta_option.rs",
-      "en": "        (&[\"--chip\", \"s3\", \"--wifi-sta\", \"ssid=lab\"][..], \"only the classic ESP32 so far\"),",
-      "zh": "        (&[\"--chip\", \"s3\", \"--wifi-sta\", \"ssid=lab\"][..], \"目前只支持经典 ESP32\"),",
-      "occ": 1
-    },
-    {
-      "file": "cli/tests/wifi_sta_option.rs",
       "en": "        (&[\"--chip\", \"esp32\", \"--wifi-sta\", \"ssid=lab\", \"--wifi\", \"ssid=demo\"][..], \"are not modelled yet\"),",
       "zh": "        (&[\"--chip\", \"esp32\", \"--wifi-sta\", \"ssid=lab\", \"--wifi\", \"ssid=demo\"][..], \"目前尚未建模\"),",
       "occ": 1
@@ -851,12 +821,6 @@
       "file": "cli/tests/wifi_sta_option.rs",
       "en": "        (&[\"--chip\", \"esp32\", \"--wifi-sta\", \"ssid=lab\", \"--net\", \"none,epoch=1767225600\"][..], \"--net configures the network behind --wifi's access point\"),",
       "zh": "        (&[\"--chip\", \"esp32\", \"--wifi-sta\", \"ssid=lab\", \"--net\", \"none,epoch=1767225600\"][..], \"--net: 只能配 --wifi 接入点背后的网络\"),",
-      "occ": 1
-    },
-    {
-      "file": "cli/tests/wifi_sta_option.rs",
-      "en": "    assert!(!stderr.contains(\"--pcap requires\") && !stderr.contains(\"panicked\"), \"{stderr}\");",
-      "zh": "    assert!(!stderr.contains(\"--pcap 需要\") && !stderr.contains(\"panicked\"), \"{stderr}\");",
       "occ": 1
     },
     {
@@ -2975,6 +2939,174 @@
       "file": "cli/src/lib.rs",
       "en": "eprintln!(\"  --trace-fn PREFIX, --break PC, --watch ADDR, --peek ADDR,N, --profile, --vcd F, --debug AREAS, --no-jit\");",
       "zh": "eprintln!(\"  --trace-fn PREFIX, --break PC, --watch ADDR, --peek ADDR,N, --profile, --vcd F, --debug AREAS, --no-jit\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --rom F               the chip's mask ROM ELF; default: $ESP32SIM_ROM_DIR, then ~/.espressif/tools/esp-rom-elfs/*/\");",
+      "zh": "eprintln!(\"  --rom F               芯片自带 ROM 的 ELF；默认：$ESP32SIM_ROM_DIR，然后是 ~/.espressif/tools/esp-rom-elfs/*/\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"                        (Espressif's, not in the tarball: tools/fetch-rom-elfs.sh DIR downloads all of them)\");",
+      "zh": "eprintln!(\"                        （乐鑫提供，不在压缩包里：tools/fetch-rom-elfs.sh DIR 可全部下载）\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"                        classic: ttgo-tdisplay, cyd, ulanzi-tc001, ai-thinker-cam, esp32dev, none)\");",
+      "zh": "eprintln!(\"                        经典款：ttgo-tdisplay、cyd、ulanzi-tc001、ai-thinker-cam、esp32dev、none)\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --flash-mb N, --psram-mb N   memory sizes (S3 default 8 / 2, C3, C6 and classic 4 / 0, P4 16 / 0, S31 2, mosaico 16 / 16)\");",
+      "zh": "eprintln!(\"  --flash-mb N, --psram-mb N   内存大小（S3 默认 8 / 2，C3、C6 和经典款 4 / 0，P4 16 / 0，S31 2，mosaico 16 / 16）\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --max-seconds S       stop after S emulated seconds (always give one: the run returns)\");",
+      "zh": "eprintln!(\"  --max-seconds S       模拟 S 秒后停止（务必指定：运行会返回）\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --console usb|uart0|both|none   which consoles to print (uart0 shows the ROM and bootloader)\");",
+      "zh": "eprintln!(\"  --console usb|uart0|both|none   打印哪些控制台（uart0 显示 ROM 和引导程序）\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --imu-motion N        scripted IMU motion: 0 at rest, 1 the 30 s tilt/flip/shake script (amoled18-v2, mosaico)\");",
+      "zh": "eprintln!(\"  --imu-motion N        脚本化 IMU 运动：0 静止，1 为 30 秒倾斜/翻转/摇晃脚本（amoled18-v2、mosaico）\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --wifi ssid=…,psk=…   a virtual access point with DHCP, DNS, NTP and NAT to the host network\");",
+      "zh": "eprintln!(\"  --wifi ssid=…,psk=…   虚拟接入点，带 DHCP、DNS、NTP，并 NAT 到宿主机网络\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --wifi-sta ssid=…,psk=…   a virtual station that joins the guest's own access point (not the P4)\");",
+      "zh": "eprintln!(\"  --wifi-sta ssid=…,psk=…   虚拟站点，加入客户机自己的接入点（不是 P4）\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --pcap F              write the station's Ethernet frames (both ways) to pcap F (needs --wifi or --wifi-sta)\");",
+      "zh": "eprintln!(\"  --pcap F              把站点的以太网帧（双向）写入 pcap 文件 F（需要 --wifi 或 --wifi-sta）\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --hostfwd tcp|udp:H:HP-G:GP  publish a guest TCP or UDP port on the host (repeatable; needs --wifi)\");",
+      "zh": "eprintln!(\"  --hostfwd tcp|udp:H:HP-G:GP  在宿主机上发布客户机的 TCP 或 UDP 端口（可重复；需要 --wifi）\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --script F            host actions at emulated times (button presses, touches, serial input, stop)\");",
+      "zh": "eprintln!(\"  --script F            在模拟时刻执行宿主机动作（按键、触摸、串口输入、停止）\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --exit-on TEXT        end the run, status 0, once the console prints TEXT (status 1 if it never does)\");",
+      "zh": "eprintln!(\"  --exit-on TEXT        控制台打印 TEXT 后结束运行，状态码 0；若始终未打印，状态码 1\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --timeout DUR         end the run after DUR of wall-clock time (5s, 500ms), status 124\");",
+      "zh": "eprintln!(\"  --timeout DUR         经过 DUR 实际时间后结束运行（5s、500ms），状态码 124\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --inject DATA, --inject-on TEXT   DATA (\\\\n, \\\\r escapes) into UART0, at the start or once UART0 printed TEXT\");",
+      "zh": "eprintln!(\"  --inject DATA, --inject-on TEXT   将 DATA（\\\\n、\\\\r 转义）注入 UART0，在开始时或 UART0 打印 TEXT 后注入\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"                        --uart1-tcp H:P the same for UART1\");",
+      "zh": "eprintln!(\"                        --uart1-tcp H:P 对 UART1 做同样的事\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --tft-png F, --wav F  save the display / the audio at the end of the run\");",
+      "zh": "eprintln!(\"  --tft-png F, --wav F  在运行结束时保存显示画面 / 音频\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --mic-wav [PORT:]F    play a 16-bit PCM WAV once into I2S RX (default controller 0), resampled\");",
+      "zh": "eprintln!(\"  --mic-wav [PORT:]F    向 I2S RX 播放一次 16 位 PCM WAV（默认控制器 0），会重采样\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --web PORT            serve the board UI at http://127.0.0.1:PORT/ in real time\");",
+      "zh": "eprintln!(\"  --web PORT            在 http://127.0.0.1:PORT/ 实时提供开发板界面\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --elf F               symbols for logs, traces and profiles (repeatable)\");",
+      "zh": "eprintln!(\"  --elf F               为日志、跟踪和性能采样提供符号（可重复）\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --usb-host F          (P4, S3, S31) a USB host on the USB-OTG port running F; --sd-timing (P4) for timed SD\");",
+      "zh": "eprintln!(\"  --usb-host F          （P4、S3、S31）在 USB-OTG 端口上运行 F 的 USB 宿主机；--sd-timing（P4）用于定时 SD\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "if matches!(o.chip.as_str(), \"p4\" | \"esp32p4\") { usage_error(\"--wifi-sta: the P4 has no WiFi of its own, and its co-processor's station is not modelled\"); }",
+      "zh": "if matches!(o.chip.as_str(), \"p4\" | \"esp32p4\") { usage_error(\"--wifi-sta：P4 自身没有 WiFi，其协处理器的站点也未建模\"); }",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "if o.exit_on.as_deref() == Some(\"\") || o.inject_ons.iter().any(String::is_empty) { usage_error(\"--exit-on and --inject-on need a non-empty string\"); }",
+      "zh": "if o.exit_on.as_deref() == Some(\"\") || o.inject_ons.iter().any(String::is_empty) { usage_error(\"--exit-on 和 --inject-on 需要非空字符串\"); }",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "if o.inject_ons.len() > o.injects.len() { usage_error(\"each --inject-on needs an --inject: they pair up in the order given\"); }",
+      "zh": "if o.inject_ons.len() > o.injects.len() { usage_error(\"每个 --inject-on 都需要一个 --inject：它们按给定顺序配对\"); }",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "if !o.inject_ons.is_empty() && o.script.is_some() { usage_error(\"--inject-on with --script: the waits would hold the script back; put them in the script (waituart0, uart0)\"); }",
+      "zh": "如果 !o.inject_ons.is_empty() && o.script.is_some() { usage_error(\"--inject-on 与 --script 同时使用：等待会阻塞脚本；请把它们放进脚本里（waituart0、uart0）\"); }",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "if o.uart_tcp.is_some() && o.uart_tcp == o.uart1_tcp && !o.uart_tcp.as_deref().is_some_and(|a| a.ends_with(\":0\")) { usage_error(\"--uart-tcp and --uart1-tcp need different addresses\"); }",
+      "zh": "如果 o.uart_tcp.is_some() && o.uart_tcp == o.uart1_tcp && !o.uart_tcp.as_deref().is_some_and(|a| a.ends_with(\":0\")) { usage_error(\"--uart-tcp 与 --uart1-tcp 需要使用不同的地址\"); }",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "usage_error(\"--exit-on, --timeout, --inject, --uart-tcp and --uart1-tcp are not available with --cooja or --coproc\");",
+      "zh": "usage_error(\"--exit-on、--timeout、--inject、--uart-tcp 和 --uart1-tcp 不能与 --cooja 或 --coproc 一起使用\");",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "m.host.deadline = o.timeout.map(|d| t0.checked_add(d).unwrap_or_else(|| usage_error(\"--timeout: too long\")));",
+      "zh": "m.host.deadline = o.timeout.map(|d| t0.checked_add(d).unwrap_or_else(|| usage_error(\"--timeout：时间过长\")));",
       "discovered": true
     }
   ]
