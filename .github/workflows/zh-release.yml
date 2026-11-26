@@ -83,7 +83,8 @@ jobs:
           git config user.name "esp32sim-zh bot"
           git config user.email "bot@users.noreply.github.com"
           git fetch https://github.com/mikroverk/esp32sim.git main
-          if git merge --no-edit -m "chore: 合并上游 ${{ needs.check.outputs.upstream }} [skip ci]" FETCH_HEAD; then
+          # 上游文件优先(-X theirs):我们的改动都在新增文件里,少量共同文件(如 .gitignore)冲突时以上游为准
+          if git merge --no-edit -X theirs -m "chore: 合并上游 ${{ needs.check.outputs.upstream }} [skip ci]" FETCH_HEAD; then
             echo "合并完成"
           else
             echo "合并冲突,需要人工处理:git fetch https://github.com/mikroverk/esp32sim.git main && git merge FETCH_HEAD" >&2
