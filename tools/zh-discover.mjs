@@ -56,6 +56,9 @@ function htmlTextCandidates(line) {
 function rustTextCandidates(line) {
   if (/\[(emu|irq|net|board|ble|pwm|adc|cooja|cosim|c6|c3|coproc)\]/.test(line)) return [];  // 运行时报告行不译
   if (!/(eprintln!\(|println!\(|usage_error\()/.test(line)) return [];
+  // 含控制流关键字的行(如 `if x { usage_error(...) }`)是代码,不是整段文案;
+  // 整行丢给翻译会把 `if` 译成「如果」破坏语法,这里跳过。
+  if (/\b(if|else|while|for|match|loop|let|mut|fn)\b/.test(line)) return [];
   const out = [];
   const re = /"((?:[^"\\]|\\.){4,400})"/g;
   let m;
