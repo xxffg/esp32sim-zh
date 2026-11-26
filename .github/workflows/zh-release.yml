@@ -84,7 +84,6 @@ jobs:
           git config user.name "esp32sim-zh bot"
           git config user.email "bot@users.noreply.github.com"
           git fetch https://github.com/mikroverk/esp32sim.git main
-          # 上游文件优先(-X theirs):我们的改动都在新增文件里,少量冲突以上游为准
           if ! git merge --no-commit --no-edit -X theirs FETCH_HEAD; then
             echo "合并冲突,需要人工处理:git fetch https://github.com/mikroverk/esp32sim.git main && git merge FETCH_HEAD" >&2
             git merge --abort || true
@@ -97,10 +96,7 @@ jobs:
             git push origin HEAD:refs/heads/zh
           else
             echo "push 事件不推回,避免循环触发"
-          fi          else
-            echo "push 事件不推回,避免循环触发"
           fi
-
   translate:
     needs: sync
     if: needs.sync.result == 'success' && inputs.skip_translate != 'true' && github.event_name != 'push'
