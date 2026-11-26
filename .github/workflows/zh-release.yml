@@ -91,7 +91,7 @@ jobs:
           fi
           # GITHUB_TOKEN 无权修改 workflow 文件,保留仓库自己的 .github/workflows
           git checkout HEAD -- .github/workflows
-          git commit -m "chore: 合并上游 ${{ needs.check.outputs.upstream }} [skip ci]"
+          git commit -m "chore: 合并上游 ${{ needs.check.outputs.upstream }} [skip ci]" || echo "上游已是最新,无变更可提交"
           if [ "${{ github.event_name }}" != "push" ]; then
             git push origin HEAD:refs/heads/zh
           else
