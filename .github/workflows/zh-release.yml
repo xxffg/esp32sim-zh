@@ -1,12 +1,11 @@
 # 中文版 esp32sim 的发布流水线(GitHub Actions)
-# 密钥:仓库 Settings → Secrets and variables → Actions → New repository secret
+# 密钥:仓库 Settings → Secrets and variables → GitHub Actions → New repository secret
 #        DEEPSEEK_API_KEY(翻译)
 #
-# 什么时候真的编译:
-#   - 定时(每天 10:00 北京时间):只有上游 main 或最新 tag 变了才编译、才发版
-#   - 手动触发:总是编译并发版
-#   - push 到 zh:只编译验证,不发版
-# 上次编译的上游状态记在 zh/last-upstream.txt,提交回仓库。
+# 规则:只有上游 mikroverk/esp32sim 的 main 变了,才合并、翻译、编译、发版。
+# 上游没变时整个工作流在 check 阶段结束,不跑任何构建。
+#
+# 上次构建的上游提交记在 zh/last-upstream.txt(只存 40 位 sha,提交回仓库)。
 name: zh-release
 
 on:
@@ -30,46 +29,75 @@ concurrency:
 
 jobs:
   check:
-    name: 检查上游是否有更新
+    name: 检查上游是否更新
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.cmp.outputs.changed }}
       upstream: ${{ steps.cmp.outputs.upstream }}
+      uptag: ${{ steps.cmp.outputs.uptag }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: 对比上游状态
+      - name: 比对上游 main 的提交
         id: cmp
         run: |
           set -e
-          git remote add upstream https://github.com/mikroverk/esp32sim.git
-          git fetch upstream --tags --force -q
-          up_sha=$(git rev-parse upstream/main)
-          up_tag=$(git tag --list 'v*' --sort=-v:refname | head -1)
-          want="$up_tag $up_sha"
-          echo "upstream=$want" >> "$GITHUB_OUTPUT"
+          # 直接用 ls-remote 问上游,避免本地 tag(含 v0.4.0-zh.N)污染
+          up_sha=$(git ls-remote https://github.com/mikroverk/esp32sim.git refs/heads/main | cut -f1)
+          up_tag=$(git ls-remote --tags --refs https://github.com/mikroverk/esp32sim.git 'v[0-9]*' \
+                   | awk -F'refs/tags/' '{print $2}' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
+          echo "upstream=$up_sha" >> "$GITHUB_OUTPUT"
+          echo "uptag=$up_tag" >> "$GITHUB_OUTPUT"
           last=""
           if [ -f zh/last-upstream.txt ]; then last=$(tr -d '\r' < zh/last-upstream.txt | head -1); fi
-          echo "上游最新: $want"
+          echo "上游 main: $up_sha($up_tag)"
           echo "上次构建: ${last:-（还没记录）}"
           case "${{ github.event_name }}" in
             push) echo "changed=true" >> "$GITHUB_OUTPUT"; echo "push 事件:只验证构建,不发版" ;;
             workflow_dispatch) echo "changed=true" >> "$GITHUB_OUTPUT"; echo "手动触发:强制构建" ;;
             *)
-              if [ "$last" = "$want" ]; then
+              if [ "$last" = "$up_sha" ]; then
                 echo "changed=false" >> "$GITHUB_OUTPUT"
                 echo "上游没有更新,跳过编译"
               else
                 echo "changed=true" >> "$GITHUB_OUTPUT"
+                echo "上游有更新,准备合并并编译"
               fi
               ;;
           esac
 
-  translate:
+  sync:
+    name: 合并上游代码
     needs: check
-    if: needs.check.outputs.changed == 'true' && inputs.skip_translate != 'true'
+    if: needs.check.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 合并 mikroverk/esp32sim 的 main
+        run: |
+          set -e
+          git config user.name "esp32sim-zh bot"
+          git config user.email "bot@users.noreply.github.com"
+          git fetch https://github.com/mikroverk/esp32sim.git main
+          if git merge --no-edit FETCH_HEAD; then
+            echo "合并完成"
+          else
+            echo "合并冲突,需要人工处理:git fetch https://github.com/mikroverk/esp32sim.git main && git merge FETCH_HEAD" >&2
+            git merge --abort || true
+            exit 1
+          fi
+          if [ "${{ github.event_name }}" != "push" ]; then
+            git push
+          else
+            echo "push 事件不推回,避免循环触发"
+          fi
+
+  translate:
+    needs: sync
+    if: needs.sync.result == 'success' && inputs.skip_translate != 'true' && github.event_name != 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -79,11 +107,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: 拉取上游 tag
-        run: |
-          git remote add upstream https://github.com/mikroverk/esp32sim.git
-          git fetch upstream --tags --force -q
 
       - name: 发现上游新增文案
         run: |
@@ -111,8 +134,8 @@ jobs:
           git push
 
   build:
-    needs: [check, translate]
-    if: needs.check.outputs.changed == 'true' && (needs.translate.result == 'success' || needs.translate.result == 'skipped')
+    needs: [sync, translate]
+    if: needs.sync.result == 'success' && (needs.translate.result == 'success' || needs.translate.result == 'skipped')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -155,7 +178,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             .build/target
-          key: cargo-${{ matrix.target }}-${{ hashFiles('Cargo.lock') }}
+          key: cargo-${{ matrix.target }}-${{ needs.check.outputs.upstream }}
 
       - name: 生成 build-src(模式 B)
         run: |
@@ -216,8 +239,8 @@ jobs:
           path: dist/*.tar.gz
 
   publish:
-    needs: [check, translate, build]
-    # push 只验证构建;定时或手动才发版,且只有上游真变了才发
+    needs: [check, build]
+    # push 只验证构建;定时或手动才发版
     if: needs.check.outputs.changed == 'true' && needs.build.result == 'success' && github.event_name != 'push'
     runs-on: ubuntu-latest
     steps:
@@ -236,7 +259,6 @@ jobs:
           ver=$(tr -d '\r' < Cargo.toml | sed -n 's/^version = "\(.*\)"$/\1/p' | head -1)
           echo "version=$ver" >> "$GITHUB_OUTPUT"
           echo "tag=v${ver}-zh.${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
-          echo "版本: $ver / 标签: v${ver}-zh.${GITHUB_RUN_NUMBER}"
 
       - name: 汇总校验和
         run: cd dist && sha256sum ./*.tar.gz | tee SHA256SUMS.txt
@@ -247,21 +269,21 @@ jobs:
           tag_name: ${{ steps.ver.outputs.tag }}
           name: esp32sim ${{ steps.ver.outputs.version }} 中文版(#${{ github.run_number }})
           body: |
-            自动构建:发现新文案 → DeepSeek 增量翻译 → 质量门禁 → 三平台交叉编译。
+            自动构建:拉上游 → 合并 → 发现新文案 → DeepSeek 增量翻译 → 门禁 → 三平台交叉编译。
 
-            - 仓库:${{ github.repository }}
-            - 上游:${{ needs.check.outputs.upstream }}
+            - 上游提交:${{ needs.check.outputs.upstream }}
+            - 上游 tag:${{ needs.check.outputs.uptag }}
             - 产物:linux-x86_64、linux-arm64、windows-x86_64(含 SHA256SUMS)
           files: dist/*
           fail_on_unmatched_files: true
 
-      - name: 记录本次构建的上游状态
+      - name: 记录已构建的上游提交
         run: |
           set -e
           echo "${{ needs.check.outputs.upstream }}" > zh/last-upstream.txt
-          if git diff --quiet -- zh/last-upstream.txt 2>/dev/null; then echo "记录未变"; exit 0; fi
+          if git diff --quiet -- zh/last-upstream.txt; then echo "记录未变"; exit 0; fi
           git config user.name "esp32sim-zh bot"
           git config user.email "bot@users.noreply.github.com"
           git add zh/last-upstream.txt
-          git commit -m "zh: 记录已构建的上游版本 ${{ needs.check.outputs.upstream }}"
+          git commit -m "zh: 记录已构建的上游提交 ${{ needs.check.outputs.upstream }}"
           git push
