@@ -2,7 +2,7 @@
 # 密钥:仓库 Settings → Secrets and variables → GitHub Actions → New repository secret
 #        DEEPSEEK_API_KEY(翻译)
 #
-# 规则:只有上游 mikroverk/esp32sim 的 main 变了,才合并、翻译、编译、发版。
+# 规则:每 3 天检查一次;只有上游 mikroverk/esp32sim 的 main 真的变了,才合并、翻译、编译、发版。
 # 上游没变时整个工作流在 check 阶段结束,不跑任何构建。
 #
 # 上次构建的上游提交记在 zh/last-upstream.txt(只存 40 位 sha,提交回仓库)。
@@ -10,7 +10,8 @@ name: zh-release
 
 on:
   schedule:
-    - cron: '0 2 * * *'
+    # 每 3 天检查一次(UTC 02:00 = 北京 10:00);cron 的日字段步进,月末会有 1 天误差
+    - cron: '0 2 */3 * *'
   workflow_dispatch:
     inputs:
       skip_translate:
