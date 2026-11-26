@@ -84,17 +84,20 @@ jobs:
           git config user.name "esp32sim-zh bot"
           git config user.email "bot@users.noreply.github.com"
           git fetch https://github.com/mikroverk/esp32sim.git main
-          # 上游文件优先(-X theirs):我们的改动都在新增文件里,少量共同文件(如 .gitignore)冲突时以上游为准
-          if git merge --no-edit -X theirs -m "chore: 合并上游 ${{ needs.check.outputs.upstream }} [skip ci]" FETCH_HEAD; then
-            echo "合并完成"
-          else
+          # 上游文件优先(-X theirs):我们的改动都在新增文件里,少量冲突以上游为准
+          if ! git merge --no-commit --no-edit -X theirs FETCH_HEAD; then
             echo "合并冲突,需要人工处理:git fetch https://github.com/mikroverk/esp32sim.git main && git merge FETCH_HEAD" >&2
             git merge --abort || true
             exit 1
           fi
+          # GITHUB_TOKEN 无权修改 workflow 文件,保留仓库自己的 .github/workflows
+          git checkout HEAD -- .github/workflows
+          git commit -m "chore: 合并上游 ${{ needs.check.outputs.upstream }} [skip ci]"
           if [ "${{ github.event_name }}" != "push" ]; then
             git push origin HEAD:refs/heads/zh
           else
+            echo "push 事件不推回,避免循环触发"
+          fi          else
             echo "push 事件不推回,避免循环触发"
           fi
 
