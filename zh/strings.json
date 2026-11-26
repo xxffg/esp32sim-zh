@@ -3088,13 +3088,13 @@
     {
       "file": "cli/src/lib.rs",
       "en": "if !o.inject_ons.is_empty() && o.script.is_some() { usage_error(\"--inject-on with --script: the waits would hold the script back; put them in the script (waituart0, uart0)\"); }",
-      "zh": "如果 !o.inject_ons.is_empty() && o.script.is_some() { usage_error(\"--inject-on 与 --script 同时使用：等待会阻塞脚本；请把它们放进脚本里（waituart0、uart0）\"); }",
+      "zh": "if !o.inject_ons.is_empty() && o.script.is_some() { usage_error(\"--inject-on 与 --script 同时使用：等待会阻塞脚本；请把它们放进脚本里（waituart0、uart0）\"); }",
       "discovered": true
     },
     {
       "file": "cli/src/lib.rs",
       "en": "if o.uart_tcp.is_some() && o.uart_tcp == o.uart1_tcp && !o.uart_tcp.as_deref().is_some_and(|a| a.ends_with(\":0\")) { usage_error(\"--uart-tcp and --uart1-tcp need different addresses\"); }",
-      "zh": "如果 o.uart_tcp.is_some() && o.uart_tcp == o.uart1_tcp && !o.uart_tcp.as_deref().is_some_and(|a| a.ends_with(\":0\")) { usage_error(\"--uart-tcp 与 --uart1-tcp 需要使用不同的地址\"); }",
+      "zh": "if o.uart_tcp.is_some() && o.uart_tcp == o.uart1_tcp && !o.uart_tcp.as_deref().is_some_and(|a| a.ends_with(\":0\")) { usage_error(\"--uart-tcp 与 --uart1-tcp 需要使用不同的地址\"); }",
       "discovered": true
     },
     {
