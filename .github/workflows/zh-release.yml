@@ -109,6 +109,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: 清理失效译文(上游改过的行)
+        run: node tools/zh-repair.mjs
+
       - name: 发现上游新增文案
         run: |
           set -e
