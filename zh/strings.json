@@ -2,7 +2,7 @@
   "meta": {
     "generator": "tools/zh-bootstrap.mjs",
     "upstream": "HEAD",
-    "count": 517,
+    "count": 516,
     "note": "en/zh 为精确文本(多行用 \\n 连接);en 唯一时唯一匹配,occ 表示取第几次出现",
     "discoveredAt": "2026-11-21T14:09:30.397Z"
   },
@@ -251,12 +251,6 @@
       "file": "cli/src/lib.rs",
       "en": "            _ => { eprintln!(\"unknown arg {}\", a); usage(default_chip) }",
       "zh": "            _ => { eprintln!(\"usage: 不认识的参数 {}。\", a); usage(default_chip) }",
-      "occ": 1
-    },
-    {
-      "file": "cli/src/lib.rs",
-      "en": "    if !o.hostfwd.is_empty() && o.wifi.is_empty() { usage_error(\"--hostfwd requires --wifi\"); }",
-      "zh": "    if !o.hostfwd.is_empty() && o.wifi.is_empty() { usage_error(\"--hostfwd: 需要 --wifi，没有接入点就没有可转发的网络。\"); }",
       "occ": 1
     },
     {
@@ -3003,12 +2997,6 @@
     },
     {
       "file": "cli/src/lib.rs",
-      "en": "eprintln!(\"  --hostfwd tcp|udp:H:HP-G:GP  publish a guest TCP or UDP port on the host (repeatable; needs --wifi)\");",
-      "zh": "eprintln!(\"  --hostfwd tcp|udp:H:HP-G:GP  在宿主机上发布客户机的 TCP 或 UDP 端口（可重复；需要 --wifi）\");",
-      "discovered": true
-    },
-    {
-      "file": "cli/src/lib.rs",
       "en": "eprintln!(\"  --script F            host actions at emulated times (button presses, touches, serial input, stop)\");",
       "zh": "eprintln!(\"  --script F            在模拟时刻执行宿主机动作（按键、触摸、串口输入、停止）\");",
       "discovered": true
@@ -3107,6 +3095,12 @@
       "file": "cli/src/lib.rs",
       "en": "m.host.deadline = o.timeout.map(|d| t0.checked_add(d).unwrap_or_else(|| usage_error(\"--timeout: too long\")));",
       "zh": "m.host.deadline = o.timeout.map(|d| t0.checked_add(d).unwrap_or_else(|| usage_error(\"--timeout：时间过长\")));",
+      "discovered": true
+    },
+    {
+      "file": "cli/src/lib.rs",
+      "en": "eprintln!(\"  --hostfwd tcp|udp:H:HP-G:GP  publish a guest TCP or UDP port on the host (repeatable; needs --wifi or --wifi-sta)\");",
+      "zh": "eprintln!(\"  --hostfwd tcp|udp:H:HP-G:GP  在宿主机上发布客户机的 TCP 或 UDP 端口（可重复；需要 --wifi 或 --wifi-sta）\");",
       "discovered": true
     }
   ]

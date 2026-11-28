@@ -68,6 +68,11 @@
       "model": "deepseek-chat",
       "updatedAt": "2026-11-26T04:38:58.626Z"
     },
+    "77d4d6ad8d9189be51eac06223cfc24cf9423fd6bda935c752d0a380dd807ef5": {
+      "zh": "eprintln!(\"  --hostfwd tcp|udp:H:HP-G:GP  在宿主机上发布客户机的 TCP 或 UDP 端口（可重复；需要 --wifi 或 --wifi-sta）\");",
+      "model": "deepseek-chat",
+      "updatedAt": "2026-11-28T10:08:39.803Z"
+    },
     "904b932b75df26bc1127fe50cf617dbb0f9fd0f126946de15814c8b2089ed119": {
       "zh": "eprintln!(\"  --console usb|uart0|both|none   打印哪些控制台（uart0 显示 ROM 和引导程序）\");",
       "model": "deepseek-chat",
