@@ -65,6 +65,11 @@ pub enum StaLink { Listening, Authenticating, Associating, Handshake, Joined }
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 enum Dhcp { Idle, Discovering, Requesting, Bound, Renewing, Rebinding }
 
+/// The station's place on the guest's network while it holds a lease (`VirtualSta::peer`): its
+/// address, and the DHCP server that leased it, by address (option 54) and MAC (the ACK's source).
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub struct Peer { pub ip: [u8; 4], pub server: [u8; 4], pub server_mac: [u8; 6] }
+
 pub struct VirtualSta {
     pub cfg: StaConfig,
     pub log: bool,
@@ -151,6 +156,15 @@ impl VirtualSta {
     pub fn channel(&self) -> u8 { self.channel }
     /// The guest access point's BSSID, from its beacon; zero before the station heard one.
     pub fn bssid(&self) -> [u8; 6] { self.bssid }
+
+    /// The lease the station holds as the host on the guest's network, with its server; None
+    /// before the lease and after it ends, which leaving the access point and the relay switched
+    /// on (`set_host`) also do, and from a server whose ACK named no server (option 54, which
+    /// RFC 2131 4.3.1 requires).
+    pub fn peer(&self) -> Option<Peer> {
+        let ip = self.lease?;
+        (self.server != [0; 4] && self.server_mac != [0; 6]).then_some(Peer { ip, server: self.server, server_mac: self.server_mac })
+    }
 
     /// The guest rebooted: its access point and everything it knew of the station are gone.
     pub fn restart(&mut self) {
@@ -525,13 +539,10 @@ impl VirtualSta {
     /// T2 or to the lease's end, at least 60 s (RFC 2131 4.4.5), and at most that time.
     ///
     /// The lease counts from when the original REQUEST was sent (RFC 2131 4.4.1, and 4.4.5 for a
-    /// renewal). A retransmission keeps the exchange's `xid`, and the rebinding REQUESTs keep the
-    /// renewing ones' (`lease_timer` takes a new one only at T1), so an ACK may answer any REQUEST
-    /// of the exchange: the station keeps the first one's time. The server counts from a REQUEST it
+    /// renewal). A retransmission keeps the exchange's `xid`, so an ACK may answer any REQUEST of
+    /// the exchange: the station keeps the first one's time. The server counts from a REQUEST it
     /// received, never from before the first went out, so the station's lease does not end after
-    /// the server's. A rebinding ACK so counts from T1: with a T2 past twice T1 (options 58 and 59;
-    /// ESP-IDF v5.5.4's server sends neither) its new T1 has already passed, and the station renews
-    /// again at once, counting two renewals.
+    /// the server's. Renewing and rebinding are exchanges of their own (`lease_timer`).
     fn dhcp_send(&mut self, now_us: u64) {
         let (request, held) = (self.dhcp != Dhcp::Discovering, matches!(self.dhcp, Dhcp::Renewing | Dhcp::Rebinding));
         let ciaddr = if held { self.lease.unwrap_or([0; 4]) } else { [0; 4] };
@@ -555,7 +566,10 @@ impl VirtualSta {
 
     /// A lease timer is up (RFC 2131 4.4.5): at T1 the station renews with its server, at T2 it
     /// rebinds with any server, and at the lease's end it gives the address up, so ARP no longer
-    /// answers for it, and starts again with DISCOVER. Each step goes out at once.
+    /// answers for it, and starts again with DISCOVER. Each step goes out at once. Renewing and
+    /// rebinding each take a new `xid`, so a late ACK to a renewing REQUEST is discarded (4.4.5) and
+    /// a rebinding ACK counts from the first rebinding REQUEST, not from T1: counted from T1, an
+    /// ACK that shortens the lease could end it before it arrived.
     fn lease_timer(&mut self, now_us: u64) {
         if self.dhcp == Dhcp::Bound { self.xid = self.xid.wrapping_add(1); }                  // a new exchange
         if now_us >= self.lease_end_us {
@@ -564,6 +578,7 @@ impl VirtualSta {
             (self.t1_us, self.t2_us, self.lease_end_us) = (u64::MAX, u64::MAX, u64::MAX);
         } else if now_us >= self.t2_us {
             if self.dhcp != Dhcp::Rebinding { self.note("T2: rebinding the lease"); }
+            if self.dhcp == Dhcp::Renewing { (self.xid, self.request_us) = (self.xid.wrapping_add(1), None); }   // a new exchange
             self.dhcp = Dhcp::Rebinding;
         } else if now_us >= self.t1_us {
             if self.dhcp != Dhcp::Renewing { self.note("T1: renewing the lease"); }
